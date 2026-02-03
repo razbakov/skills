@@ -1,56 +1,59 @@
 ---
 name: analyze
-description: Analyze topics using the Six Thinking Hats technique with parallel agents. Use when the user asks to analyze, evaluate, assess, brainstorm, or examine a topic from multiple perspectives. Triggers on requests like "analyze X", "pros and cons of Y", "evaluate this decision", or "think through Z".
+description: Analyze topics using the Six Thinking Hats technique with parallel agents. Use when the user asks to analyze, evaluate, assess, brainstorm, or examine a topic from multiple perspectives. Triggers on requests like "analyze X", "pros and cons of Y", "evaluate this decision", or "think through Z". Saves findings to analysis/yyyy-mm-dd-title.md
 ---
 
 # Six Thinking Hats Analysis
 
 Perform structured multi-perspective analysis using Edward de Bono's Six Thinking Hats technique. This skill launches parallel agents to explore different viewpoints simultaneously.
 
-## The Six Hats
-
-| Hat | Perspective | Focus |
-|-----|-------------|-------|
-| **White** | Facts & Data | What do we know? What information is missing? |
-| **Red** | Emotions & Intuition | Gut reactions, feelings, immediate responses |
-| **Black** | Caution & Risks | What could go wrong? Weaknesses, obstacles |
-| **Yellow** | Optimism & Benefits | Strengths, advantages, why it could work |
-| **Green** | Creativity & Alternatives | New ideas, novel approaches, possibilities |
-| **Blue** | Process & Synthesis | Orchestration, summary, next steps |
-
 ## Workflow
 
 ### Step 1: Launch Parallel Analysis Agents
 
-Spin up **3 parallel agents** to analyze simultaneously:
+Spin up **5 parallel agents** to analyze simultaneously:
 
-**Agent 1 - Facts & Feelings:**
+**Agent 1 - White Hat (Facts):**
 ```
-Analyze "[TOPIC]" using Six Thinking Hats:
+Analyze "[TOPIC]" using WHITE HAT thinking:
 
-WHITE HAT (Facts): List all known facts, data, statistics about this topic. Note any information gaps.
+Use web search to find all known facts, data, statistics about this topic. Note any information gaps.
 
-RED HAT (Emotions): What are the immediate emotional reactions to this? What feels right or wrong intuitively?
-
-Format as two clearly labeled sections.
+Format as a bullet list of facts with source and a separate section for information gaps.
 ```
 
-**Agent 2 - Risks & Benefits:**
+**Agent 2 - Red Hat (Emotions):**
 ```
-Analyze "[TOPIC]" using Six Thinking Hats:
+Analyze "[TOPIC]" using RED HAT thinking:
 
-BLACK HAT (Caution): Identify all risks, downsides, obstacles, and failure modes. What could go wrong?
+What are the immediate emotional reactions to this? What feels right or wrong intuitively?
 
-YELLOW HAT (Optimism): Highlight advantages, benefits, ROI, and strategic fit. Why could this succeed?
-
-Format as two clearly labeled sections.
+Format as a list of gut reactions and intuitions.
 ```
 
-**Agent 3 - Creativity:**
+**Agent 3 - Black Hat (Caution):**
 ```
-Analyze "[TOPIC]" using Six Thinking Hats:
+Analyze "[TOPIC]" using BLACK HAT thinking:
 
-GREEN HAT (Creativity): Generate at least 5 novel ideas, unconventional approaches, or alternatives not yet considered. Think outside the box.
+Identify all risks, downsides, obstacles, and failure modes. What could go wrong?
+
+Format as a bullet list of concerns and potential problems.
+```
+
+**Agent 4 - Yellow Hat (Optimism):**
+```
+Analyze "[TOPIC]" using YELLOW HAT thinking:
+
+Highlight advantages, benefits, ROI, and strategic fit. Why could this succeed?
+
+Format as a bullet list of opportunities and advantages.
+```
+
+**Agent 5 - Green Hat (Creativity):**
+```
+Analyze "[TOPIC]" using GREEN HAT thinking:
+
+Generate at least 5 novel ideas, unconventional approaches, or alternatives not yet considered. Think outside the box.
 
 Format as a numbered list with brief explanations.
 ```
@@ -69,30 +72,29 @@ After all agents complete, perform the **Blue Hat** synthesis yourself:
 Present the final analysis using this structure:
 
 ```markdown
-## Six Hats Analysis: [Topic]
+## Analysis: [Topic]
 
-### ⚪ White Hat – Facts
-[Key facts and data gaps]
-
-### 🔴 Red Hat – Emotions
-[Gut reactions and intuitions]
-
-### ⚫ Black Hat – Risks
-[Cautions and potential problems]
-
-### 🟡 Yellow Hat – Benefits
-[Advantages and opportunities]
-
-### 🟢 Green Hat – Ideas
-[Creative alternatives and novel approaches]
-
-### 🔵 Blue Hat – Synthesis
 **Key Insights:** [2-3 main takeaways]
 **Tensions:** [Any conflicting perspectives]
 **Recommended Actions:**
 1. [Action 1]
 2. [Action 2]
 3. [Action 3]
+
+### Facts
+[Key facts and data gaps]
+
+### Emotions
+[Gut reactions and intuitions]
+
+### Risks
+[Cautions and potential problems]
+
+### Benefits
+[Advantages and opportunities]
+
+### Ideas
+[Creative alternatives and novel approaches]
 ```
 
 ## Agent Configuration
@@ -100,7 +102,6 @@ Present the final analysis using this structure:
 When launching Task agents:
 - Use `subagent_type: "generalPurpose"` for each analysis agent
 - Set `readonly: true` since these are analysis-only tasks
-- Launch all 3 agents in a **single message** for parallel execution
 
 ## Tips
 
