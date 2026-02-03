@@ -8,16 +8,16 @@ all: install
 install: $(SKILLS_DIR)
 	@for folder in $(SKILL_FOLDERS); do \
 		if [ -d "$$folder" ]; then \
-			link_path="$(SKILLS_DIR)/$$folder"; \
-			if [ -L "$$link_path" ] || [ -e "$$link_path" ]; then \
-				echo "Removing existing $$link_path"; \
-				rm -rf "$$link_path"; \
+			dest_path="$(SKILLS_DIR)/$$folder"; \
+			if [ -e "$$dest_path" ]; then \
+				echo "Removing existing $$dest_path"; \
+				rm -rf "$$dest_path"; \
 			fi; \
-			echo "Creating symlink: $$link_path -> $(PWD)/$$folder"; \
-			ln -s "$(PWD)/$$folder" "$$link_path"; \
+			echo "Copying $$folder to $$dest_path"; \
+			cp -r "$$folder" "$$dest_path"; \
 		fi; \
 	done
-	@echo "Symlinks created successfully!"
+	@echo "Skills copied successfully!"
 
 $(SKILLS_DIR):
 	@mkdir -p $(SKILLS_DIR)
@@ -25,10 +25,10 @@ $(SKILLS_DIR):
 
 clean:
 	@for folder in $(SKILL_FOLDERS); do \
-		link_path="$(SKILLS_DIR)/$$folder"; \
-		if [ -L "$$link_path" ]; then \
-			echo "Removing symlink: $$link_path"; \
-			rm "$$link_path"; \
+		dest_path="$(SKILLS_DIR)/$$folder"; \
+		if [ -e "$$dest_path" ]; then \
+			echo "Removing $$dest_path"; \
+			rm -rf "$$dest_path"; \
 		fi; \
 	done
 	@echo "Cleanup complete!"
