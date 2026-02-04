@@ -94,7 +94,12 @@ project/
     └── public/images/
 ```
 
-**Setup**: `bun create nuxt@latest src` → run commands from `src/`
+**Setup**:
+
+- Prefer `bun` when installing dependencies.
+- Use `bunx nuxi@latest init` with `--template minimal --no-modules --packageManager bun --gitInit --force` for non-interactive setup
+- Add modules separately with `bunx nuxi@latest module add`
+- Run commands from `src/`
 
 **Auto-import**: `components/section/Hero.vue` → `<SectionHero />`
 
