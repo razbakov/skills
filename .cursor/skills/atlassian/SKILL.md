@@ -101,6 +101,10 @@ acli jira workitem create \
   --summary "Short description" \
   --assignee "@me"
 ```
+
+**Issue types vary per project.** If `--type "Bug"` fails, the error message lists allowed types (e.g., Task, Epic, Subtask). Fall back to an available type.
+
+**Plain-text descriptions only at creation.** The `--description` flag sends text as-is into a single ADF paragraph — markdown syntax (headings, code fences, lists) will NOT render. If the description needs rich formatting, create the issue first, then update it with ADF using `--from-json` (see the Rich Descriptions section below).
 </jira_create>
 
 <jira_edit>
@@ -116,6 +120,74 @@ acli jira workitem edit \
   --assignee "@me"
 ```
 </jira_edit>
+
+<jira_rich_descriptions>
+### Rich Descriptions (ADF)
+
+Jira Cloud uses Atlassian Document Format (ADF) for rich text. The `--description` flag on both `create` and `edit` sends raw text into a single paragraph — markdown is NOT interpreted. To get proper headings, code blocks, inline code, and bullet lists, use `--from-json` with an ADF payload.
+
+**Step 1 — See the expected JSON structure:**
+
+```bash
+acli jira workitem edit --generate-json
+```
+
+**Step 2 — Write a JSON file with the edit payload:**
+
+```json
+{
+  "issues": ["PROJ-123"],
+  "description": {
+    "version": 1,
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": { "level": 2 },
+        "content": [{ "type": "text", "text": "Section Title" }]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          { "type": "text", "text": "Regular text with " },
+          { "type": "text", "text": "inline code", "marks": [{ "type": "code" }] },
+          { "type": "text", "text": " in it." }
+        ]
+      },
+      {
+        "type": "codeBlock",
+        "attrs": { "language": "text" },
+        "content": [{ "type": "text", "text": "code block content here" }]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [{
+              "type": "paragraph",
+              "content": [{ "type": "text", "text": "List item" }]
+            }]
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Step 3 — Apply the update:**
+
+```bash
+acli jira workitem edit --from-json /tmp/edit-payload.json --yes
+```
+
+**Important caveats:**
+- `--description-file` claims to accept ADF but often fails with `INVALID_INPUT`. Use `--from-json` instead — it is reliable.
+- `--from-json` and `--key` are mutually exclusive flags. Put the issue key(s) inside the `"issues"` array in the JSON file.
+- `--generate-json` and `--key` are also mutually exclusive — run `--generate-json` alone.
+- Clean up the temp JSON file after use.
+</jira_rich_descriptions>
 
 <jira_transition>
 Transitions change ticket status and are not easily reversible in most workflows. Confirm the target status with the user if there is any ambiguity.
@@ -261,6 +333,26 @@ confluence search "type=page AND text~'relevant keywords'"
 ```
 
 Read the most relevant page as markdown and present a summary.
+</example>
+
+<example name="user asks to create a Jira issue with rich formatting">
+User: "Create a bug ticket for the API timeout issue in project PROJ"
+
+1. First, try creating with the desired type. If it fails (e.g., "Bug" not available), read the allowed types from the error and retry with a valid one:
+```bash
+acli jira workitem create \
+  --project "PROJ" \
+  --type "Task" \
+  --summary "API timeout on /endpoint under load" \
+  --assignee "@me"
+```
+
+2. Then write an ADF JSON file for the rich description and apply it:
+```bash
+acli jira workitem edit --from-json /tmp/proj-123-edit.json --yes
+```
+
+3. Clean up the temp file and confirm the result.
 </example>
 
 <example name="user asks to update Confluence from local changes">
