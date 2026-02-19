@@ -2,7 +2,6 @@
 name: user-story
 description: Transform requirements into structured user stories with acceptance criteria using INVEST principles. Use when the user asks to write a user story, create a ticket, define acceptance criteria, or convert requirements into dev-ready stories.
 ---
-### Custom Instruction for Transforming Requirements into User Story Format
 
 Objective: Transform any given requirements into a user story with detailed acceptance criteria, ensuring clarity and completeness for development and QA teams.
 
