@@ -1,6 +1,6 @@
 ---
 name: app
-description: Documentation-first, test-driven development workflow for building applications. Use when starting new features, implementing functionality, or following structured development processes. Guides through phases: vision, architecture, data modeling, integration tests, unit tests, and implementation.
+description: Documentation-first, test-driven development workflow for building applications. Use when starting new features, implementing functionality, or following structured development processes. Guides through phases - vision, architecture, data modeling, integration tests, unit tests, and implementation.
 ---
 
 See README.md for project details
