@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:10:04.905Z",
+  "generatedAt": "2026-02-24T19:10:14.545Z",
   "installedSkills": [
     {
       "name": "atlassian",
@@ -64,6 +64,14 @@
       "install": {
         "repoUrl": "https://github.com/obra/superpowers",
         "skillPath": "skills/using-superpowers"
+      }
+    },
+    {
+      "name": "workflow",
+      "description": "Orchestrate complex tasks with planning, subagents, and verification. Use when starting multi-step tasks, managing todo items, coordinating work with subagents, or when the user mentions planning, verification, or task management.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/workflow"
       }
     }
   ]
