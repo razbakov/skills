@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:54:37.472Z",
+  "generatedAt": "2026-02-24T19:54:38.292Z",
   "installedSkills": [
     {
       "name": "bdd-collaboration",
@@ -16,6 +16,14 @@
       "install": {
         "repoUrl": "https://github.com/TheBushidoCollective/han",
         "skillPath": "plugins/patterns/bdd/skills/bdd-patterns"
+      }
+    },
+    {
+      "name": "bdd-principles",
+      "description": "Core BDD concepts, philosophy, and the Three Amigos practice",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-principles"
       }
     }
   ]
