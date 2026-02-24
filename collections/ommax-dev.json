@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:07:46.012Z",
+  "generatedAt": "2026-02-24T19:09:25.907Z",
   "installedSkills": [
     {
       "name": "atlassian",
@@ -32,6 +32,14 @@
       "install": {
         "repoUrl": "https://github.com/razbakov/skills",
         "skillPath": "skills/estimation"
+      }
+    },
+    {
+      "name": "google-drive",
+      "description": "Operate Google services from the terminal using gog. Use when requests involve Gmail, Calendar, Chat, Classroom, Drive, Docs, Slides, Contacts, Tasks, People, Sheets, Forms, Apps Script, Groups, or Keep workflows, including auth checks, data listing/search, file transfer, and command automation.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/google-drive"
       }
     },
     {
