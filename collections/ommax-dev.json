@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:10:35.100Z",
+  "generatedAt": "2026-02-24T19:12:21.406Z",
   "installedSkills": [
     {
       "name": "atlassian",
@@ -53,7 +53,10 @@
     {
       "name": "thank-you-next",
       "description": "Use when the user wants prompt-only backlog progression: select the next not_started story from docs/backlog.yaml, mark it in_progress, write a plan, and implement it.",
-      "install": {}
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/thank-you-next"
+      }
     },
     {
       "name": "user-story",
