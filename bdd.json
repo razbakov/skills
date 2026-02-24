@@ -1,15 +1,7 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:54:39.253Z",
+  "generatedAt": "2026-02-24T19:54:44.351Z",
   "installedSkills": [
-    {
-      "name": "bdd-collaboration",
-      "description": "Use when facilitating BDD collaboration between developers, testers, and business stakeholders. Use when running discovery workshops and example mapping sessions.",
-      "install": {
-        "repoUrl": "https://github.com/TheBushidoCollective/han",
-        "skillPath": "plugins/patterns/bdd/skills/bdd-collaboration"
-      }
-    },
     {
       "name": "bdd-patterns",
       "description": "Use when applying Behavior-Driven Development patterns including Given-When-Then structure, feature files, and acceptance criteria. Use when writing BDD-style tests and specifications.",
