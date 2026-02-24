@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:10:14.545Z",
+  "generatedAt": "2026-02-24T19:10:20.253Z",
   "installedSkills": [
     {
       "name": "atlassian",
@@ -72,6 +72,14 @@
       "install": {
         "repoUrl": "https://github.com/razbakov/skills",
         "skillPath": "skills/workflow"
+      }
+    },
+    {
+      "name": "writing-plans",
+      "description": "Use when you have a spec or requirements for a multi-step task, before touching code",
+      "install": {
+        "repoUrl": "https://github.com/obra/superpowers",
+        "skillPath": "skills/writing-plans"
       }
     }
   ]
