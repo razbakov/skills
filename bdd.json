@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:54:38.292Z",
+  "generatedAt": "2026-02-24T19:54:39.253Z",
   "installedSkills": [
     {
       "name": "bdd-collaboration",
@@ -24,6 +24,14 @@
       "install": {
         "repoUrl": "https://github.com/TheBushidoCollective/han",
         "skillPath": "plugins/patterns/bdd/skills/bdd-principles"
+      }
+    },
+    {
+      "name": "bdd-scenarios",
+      "description": "Use when writing effective BDD scenarios including acceptance criteria, edge cases, and scenario organization. Use when defining behavior specifications.",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-scenarios"
       }
     }
   ]
