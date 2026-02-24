@@ -1,5 +1,14 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:54:30.699Z",
-  "installedSkills": []
+  "generatedAt": "2026-02-24T19:54:36.384Z",
+  "installedSkills": [
+    {
+      "name": "bdd-collaboration",
+      "description": "Use when facilitating BDD collaboration between developers, testers, and business stakeholders. Use when running discovery workshops and example mapping sessions.",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-collaboration"
+      }
+    }
+  ]
 }
