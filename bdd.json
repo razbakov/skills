@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:54:36.384Z",
+  "generatedAt": "2026-02-24T19:54:37.472Z",
   "installedSkills": [
     {
       "name": "bdd-collaboration",
@@ -8,6 +8,14 @@
       "install": {
         "repoUrl": "https://github.com/TheBushidoCollective/han",
         "skillPath": "plugins/patterns/bdd/skills/bdd-collaboration"
+      }
+    },
+    {
+      "name": "bdd-patterns",
+      "description": "Use when applying Behavior-Driven Development patterns including Given-When-Then structure, feature files, and acceptance criteria. Use when writing BDD-style tests and specifications.",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-patterns"
       }
     }
   ]
