@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:10:21.552Z",
+  "generatedAt": "2026-02-24T19:10:35.100Z",
   "installedSkills": [
     {
       "name": "atlassian",
@@ -49,6 +49,11 @@
         "repoUrl": "https://github.com/obra/superpowers",
         "skillPath": "skills/test-driven-development"
       }
+    },
+    {
+      "name": "thank-you-next",
+      "description": "Use when the user wants prompt-only backlog progression: select the next not_started story from docs/backlog.yaml, mark it in_progress, write a plan, and implement it.",
+      "install": {}
     },
     {
       "name": "user-story",
