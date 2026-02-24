@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:09:56.923Z",
+  "generatedAt": "2026-02-24T19:10:04.905Z",
   "installedSkills": [
     {
       "name": "atlassian",
@@ -56,6 +56,14 @@
       "install": {
         "repoUrl": "https://github.com/razbakov/skills",
         "skillPath": "skills/user-story"
+      }
+    },
+    {
+      "name": "using-superpowers",
+      "description": "Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions",
+      "install": {
+        "repoUrl": "https://github.com/obra/superpowers",
+        "skillPath": "skills/using-superpowers"
       }
     }
   ]
