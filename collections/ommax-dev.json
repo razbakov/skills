@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:09:25.907Z",
+  "generatedAt": "2026-02-24T19:09:56.923Z",
   "installedSkills": [
     {
       "name": "atlassian",
@@ -40,6 +40,14 @@
       "install": {
         "repoUrl": "https://github.com/razbakov/skills",
         "skillPath": "skills/google-drive"
+      }
+    },
+    {
+      "name": "test-driven-development",
+      "description": "Use when implementing any feature or bugfix, before writing implementation code",
+      "install": {
+        "repoUrl": "https://github.com/obra/superpowers",
+        "skillPath": "skills/test-driven-development"
       }
     },
     {
