@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-24T19:31:15.053Z",
+  "generatedAt": "2026-02-24T19:31:39.705Z",
   "installedSkills": [
     {
       "name": "atlassian",
@@ -8,6 +8,14 @@
       "install": {
         "repoUrl": "https://github.com/razbakov/skills",
         "skillPath": "skills/atlassian"
+      }
+    },
+    {
+      "name": "bdd",
+      "description": "Documentation-first, test-driven development workflow for building applications. Use when starting new features, implementing functionality, or following structured development processes. Guides through phases - vision, architecture, data modeling, integration tests, unit tests, and implementation.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/bdd"
       }
     },
     {
