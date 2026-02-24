@@ -1,9 +1,46 @@
 {
-  "name": "ommax-dev",
-  "skills": [
-    "/Users/aleksey.razbakov/.skills-manager/sources/skills@razbakov/skills/atlassian",
-    "/Users/aleksey.razbakov/.skills-manager/sources/skills@razbakov/skills/developing-tickets",
-    "/Users/aleksey.razbakov/.skills-manager/sources/skills@razbakov/skills/estimation",
-    "/Users/aleksey.razbakov/.skills-manager/sources/skills@razbakov/skills/user-story"
+  "schemaVersion": 3,
+  "generatedAt": "2026-02-24T19:07:46.012Z",
+  "installedSkills": [
+    {
+      "name": "atlassian",
+      "description": "Interact with Atlassian Jira and Confluence from the terminal. Search, create, and update Jira tickets; read, search, create, and update Confluence pages. Use when the user mentions Jira tickets, issues, work items, sprints, Confluence pages, documentation, or Atlassian in general.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/atlassian"
+      }
+    },
+    {
+      "name": "bdd",
+      "description": "Documentation-first, test-driven development workflow for building applications. Use when starting new features, implementing functionality, or following structured development processes. Guides through phases - vision, architecture, data modeling, integration tests, unit tests, and implementation.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/bdd"
+      }
+    },
+    {
+      "name": "developing-tickets",
+      "description": "Use when the user says \"develop PP-XYZ\" or asks to work on, develop, or implement a ticket, issue, or story referenced by ID",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/developing-tickets"
+      }
+    },
+    {
+      "name": "estimation",
+      "description": "Estimate the effort of user stories, tasks, bugs, or raw requirements using story points. Use when the user asks to estimate, size, or score a ticket, story, feature, or piece of work.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/estimation"
+      }
+    },
+    {
+      "name": "user-story",
+      "description": "Transform requirements into structured user stories with acceptance criteria using INVEST principles. Use when the user asks to write a user story, create a ticket, define acceptance criteria, or convert requirements into dev-ready stories.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/user-story"
+      }
+    }
   ]
 }
