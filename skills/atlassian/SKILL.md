@@ -189,6 +189,41 @@ acli jira workitem edit --from-json /tmp/edit-payload.json --yes
 - Clean up the temp JSON file after use.
 </jira_rich_descriptions>
 
+<jira_scripts>
+### Reusable Scripts
+
+Reusable helper scripts from this skill live in `scripts/`:
+
+- `scripts/jira_update_adf_from_markdown.py`
+  - Converts markdown bodies (including headings and bullet lists) to ADF and updates Jira descriptions.
+  - Usage:
+    ```bash
+    scripts/jira_update_adf_from_markdown.py \
+      --pair DD-127=/path/to/story.md \
+      --pair DD-128=/path/to/another.md
+    ```
+
+- `scripts/jira_set_estimate_line.py`
+  - Appends/replaces a single estimate line at the end of description: `Estimate: XX`.
+  - Usage:
+    ```bash
+    scripts/jira_set_estimate_line.py \
+      --pair DD-127=3 \
+      --pair DD-128=5
+    ```
+
+- `scripts/jira_relabel_by_jql.py`
+  - Migrates labels for all issues returned by a JQL query.
+  - Usage:
+    ```bash
+    scripts/jira_relabel_by_jql.py \
+      --jql 'project = DD AND labels = old-label' \
+      --from-label old-label \
+      --to-label new-label \
+      --yes
+    ```
+</jira_scripts>
+
 <jira_transition>
 Transitions change ticket status and are not easily reversible in most workflows. Confirm the target status with the user if there is any ambiguity.
 
