@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-27T10:40:03.511Z",
+  "generatedAt": "2026-02-27T10:40:05.778Z",
   "installedSkills": [
     {
       "name": "agent-browser",
@@ -16,6 +16,14 @@
       "install": {
         "repoUrl": "https://github.com/vercel-labs/agent-browser",
         "skillPath": "skills/dogfood"
+      }
+    },
+    {
+      "name": "figma-implement-design",
+      "description": "Translate Figma nodes into production-ready code with 1:1 visual fidelity using the Figma MCP workflow (design context, screenshots, assets, and project-convention translation). Trigger when the user provides Figma URLs or node IDs, or asks to implement designs or components that must match Figma specs. Requires a working Figma MCP server connection.",
+      "install": {
+        "repoUrl": "https://github.com/openai/skills",
+        "skillPath": "skills/.curated/figma-implement-design"
       }
     }
   ]
