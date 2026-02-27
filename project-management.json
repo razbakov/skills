@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-02-27T14:15:10.867Z",
+  "generatedAt": "2026-02-27T14:15:32.251Z",
   "installedSkills": [
     {
       "name": "atlassian",
@@ -8,6 +8,14 @@
       "install": {
         "repoUrl": "https://github.com/razbakov/skills",
         "skillPath": "skills/atlassian"
+      }
+    },
+    {
+      "name": "project-start",
+      "description": "Build shared understanding before building software: README → user journey → story map → architecture → AI context. Use when starting a new project, onboarding to an existing one, or when AI needs better context about what the project is and why it exists.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/project-start"
       }
     }
   ]
