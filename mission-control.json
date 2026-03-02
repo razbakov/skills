@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-03-02T14:26:46.933Z",
+  "generatedAt": "2026-03-02T14:26:47.524Z",
   "installedSkills": [
     {
       "name": "atlassian",
@@ -51,6 +51,14 @@
       "install": {
         "repoUrl": "https://github.com/razbakov/skills",
         "skillPath": "skills/project-start"
+      }
+    },
+    {
+      "name": "user-story",
+      "description": "Transform requirements into structured user stories with acceptance criteria using INVEST principles. Use when the user asks to write a user story, create a ticket, define acceptance criteria, or convert requirements into dev-ready stories.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/user-story"
       }
     }
   ]
