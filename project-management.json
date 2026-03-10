@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-03-10T14:53:09.494Z",
+  "generatedAt": "2026-03-10T14:53:11.485Z",
   "installedSkills": [
     {
       "name": "atlassian-cli-jira",
@@ -24,6 +24,14 @@
       "install": {
         "repoUrl": "https://github.com/TheBushidoCollective/han",
         "skillPath": "plugins/patterns/bdd/skills/bdd-patterns"
+      }
+    },
+    {
+      "name": "bdd-principles",
+      "description": "Core BDD concepts, philosophy, and the Three Amigos practice",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-principles"
       }
     },
     {
