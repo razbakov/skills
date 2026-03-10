@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-03-10T14:53:07.221Z",
+  "generatedAt": "2026-03-10T14:53:09.494Z",
   "installedSkills": [
     {
       "name": "atlassian-cli-jira",
@@ -16,6 +16,14 @@
       "install": {
         "repoUrl": "https://github.com/TheBushidoCollective/han",
         "skillPath": "plugins/patterns/bdd/skills/bdd-collaboration"
+      }
+    },
+    {
+      "name": "bdd-patterns",
+      "description": "Use when applying Behavior-Driven Development patterns including Given-When-Then structure, feature files, and acceptance criteria. Use when writing BDD-style tests and specifications.",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-patterns"
       }
     },
     {
