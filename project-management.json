@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-03-10T14:53:11.485Z",
+  "generatedAt": "2026-03-10T14:53:14.252Z",
   "installedSkills": [
     {
       "name": "atlassian-cli-jira",
@@ -32,6 +32,14 @@
       "install": {
         "repoUrl": "https://github.com/TheBushidoCollective/han",
         "skillPath": "plugins/patterns/bdd/skills/bdd-principles"
+      }
+    },
+    {
+      "name": "bdd-scenarios",
+      "description": "Use when writing effective BDD scenarios including acceptance criteria, edge cases, and scenario organization. Use when defining behavior specifications.",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-scenarios"
       }
     },
     {
