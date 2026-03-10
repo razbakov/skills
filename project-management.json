@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-03-09T17:23:14.019Z",
+  "generatedAt": "2026-03-10T14:53:07.221Z",
   "installedSkills": [
     {
       "name": "atlassian-cli-jira",
@@ -8,6 +8,14 @@
       "install": {
         "repoUrl": "https://github.com/benjaming/ai-skills",
         "skillPath": "atlassian-cli-jira"
+      }
+    },
+    {
+      "name": "bdd-collaboration",
+      "description": "Use when facilitating BDD collaboration between developers, testers, and business stakeholders. Use when running discovery workshops and example mapping sessions.",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-collaboration"
       }
     },
     {
