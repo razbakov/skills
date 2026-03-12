@@ -28,17 +28,11 @@ Task — a concrete piece of work, often subordinate to a story. Clearly describ
 Bug — describes a deviation from expected behavior. Include steps to reproduce, actual result, expected result, and a link to the relevant page so it can be checked quickly.
 </ticket_types>
 
-<formatting>
-Heading levels:
-
-- `#` (h1) — story title
-- `##` (h2) — top-level sections: Context, Acceptance Criteria, Out of Scope
-- `###` (h3) — sub-groups within Acceptance Criteria when there are distinct areas
-
-Title format: `<Topic>: <Action>` (use ":" as separator). The topic is the location of the change (e.g. Homepage, Salesforce). The action summarises what is being done. A reader should be able to classify and find the ticket from the title alone.
+<naming_conventions>
+`<Topic>: <Action>` — use ":" as separator. The topic is the location of the change (e.g. Homepage, Salesforce). The action summarises what is being done. A reader should be able to classify and find the ticket from the title alone.
 
 Good titles: "Product Pages: Center Images Automatically", "Browser API: Update Custom Attribute Docs", "Distributed Tracing: Add CAT Relationship Detail".
-</formatting>
+</naming_conventions>
 
 <invest_principles>
 Evaluate every story against the INVEST checklist — these qualities make stories reliably plannable and deliverable:
@@ -52,7 +46,7 @@ Evaluate every story against the INVEST checklist — these qualities make stori
 </invest_principles>
 
 <writing_tone>
-The story will be read by stakeholders, PMs, and designers who may have no technical background. Write every part of the story — title, user story sentence, context, and acceptance criteria — so that a non-technical reader can understand it without help.
+The story will be read by stakeholders, PMs, and designers who may have no technical background. Write every part of the story — title, user story sentence, and acceptance criteria — so that a non-technical reader can understand it without help.
 
 - Use everyday language. Say "the user sees a confirmation message" rather than "the component renders a toast notification."
 - Describe behavior from the user's perspective: what they see, click, and experience — not what the system does internally.
