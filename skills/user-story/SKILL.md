@@ -12,7 +12,7 @@ Transform any given requirements into a user story with detailed acceptance crit
 
 Follow these steps in order:
 
-1. **Check the output configuration.** Look for a project-level setting that specifies how stories should be delivered (e.g. in an AGENTS.md, project config, or prior conversation context). If no output mode is configured, read the template files in `templates/` (relative to this skill) to present the available options and ask the user to choose before proceeding.
+1. **Check the output configuration.** Look for `skills.user-story.format` in AGENTS.md. If not configured, see template files in `format/` (relative to this skill) to present the available options and ask the user to choose before proceeding.
 2. **Understand the project context.** Before writing anything, explore the repository to ground the story in the real codebase. Read the README, scan docs/ or any documentation folder, and skim relevant source files (routes, components, models, config). Look for the tech stack, existing terminology, domain language, feature boundaries, and naming conventions the team already uses. This prevents inventing features that already exist and ensures acceptance criteria reference actual UI labels, page names, and workflows.
 3. **Identify the user persona, their goal, and the ticket type** (Story, Task, or Bug). Use what you learned from the codebase to pick the right persona and to align the story's scope with existing architecture.
 4. **Write the ticket** following the standards below. Weave in project-specific details — reference real page names, existing components, and established terminology rather than generic placeholders.
