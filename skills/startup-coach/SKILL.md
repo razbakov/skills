@@ -37,10 +37,11 @@ Check each layer in order and report what's present, missing, or needs improveme
 | Vision | `README.md` | Problem stated? Audience clear? Workspace map present? Getting started shown? |
 | AI Symlinks | `CLAUDE.md`, `AGENTS.md` | Symlinks to README.md? Run `.bin/link-readmes.sh` if missing. |
 | Product Strategy | `product/<product>/strategy.md` | Hypothesis? Target customer? Pricing? MVP scope? Success metrics? GTM? |
-| User Journey | `product/<product>/user-journey.md` | Entry point? Step-by-step flow? Aha moment identified? Assumptions listed? |
-| Story Map | `product/<product>/story-map.md` | Personas table? Epics? Stories as one-liners? Summary table? |
-| Issues | `product/<product>/issues/*.md` | One file per story? Frontmatter complete? Acceptance criteria testable? |
-| Backlog | `product/<product>/backlog.yaml` | All stories included? Phases ordered by dependency? Each phase has outcome? |
+| Jobs to Be Done | `product/<product>/jtbd.md` | Jobs per persona? JTBD format used? Struggling moments? Job Priority Map? |
+| User Journey | `product/<product>/user-journey.md` | Entry point? Step-by-step flow? ASCII wireframe? Aha moment? What Must Be True? |
+| Story Map | `product/<product>/story-map.md` | Journey columns? Priority rows? Release slices? Cross-refs to backlog/jtbd? |
+| Backlog | `product/<product>/backlog.md` | Epics with problem statements? JTBD refs? Stories with "so I can..."? Personas table? |
+| Scenarios | `product/<product>/scenarios/*.feature` | Feature per epic/story? User story in description? ACs as Rules? Scenarios with Given-When-Then? |
 | Brand | `design/brand.md` | Colors? Fonts? Logo usage? Print specs? |
 | Visual Styles | `design/styles/*.md` | At least one style defined? Mood, palette, typography, imagery, do/don't? |
 | Logo Assets | `design/logos/` | SVG + PNG? Light/dark variants? |
@@ -88,11 +89,12 @@ This serves two audiences equally:
 ├── product/                            # Strategy & planning
 │   └── <product>/
 │       ├── strategy.md                 # Business strategy
+│       ├── jtbd.md                     # Jobs to Be Done — user research
 │       ├── user-journey.md             # First user experience
-│       ├── story-map.md                # Personas, epics, stories
-│       ├── backlog.yaml                # Implementation plan
-│       └── issues/                     # One file per story
-│           └── <slug>.md
+│       ├── story-map.md                # Visual journey × priority map
+│       ├── backlog.md                  # All stories grouped by epic
+│       └── scenarios/                  # BDD feature files (playwright-bdd)
+│           └── <slug>.feature
 ├── design/                             # Brand & visual assets
 │   ├── brand.md                        # Colors, fonts, logo rules
 │   ├── logos/                          # SVG + PNG variants
@@ -159,50 +161,78 @@ Create `product/<product>/strategy.md` using → `templates/strategy.md`
 - Success metrics must have targets and timeframes
 - Next steps use ✅ / 🔲 to show progress at a glance
 
-## Phase 3: User Journey
+## Phase 3: Jobs to Be Done
+
+Create `product/<product>/jtbd.md` using → `templates/jtbd.md`
+
+The JTBD analysis captures what users are trying to accomplish independent of the product. It feeds directly into the user journey and story map.
+
+**Rules:**
+- Use the JTBD format: "When [situation], I want to [motivation], so I can [expected outcome]"
+- Group jobs by persona — one section per persona
+- Each job gets 2–4 "Struggling moments" — real-world triggers that create urgency
+- End with a Job Priority Map table ordered by frequency and business impact
+- Jobs exist independent of your product — they describe what users do today, not what your product will do
+- Number jobs sequentially across personas (Job 1, Job 2, ...) for cross-referencing in the backlog
+
+## Phase 4: User Journey
 
 Create `product/<product>/user-journey.md` using → `templates/user-journey.md`
 
 **Rules:**
 - Write from the user's perspective, not the system's
 - 4–6 steps maximum — this is the happy path, not edge cases
+- Include an ASCII wireframe showing the main interface layout
 - Identify the "aha moment" explicitly — the step where value clicks
-- End with assumptions to validate — these drive experiments
+- End with "What Must Be True" — preconditions the system needs for the first impression to succeed
 
-## Phase 4: Story Map
+## Phase 5: Story Map
 
 Create `product/<product>/story-map.md` using → `templates/story-map.md`
 
 **Rules:**
-- Stories are one sentence: what the user can do, not how it's implemented
-- Each story belongs to exactly one persona
-- Epics group related stories by user goal, not by technical layer
-- Story numbers use `<epic>.<story>` format (e.g., 1.1, 1.2, 2.1)
-
-## Phase 5: Issue Files
-
-After the story map is approved, generate an individual file for each story in `product/<product>/issues/`.
-
-Create each file using → `templates/issue.md`
-
-**Rules:**
-- Filename is a short 1–2 word slug for daily reference
-- `story` field matches the number from the story map (e.g., `1.3`)
-- One file per story — generate all stories from the map
-- Use the **user-story** skill for each file to ensure consistent quality
+- Columns represent the user's journey (left to right) — not epics or technical layers
+- Rows stack stories by priority (top = essential), with bold separator rows marking release slices (MVP, R1, R2)
+- Story numbers reference the backlog (e.g., 1.1, 3.4) and each cell is a short label + number
+- Cross-reference JTBD and backlog at the top: "Research in [Jobs to Be Done](jtbd.md). Story numbers reference [Backlog](backlog.md)."
+- Secondary personas get their own row at the bottom (e.g., "Consultant journey (parallel): ...")
 
 ## Phase 6: Backlog
 
-After issue files are created, generate `product/<product>/backlog.yaml` using → `templates/backlog.yaml`
+After the story map is approved, create `product/<product>/backlog.md` using → `templates/backlog.md`
+
+This is the detailed specification of all stories. Each epic starts with the problem it solves and references the JTBD that drive it.
 
 **Rules:**
-- Phases are ordered by dependency and risk — not by epic order
-- Each phase delivers a coherent, shippable outcome
-- `key` matches the issue file slug in the issues directory
-- `id` matches the story number from the story map
-- All stories from the map must appear in exactly one phase
+- Start with a Personas table — same personas as the story map
+- Group stories by epic — each epic opens with a **Problem** statement and **Jobs** references (linking to jtbd.md)
+- Stories use the format: "goal + outcome" — always include "so I can [benefit]"
+- Story numbers use `<epic>.<story>` format matching the story map
+- Each story belongs to exactly one persona
 
-## Phase 7: Brand & Design
+## Phase 7: Scenarios (BDD)
+
+After the backlog is created, generate feature files in `product/<product>/scenarios/`.
+
+Create each file using → `templates/scenario.feature`
+
+Feature files are living documentation that progress through three levels of detail:
+
+1. **User story only** — the Feature description captures the "As a / I want / So that" from the backlog
+2. **Acceptance criteria** — Rules are added as the story is refined (one Rule per AC)
+3. **Scenarios** — concrete Given-When-Then examples are added when development begins
+
+**Rules:**
+- One `.feature` file per story or tightly related group of stories
+- Filename is a short slug (e.g., `grid-view.feature`, `create-booking.feature`)
+- Feature description is the user story from the backlog
+- Use `Rule:` blocks to express acceptance criteria
+- Scenarios use `Given-When-Then` with concrete data (data tables, not vague phrases)
+- Use `Background:` for shared setup within a feature
+- Use tags (`@epic-1`, `@mvp`, `@wip`) for organization and test filtering
+- BDD tooling: **playwright-bdd** (not cucumber-js) — feature files drive Playwright tests
+
+## Phase 8: Brand & Design
 
 Set up `design/` with brand guidelines, logo assets, and visual styles.
 
@@ -218,7 +248,7 @@ Provide SVG + PNG for each variant:
 - `vertical_on_dark.svg` / `.png`
 - `icon_on_light.png`
 
-## Phase 8: Marketing
+## Phase 9: Marketing
 
 Set up `marketing/<product>/` with campaign playbook, content calendar, and poster briefs.
 
@@ -226,16 +256,20 @@ Set up `marketing/<product>/` with campaign playbook, content calendar, and post
 - Create `marketing/<product>/content-plan.md` using → `templates/content-plan.md`
 - Create each `marketing/<product>/posters/<name>.md` using → `templates/poster.md`
 
-## Phase 9: Architecture
+## Phase 10: Architecture
 
 Create `engineering/architecture.md` using → `templates/architecture.md`
 
 **Rules:**
+- Lead with an ASCII system diagram showing all layers and how they connect
+- Technology choices table must have a Rationale column — "why this" not just "what"
+- Include a project structure tree showing directory layout
+- Define key domain concepts in a table (concept + description)
+- Include a Mermaid ER diagram for the data model
+- Describe the primary data flow as a numbered sequence
 - Keep it high-level — link to code for specifics
-- Use Mermaid diagrams where they clarify relationships
-- Rationale column explains "why this" not just "what"
 
-## Phase 10: Decisions (ADRs)
+## Phase 11: Decisions (ADRs)
 
 Create `engineering/decisions/<NNN>-<slug>.md` using → `templates/adr.md`
 
@@ -245,7 +279,7 @@ Create `engineering/decisions/<NNN>-<slug>.md` using → `templates/adr.md`
 - "Superseded by ADR XXX" when a decision is replaced
 - Focus on the *why* — the *what* is in the code
 
-## Phase 11: Website / Landing Page
+## Phase 12: Website / Landing Page
 
 Use this phase when the product needs a marketing page, landing page, or any web presence. This is a content-first, mobile-first methodology — all copy is written before any code.
 
@@ -356,7 +390,7 @@ Code files are the source of truth for data models and implementation. Docs link
 </writing-style>
 
 <products>
-Product-specific documents (strategy, user-journey, story-map, issues, backlog) live under `product/<product>/`. Marketing documents mirror this structure under `marketing/<product>/`. When a workspace has multiple products, each gets its own subdirectory in both folders.
+Product-specific documents (strategy, jtbd, user-journey, story-map, backlog, scenarios) live under `product/<product>/`. Marketing documents mirror this structure under `marketing/<product>/`. When a workspace has multiple products, each gets its own subdirectory in both folders.
 </products>
 
 <example name="new-workspace-guided">
@@ -396,11 +430,12 @@ User: "Review this workspace" (README.md exists)
    - ✅ Product strategies defined for 2 products
    - ✅ User journey for one product
    - ⚠️ No story map for either product
-   - ❌ No issue files or backlog
+   - ❌ No JTBD analysis
+   - ❌ No backlog or scenarios
    - ✅ Brand guide with colors, fonts, logo rules
    - ✅ 3 visual styles defined
    - ✅ Campaign and content plan for one product
    - ❌ No architecture doc
    - ❌ No decision records
-3. Suggest next step: "Create `product/<product>/story-map.md` — define personas and break the strategy into epics and stories"
+3. Suggest next step: "Create `product/<product>/jtbd.md` — research the jobs users are trying to do before defining stories"
 </example>
