@@ -25,10 +25,11 @@
 
 ## Workspace
 
-- [Strategies and user journeys](product/)
-- [Brand, visual styles, logos](design/)
-- [Campaigns and poster concepts](marketing/)
-- [App source code](engineering/<app>/)
+<!-- This structure defines where documents live. The coach reads this to know where to create files. -->
+
+```
+<paste the chosen structure tree here>
+```
 
 ### Products
 
