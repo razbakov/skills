@@ -1,0 +1,28 @@
+name: <Product Name> Backlog
+date: <YYYY-MM-DD>
+status: not_started
+source:
+  stories_path: product/<product>/issues
+  ordering: dependency_and_risk
+totals:
+  stories: <total count>
+  points: <total points>
+status_definitions:
+  proposed: backlog defined but not started
+  not_started: ready but not in progress
+  in_progress: implementation has started
+  blocked: waiting on dependency or decision
+  done: implemented and verified
+phases:
+  - id: 1
+    name: <snake_case_name>
+    title: <Human readable title>
+    points: <sum of story points in phase>
+    status: not_started
+    outcome: <One sentence — what is unlocked when this phase is done.>
+    stories:
+      - id: "1.1"
+        key: <slug matching issue filename>
+        status: not_started
+notes: >
+  <Optional: MVP cutoff, release strategy, key decisions.>
