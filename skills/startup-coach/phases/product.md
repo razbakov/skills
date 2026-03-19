@@ -35,7 +35,7 @@ Create `user-journey.md` using → `templates/user-journey.md`
 - Identify the "aha moment" explicitly — the step where value clicks
 - End with "What Must Be True" — preconditions the system needs for the first impression to succeed
 
-# Phase 5: Story Map
+# Phase 8: Story Map
 
 Create `story-map.md` using → `templates/story-map.md`
 
@@ -46,7 +46,7 @@ Create `story-map.md` using → `templates/story-map.md`
 - Cross-reference JTBD and backlog at the top: "Research in [Jobs to Be Done](jtbd.md). Story numbers reference [Backlog](backlog.md)."
 - Secondary personas get their own row at the bottom (e.g., "Consultant journey (parallel): ...")
 
-# Phase 6: Backlog
+# Phase 9: Backlog
 
 After the story map is approved, create `backlog.md` using → `templates/backlog.md`
 
@@ -59,7 +59,7 @@ This is the detailed specification of all stories. Each epic starts with the pro
 - Story numbers use `<epic>.<story>` format matching the story map
 - Each story belongs to exactly one persona
 
-# Phase 7: Scenarios (BDD)
+# Phase 10: Scenarios (BDD)
 
 After the backlog is created, generate feature files in the `scenarios/` directory.
 

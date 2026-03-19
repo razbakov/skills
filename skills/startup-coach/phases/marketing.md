@@ -1,6 +1,6 @@
 All file paths below are relative to the marketing area defined in the workspace structure (README.md). Look up the actual directory before creating files.
 
-# Phase 9: Marketing
+# Phase 12: Marketing
 
 Set up campaign playbook, content calendar, and poster briefs.
 

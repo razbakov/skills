@@ -1,6 +1,6 @@
 All file paths below are relative to the design area defined in the workspace structure (README.md). Look up the actual directory before creating files.
 
-# Phase 8: Brand & Design
+# Phase 11: Brand & Design
 
 Set up brand guidelines, logo assets, and visual styles.
 

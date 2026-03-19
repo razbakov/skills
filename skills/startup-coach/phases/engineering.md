@@ -1,6 +1,6 @@
 All file paths below are relative to the engineering area defined in the workspace structure (README.md). Look up the actual directory before creating files.
 
-# Phase 10: Architecture
+# Phase 13: Architecture
 
 Create `architecture.md` using → `templates/architecture.md`
 
@@ -13,7 +13,7 @@ Create `architecture.md` using → `templates/architecture.md`
 - Describe the primary data flow as a numbered sequence
 - Keep it high-level — link to code for specifics
 
-# Phase 11: Decisions (ADRs)
+# Phase 14: Decisions (ADRs)
 
 Create `decisions/<NNN>-<slug>.md` using → `templates/adr.md`
 
@@ -23,7 +23,7 @@ Create `decisions/<NNN>-<slug>.md` using → `templates/adr.md`
 - "Superseded by ADR XXX" when a decision is replaced
 - Focus on the *why* — the *what* is in the code
 
-# Phase 12: Website / Landing Page
+# Phase 15: Website / Landing Page
 
 Use this phase when the product needs a marketing page, landing page, or any web presence. This is a content-first, mobile-first methodology — all copy is written before any code.
 

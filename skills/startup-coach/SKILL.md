@@ -56,18 +56,15 @@ When the workspace already exists, read README.md first to learn the workspace s
 
 Don't rewrite everything at once. Fix the most impactful gap first, then suggest the next.
 
-# Core Principle: Start From the End
+# Core Principle: Validate Before You Commit
 
-This skill applies design thinking — the same methodology behind Google Ventures' Design Sprint. Start from the mission and vision, work backwards to find the first obstacle, form a hypothesis, and test it as cheaply as possible. AI makes proper methodology free: you no longer have to choose between doing it right and doing it fast.
+This skill follows the Design Sprint methodology (Jake Knapp / Google Ventures): understand the problem, sketch solutions, prototype the best one, and test with real users — all before writing a single line of production code. AI makes this nearly free: what used to take a team 5 days now takes hours.
 
-**The layers reveal complexity progressively.** Each layer makes sense on its own before the next is opened:
+**The process has three blocks:**
 
-0. **Mission & Vision** — why does this exist, and what does the world look like if it works? (Discovery)
-1. **Foundation** — mission, vision, status, next steps, OKRs (README.md)
-2. **What** — product strategy and user experience (product/)
-3. **Who sees what** — brand identity and visual language (design/)
-4. **How we reach them** — campaigns and content (marketing/)
-5. **How it works** — code, architecture, and technical decisions (engineering/)
+1. **Understand** — mission, vision, JTBD, user journey. Frame the problem and the hypothesis.
+2. **Validate** — sketch 3 approaches, prototype the best one, test with real users. Learn before committing.
+3. **Commit** — story map, backlog, scenarios, brand, marketing, architecture. Now you know what to build.
 
 This serves two audiences equally:
 - **Humans** deciding whether to use, contribute to, or invest in the project
@@ -85,7 +82,9 @@ When reviewing an existing workspace, **read the structure from README.md first*
 
 # Development Phases
 
-Follow these phases in order. Each phase produces artifacts the next phase depends on. **Read the phase file before executing.**
+Three blocks: **Understand → Validate → Commit.** Follow in order. Each phase produces artifacts the next depends on. **Read the phase file before executing.**
+
+### Understand
 
 | Phase | Name | Deliverable | Reference |
 |-------|------|-------------|-----------|
@@ -94,14 +93,31 @@ Follow these phases in order. Each phase produces artifacts the next phase depen
 | 2 | Product Strategy | `strategy.md` | → `phases/product.md` |
 | 3 | Jobs to Be Done | `jtbd.md` | → `phases/product.md` |
 | 4 | User Journey | `user-journey.md` | → `phases/product.md` |
-| 5 | Story Map | `story-map.md` | → `phases/product.md` |
-| 6 | Backlog | `backlog.md` | → `phases/product.md` |
-| 7 | Scenarios (BDD) | `scenarios/*.feature` | → `phases/product.md` |
-| 8 | Brand & Design | Brand guide, styles, logos | → `phases/design.md` |
-| 9 | Marketing | Campaign, content plan, posters | → `phases/marketing.md` |
-| 10 | Architecture | `architecture.md` | → `phases/engineering.md` |
-| 11 | Decisions (ADRs) | `decisions/*.md` | → `phases/engineering.md` |
-| 12 | Website | `plan.md`, `content.md`, source code | → `phases/engineering.md` |
+
+### Validate
+
+Test the hypothesis before committing to detailed planning. Skippable — but strongly recommended. With AI, this takes hours, not days.
+
+| Phase | Name | Deliverable | Reference |
+|-------|------|-------------|-----------|
+| 5 | Sketch | 3 approaches (wireframes + trade-offs) | → `phases/validation.md` |
+| 6 | Prototype | Clickable prototype of chosen approach | → `phases/validation.md` |
+| 7 | Test | User feedback + proceed / pivot / kill decision | → `phases/validation.md` |
+
+### Commit
+
+Only after validation (or a conscious decision to skip it). This is where the investment gets real.
+
+| Phase | Name | Deliverable | Reference |
+|-------|------|-------------|-----------|
+| 8 | Story Map | `story-map.md` | → `phases/product.md` |
+| 9 | Backlog | `backlog.md` | → `phases/product.md` |
+| 10 | Scenarios (BDD) | `scenarios/*.feature` | → `phases/product.md` |
+| 11 | Brand & Design | Brand guide, styles, logos | → `phases/design.md` |
+| 12 | Marketing | Campaign, content plan, posters | → `phases/marketing.md` |
+| 13 | Architecture | `architecture.md` | → `phases/engineering.md` |
+| 14 | Decisions (ADRs) | `decisions/*.md` | → `phases/engineering.md` |
+| 15 | Website | `plan.md`, `content.md`, source code | → `phases/engineering.md` |
 
 File paths are relative — the actual location depends on the workspace structure defined in README.md.
 
