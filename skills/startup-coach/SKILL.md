@@ -276,15 +276,16 @@ Build on the product strategy and brand from earlier phases:
 
 ### Step 2: Design System Mapping
 
-Map the brand tokens from `design/brand.md` to CSS implementation:
+Translate tokens from `design/brand.md` into CSS variables / Tailwind config — don't redefine them:
 
-- **Colors**: primary, secondary, accent, text, background
-- **Typography**: heading/body fonts, sizes, line-heights
-- **Spacing**: 4, 8, 16, 24, 32, 48, 64px
-- **Effects**: shadows/elevation if needed
-- **Aesthetic**: 3–4 pillars (e.g., "minimal, warm, playful"), icon/image style, recurring motifs
+- **Colors** → CSS custom properties from brand color table
+- **Typography** → font-family, sizes, weights, line-heights from brand typography table
+- **Spacing** → spacing scale from brand spacing table
+- **Effects** → border-radius, shadows from brand effects table
+- **Aesthetic** → pillars and motifs from brand personality
 
 **Design system principles:**
+- `design/brand.md` is the single source of truth — implementation maps, never duplicates
 - Consistency across components
 - Maximize signal, minimize chrome
 - No dark patterns
