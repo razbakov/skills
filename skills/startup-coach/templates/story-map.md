@@ -1,32 +1,18 @@
-# Story Map: <Product Name>
+# Story Map — <Product Name>
 
-## Personas
+Columns = <Primary Persona>'s journey (left to right). Rows = stories stacked by priority (top = essential). Bold rows = release slices. Story numbers reference [Backlog](backlog.md). Research in [Jobs to Be Done](jtbd.md).
 
-| Persona | Role | Primary Goal |
-|---------|------|-------------|
-| <Name> | <What they do> | <What they want to achieve> |
 
-## Epic 1: <Epic Name>
+| <Journey Step 1>    | <Journey Step 2> | <Journey Step 3>    | <Journey Step 4>     | <Journey Step 5>      |
+| ------------------- | ---------------- | ------------------- | -------------------- | --------------------- |
+| <Story label> 1.1   | <Label> 2.1      | <Label> 3.1         |                      | <Label> 5.1           |
+| <Story label> 1.2   | <Label> 2.2      | <Label> 3.2         |                      | <Label> 5.2           |
+| <Story label> 1.3   |                  |                     |                      |                       |
+| **── MVP ──**       | **─────────**    | **─────────**       | **─────────**        | **─────────**         |
+| <Story label> 1.4   |                  | <Label> 3.4         | <Label> 4.1          | <Label> 5.3           |
+| <Story label> 1.5   |                  | <Label> 3.5         | <Label> 4.2          | <Label> 5.4           |
+| **── R1 ──**        | **─────────**    | **─────────**       | **─────────**        | **─────────**         |
+| <Story label> 1.6   |                  | <Label> 3.6         | <Label> 4.3          | <Label> 5.5           |
 
-<One-line description of this feature area.>
 
-| # | Story | Persona |
-|---|-------|---------|
-| 1.1 | <User can do X> | <Persona> |
-| 1.2 | <User can do Y> | <Persona> |
-
-## Epic 2: <Epic Name>
-
-<One-line description.>
-
-| # | Story | Persona |
-|---|-------|---------|
-| 2.1 | <User can do X> | <Persona> |
-
-## Summary
-
-| Epic | Stories | Key Persona |
-|------|---------|------------|
-| <Epic 1> | <count> | <primary persona> |
-| <Epic 2> | <count> | <primary persona> |
-| **Total** | **<total>** | |
+**<Secondary Persona> journey (parallel):** <Step> → <Story label> 6.1 → <Story label> 6.2 → <Story label> 6.3

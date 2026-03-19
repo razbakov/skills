@@ -1,30 +1,59 @@
-# User Journey: <Persona> at <Context>
+# User Journey
 
-## Entry Point
+What a new user experiences from first encounter to first productive action.
 
-<How the user first encounters the product. What triggered them to arrive.>
+## Persona: <Primary Persona> (<role description>)
 
-## Step 1: <Action Name>
+### Step 1: <Action Name>
 
-- <What the user does>
-- <What they see>
-- <What happens>
+<What the user does. What they see. What happens.>
 
-**Goal:** <What this step achieves. Time target if relevant.>
+### Step 2: <Action Name>
 
-## Step 2: <Action Name>
+The main interface loads:
 
-<Repeat for each step.>
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  <TOP AREA: key navigation elements>                            │
+├──────────┬──────────────────────────────────┬───────────────────┤
+│  LEFT    │        CENTER                    │      RIGHT        │
+│  <panel> │       <main content area>        │     <panel>       │
+│          │                                  │                   │
+└──────────┴──────────────────────────────────┴───────────────────┘
+```
 
-## Step 3: <Action Name>
+- **<Axis/Area 1>**: <What it shows>
+- **<Axis/Area 2>**: <What it shows>
+- **<Visual encoding>**: <How data is represented — colors, sizes, positions>
 
-**Aha moment:** "<Quote capturing when value becomes obvious.>"
+### Step 3: <Action Name>
 
-## Step N: <Final Step>
+<Interaction — filtering, selecting, navigating.>
 
-**Goal:** <Long-term outcome.>
+### Step 4: <Action Name> (the "aha" moment)
 
-## Key Assumptions to Validate
+<The first productive action. What makes the value obvious.>
 
-1. <Assumption that must be true for this journey to work>
-2. <Another assumption>
+### Step 5: <Action Name>
+
+<Follow-up action that confirms the value delivered.>
+
+## Aha Moment
+
+The value becomes obvious when the user can see, at a glance, that:
+
+1. <First insight the product reveals>
+2. <Second insight>
+3. <Third insight>
+
+This visibility — which previously required <old way of doing it> — happens automatically.
+
+## What Must Be True
+
+For the first impression to succeed, the system needs:
+
+- <Precondition 1 — data, config, or state that must exist>
+- <Precondition 2>
+- <Precondition 3>
+
+Without <key precondition>, the interface is empty and the value proposition is invisible.
