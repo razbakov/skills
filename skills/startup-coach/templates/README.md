@@ -1,6 +1,27 @@
 # <Project Name>
 
-<One-sentence description: what it does and for whom.>
+**Mission:** <One sentence — why this exists. Rarely changes.>
+
+**Vision:** <One sentence — what the world looks like if this succeeds.>
+
+## Status
+
+<What's live, what's being built, where things stand right now.>
+
+## Next Steps
+
+- 🔲 <Next action>
+- 🔲 <Next action>
+
+## OKRs
+
+<!-- Add when the project is mature enough to set quarterly objectives. Remove this section for early-stage projects. -->
+
+**Objective 1:** <What we're trying to achieve this quarter>
+
+- KR1: <Measurable key result with target>
+- KR2: <Measurable key result with target>
+- KR3: <Measurable key result with target>
 
 ## Workspace
 
