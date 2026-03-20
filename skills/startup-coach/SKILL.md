@@ -76,6 +76,7 @@ The workspace structure is **defined in the project's README.md**, not hardcoded
 
 Structure templates are in `templates/structures/`:
 - **startup** — full lifecycle: product, design, marketing, engineering
+- **ikigai** — personal life OS: mission, vision, portfolio, CRM, daily reflection
 - **custom** — user-defined
 
 When reviewing an existing workspace, **read the structure from README.md first** — that's the source of truth for where files live.
