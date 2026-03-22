@@ -15,6 +15,13 @@ Generate professional PDF documents by writing a Python script that constructs L
 
 This approach is preferred over HTML-to-PDF or JS-based PDF libraries because LaTeX produces typographically superior output with precise control over layout, tables, math, headers/footers, and page breaks.
 
+**When NOT to use LaTeX:**
+- **Presentations / slide decks** — LaTeX produces ugly, hard-to-brand slides. Use the `image-from-html` skill instead (HTML/CSS slides → Chrome headless → PNG → PDF). HTML gives pixel-perfect brand control that LaTeX can't match.
+- **Branded marketing materials** — posters, social graphics, flyers. Use `image-from-html` for exact brand guideline matching.
+
+**When to use LaTeX:**
+- Reports, invoices, CVs, academic papers, data-heavy documents with tables and statistics — anything that benefits from precise typographic control over text-heavy content.
+
 ## Prerequisites
 
 - Python 3 (standard library only — no pip packages needed)
