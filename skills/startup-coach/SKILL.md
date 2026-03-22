@@ -117,10 +117,16 @@ Only after validation (or a conscious decision to skip it). This is where the in
 | 11 | Brand & Design | Brand guide, styles, logos | → `phases/design.md` |
 | 12 | Marketing | Campaign, content plan, posters | → `phases/marketing.md` |
 | 13 | Architecture | `architecture.md` | → `phases/engineering.md` |
+| 13b | Integrations | `integrations.md` | → (multi-service workspaces only) |
 | 14 | Decisions (ADRs) | `decisions/*.md` | → `phases/engineering.md` |
 | 15 | Website | `plan.md`, `content.md`, source code | → `phases/engineering.md` |
+| 16 | Jour Fix / Presentation | Meeting agenda + branded slide deck | → `image-from-html` skill |
 
 File paths are relative — the actual location depends on the workspace structure defined in README.md.
+
+**Phase 13b (Integrations)** applies when a workspace has multiple services/interfaces. Create `integrations.md` in the product area showing: integration map diagram, per-service status table (what/how/status), integration priorities (effort vs impact), shared infrastructure convergence plan, and rollout timeline.
+
+**Phase 16 (Jour Fix)** is optional. When preparing a stakeholder meeting, create an agenda (markdown) and a branded slide deck (HTML → PNG → PDF using the `image-from-html` skill). Never use LaTeX for presentations — it produces poor visual results. HTML/CSS matches the brand guide exactly.
 
 # Documentation Standards
 
@@ -166,6 +172,19 @@ User: "I just want a cool personal homepage"
 5. → Phase 1: Generate README with mission ("express who I am online"), vision ("people land on my page and remember it"), status, next steps
 6. → Autopilot through all phases: bold brand style, minimal product strategy, architecture
 7. User gets a fully structured workspace without thinking about process
+</example>
+
+<example name="multi-service-discovery">
+User: "discover engineering/nuxt-app" (workspace has multiple sub-projects)
+
+1. README.md missing at root → start Phase 0: Discovery
+2. Discover each sub-project (dispatch parallel agents to read READMEs, package.json, architecture)
+3. Key insight: multiple services may be interfaces to the same core, not separate products
+4. Create workspace README showing all services as one platform with multiple interfaces
+5. Strategy covers the platform, not individual apps
+6. Create `integrations.md` in product/ showing how services connect
+7. Each service gets its own `strategy.md` in product/ defining its relationship to the platform
+8. Shared infrastructure table: what converges (AI runtime, skills, auth) vs what stays separate (I/O layer)
 </example>
 
 <example name="existing-workspace">

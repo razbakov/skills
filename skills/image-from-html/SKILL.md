@@ -44,6 +44,41 @@ Use this skill when you need pixel-perfect output, brand-accurate typography, an
 - Prefer SVG for logos and icons to avoid raster artifacts when scaling
 - When embedding QR codes, use inline SVG so you can regenerate them programmatically
 
+## Slide Deck Pattern (HTML → PDF presentation)
+
+For branded presentations, create one HTML file with multiple `.slide` divs (1280x720px each). Then capture each slide individually and combine into a PDF.
+
+**HTML structure:**
+```html
+<div class="slide dark"><!-- navy background slide --></div>
+<div class="slide light"><!-- white background slide --></div>
+```
+
+**Capture script (Python):**
+```python
+# For each slide, inject CSS that hides all others via nth-child
+for i in range(num_slides):
+    single_html = html.replace('</head>', f"""<style>
+  body {{ margin:0 !important; overflow:hidden !important; }}
+  .slide {{ display:none !important; }}
+  .slide:nth-child({i+1}) {{ display:block !important; }}
+</style></head>""")
+    # Write to temp file, screenshot with Chrome headless
+    # --window-size=1280,720 --force-device-scale-factor=2
+
+# Combine PNGs into PDF with img2pdf
+import img2pdf
+with open('deck.pdf', 'wb') as f:
+    f.write(img2pdf.convert(png_list))
+```
+
+**Key rules for slide decks:**
+- Use 1280x720px per slide (16:9, standard presentation)
+- Alternate dark/light slides for visual rhythm
+- All content must fit within 720px height — no scrolling
+- Use `overflow: hidden` on `.slide` to catch clipping issues during preview
+- Never use Chrome's `--print-to-pdf` for slides — it uses A4 paper size and breaks layout
+
 ## Example screenshot command (Chrome headless)
 
 ```bash
