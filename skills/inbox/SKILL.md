@@ -71,6 +71,30 @@ Write the full prompt to `${TASK_DIR}/agent-prompt.md`. This is the raw input lo
 <expanded prompt with context>
 ```
 
+The expanded prompt MUST always end with a delivery checklist. Agents that finish without a PR leave invisible work in worktrees.
+
+**For tasks implementing a GitHub issue:**
+
+```
+### Delivery checklist
+1. Run build/tests to verify no errors
+2. Commit changes with a descriptive message referencing the issue (e.g. "Add hero image #11")
+3. Push the branch: `git push -u origin agent/${TASK}`
+4. Create a pull request: `gh pr create --title "<short title>" --body "<summary + Closes #N>"`
+5. The PR body must include: a Summary section, a Test Plan section, and `Closes #<ISSUE_NUMBER>`
+```
+
+**For all other tasks (research, skill creation, config changes, etc.):**
+
+```
+### Delivery checklist
+1. Commit all changes with a descriptive message
+2. Push the branch: `git push -u origin agent/${TASK}`
+3. Create a pull request: `gh pr create --title "<short title>" --body "<summary of what was done>"`
+```
+
+Every agent must deliver a reviewable PR, not just a local commit.
+
 ### 6. Launch in tmux
 
 ```bash

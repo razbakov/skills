@@ -39,74 +39,121 @@ Look for:
 - Error patterns (`Error:`, `fatal:`, `SIGTERM`, `panic`) → **FAILED**
 - `permission denied`, `needs input`, `waiting for` → **NEEDS INPUT**
 
-**c) Check git status in worktree**
+**c) For agents without task dirs, capture tmux pane output**
+```bash
+tmux capture-pane -t SESSION -p 2>/dev/null | tail -10
+```
+- Look for "Done" / completion markers → **DONE**
+- This catches agents that run in-place (no worktree), like voice-assistant tasks
+
+**d) Check git status in worktree**
 ```bash
 cd ${TASK_DIR} && git status --short 2>/dev/null
 git log --oneline main..HEAD 2>/dev/null
 ```
-- Has commits on branch → work was done
+- Has commits on branch AND has PR → **DONE**
+- Has commits on branch but NO PR → **NEEDS PR** (work done but not reviewable)
 - Has uncommitted changes → work in progress or agent crashed mid-edit
 - Clean → either not started or already merged
 
-### 3. Present the dashboard
+### 3. Enrich with real deliverables
 
-Output a table:
+Go beyond raw git status — check what was actually produced:
 
-```
-## Agent Status — $(date)
-
-| Session | Project | Status | Branch | Changes | Age |
-|---------|---------|--------|--------|---------|-----|
-| wf-fix-login | wedance | RUNNING | agent/fix-login | 2 commits, 1 uncommitted | 15m |
-| wf-add-tests | sdtv | DONE | agent/add-tests | 3 commits | 1h |
-| wf-update-readme | ikigai | FAILED | agent/update-readme | 0 commits, 2 uncommitted | 30m |
+**a) For agents with commits: get commit messages**
+```bash
+cd ${TASK_DIR} && git log --oneline main..HEAD
 ```
 
-Status values:
-- **RUNNING** — claude process alive, agent working
-- **DONE** — agent finished successfully (exit 0, has commits)
-- **FAILED** — agent crashed or errored (non-zero exit, error in log)
-- **NEEDS INPUT** — agent is waiting for something (permission, clarification)
-- **STALE** — tmux session exists but no claude process and no completion signal
-- **EMPTY** — no work done (no commits, no changes)
-
-### 4. Show actionable items
-
-After the table, list actions for non-running agents:
-
-**For DONE agents:**
-```
-wf-add-tests (sdtv): DONE — 3 commits on agent/add-tests
-  Review: cd ~/Tasks/sdtv-add-tests && git log --oneline main..HEAD
-  Merge:  cd ~/Projects/sdtv && git merge agent/add-tests
-  Clean:  tmux kill-session -t wf-add-tests && git -C ~/Projects/sdtv worktree remove ~/Tasks/sdtv-add-tests
+**b) For agents that pushed branches: check for open PRs**
+```bash
+# ALWAYS use --json url to get real PR URLs — never construct URLs from directory names
+cd ~/Projects/PROJECT && gh pr list --state open --json number,title,headRefName,state,url
 ```
 
-**For FAILED agents:**
-```
-wf-update-readme (ikigai): FAILED
-  Error: <last error line from agent.log>
-  Log:   tail -50 ~/Tasks/ikigai-update-readme/agent.log
-  Retry: /inbox: retry wf-update-readme
+**c) For PRs: check CI status and review state**
+```bash
+gh pr checks PR_NUMBER --json name,state
+gh pr view PR_NUMBER --json reviewDecision --jq '.reviewDecision'
 ```
 
-**For STALE agents:**
-```
-wf-old-task: STALE (created 3 days ago, no activity)
-  Kill: tmux kill-session -t wf-old-task
+**d) For research/output agents: list produced files with sizes**
+```bash
+find ${TASK_DIR} -name "*.md" -not -name "agent-prompt.md" -not -name "agent.log"
+wc -l < OUTPUT_FILE
 ```
 
-### 5. Summary line
+### 4. Present the dashboard — grouped by project/purpose
 
-End with a one-liner:
+DO NOT present a flat table of all sessions. Instead, group related agents and present them with their real deliverables.
+
+**For PR-producing agents, show a PR table:**
+```
+### WeDance — N PRs open, CI status, review status
+
+| PR | Title | CI | Review |
+|----|-------|----|--------|
+| #23 | Add hero image to festival page | 3/3 passed | Pending |
+```
+
+**For research/batch agents, show a summary table:**
+```
+### Platform Research (campaign name) — N/N complete
+
+| Platform | Output | Size |
+|----------|--------|------|
+| LinkedIn | research-post-linkedin.md | 475 lines |
+```
+
+**For other agents, show a details table:**
+```
+### Other Agents
+
+| Session | Project | Status | Details |
+|---------|---------|--------|---------|
+| wf-process-telegram-inbox | ikigai | DONE | Produced inbox/2026-03-21.md |
+```
+
+### 5. Summary block
+
+End with a concise summary showing counts and key actions:
 
 ```
-5 agents: 2 running, 1 done (ready to merge), 1 failed, 1 stale
+23 agents: 0 running, 22 done, 1 stale
+
+ 7 PRs ready to review (all CI green)
+11 research reports ready to commit
+ 1 stale agent needs manual review
 ```
+
+### 6. Check for PRs with unresolved review threads
+
+For any open PRs found in step 3b, check for unresolved review threads:
+
+```bash
+gh api graphql -f query='query { repository(owner: "OWNER", name: "REPO") { pullRequest(number: N) { reviewThreads(first: 50) { nodes { isResolved } } } } }' \
+  --jq '[.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved == false)] | length'
+```
+
+If any PRs have unresolved threads, add to recommended actions:
+
+```
+N PRs have unresolved review threads — run /review-all-prs to address them
+```
+
+### 7. Recommended actions
+
+Prioritized list of what to do next:
+
+1. **Address PR reviews** — if unresolved threads exist, automatically run `/review-all-prs` to dispatch review agents
+2. **Review & merge PRs** — PRs with all threads resolved and CI green
+3. **Commit uncommitted work** — flag data at risk in worktrees
+4. **Investigate stale agents** — with `git diff` commands
+5. **Clean up** — which sessions are safe to kill
 
 ## Quick Mode
 
-If the user says `/scrum quick`, skip the detailed actions and just show the table + summary.
+If the user says `/scrum quick`, skip enrichment (PRs, CI, file sizes) and just show the grouped status tables + summary.
 
 ## Cleanup Command
 

@@ -29,7 +29,29 @@ Export since last daily review:
 tdl chat export --all --with-content -T time -i $(date -v-1d +%s),$(date +%s) -o /tmp/tdl-saved.json
 ```
 
-### 2. Parse and display messages
+### 2. React 👀 to exported messages (mark as "seen")
+
+After export, immediately mark all exported messages with 👀 in Telegram. This tells the user which messages have been picked up for processing.
+
+```bash
+# Extract timestamps from exported messages
+TIMESTAMPS=$(cat /tmp/tdl-saved.json | python3 -c "
+import json, sys, datetime
+data = json.load(sys.stdin)
+msgs = data.get('messages', [])
+ts_list = []
+for m in msgs:
+    ts = m.get('date', 0)
+    dt = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M')
+    ts_list.append(dt)
+print(','.join(ts_list))
+")
+
+# Mark as seen in Telegram
+cd ~/.config/telegram && uvx --python python3 --from telethon python3 react.py --mark-seen "$TIMESTAMPS"
+```
+
+### 3. Parse and display messages
 
 ```bash
 cat /tmp/tdl-saved.json | python3 -c "
@@ -46,7 +68,7 @@ for m in msgs:
 "
 ```
 
-### 3. Apply GTD Clarify to each message
+### 4. Apply GTD Clarify to each message
 
 - **Is it actionable?** If yes -> extract a task with project assignment
 - **Is it reference material?** If yes -> note which project/contact it relates to
@@ -55,7 +77,7 @@ for m in msgs:
 
 **Important:** Never mark voice notes or reflections as "Reference" — they are content ideas. Classify them as Action for razbakov.com or smm-manager (blog post, thread, social media post). Every thought Alex captures is potential content.
 
-### 4. Present summary table
+### 5. Present summary table
 
 ```
 | # | Time | Preview | GTD | Project | Task |
@@ -65,14 +87,14 @@ for m in msgs:
 | 3 | 13:02 | codex in slack... | Reference | brievcase | — |
 ```
 
-### 5. Update project docs (source of truth)
+### 6. Update project docs (source of truth)
 
 For each actionable item:
 - Read the project's `README.md` (or `TODO.md`, `docs/backlog.yaml` if they exist)
 - Add the task to the project's next steps / backlog
 - This is where the task actually lives — not in the daily review file
 
-### 6. Save to inbox file
+### 7. Save to inbox file
 
 Save to `inbox/YYYY-MM-DD-HH-MM.md` (timestamp of the first message in the batch):
 - `## Raw` — exact messages, unedited
@@ -81,7 +103,48 @@ Save to `inbox/YYYY-MM-DD-HH-MM.md` (timestamp of the first message in the batch
 
 The daily review file (`sessions/YYYY-MM-DD-daily-review.md`) should only contain a link to the inbox file, not the full content.
 
-**Information flow:** Telegram -> `inbox/` file (raw + processed) -> Project README (source of truth) -> PROJECTS.md (cache, synced later) -> Daily Review (link only).
+### 8. React with GTD emojis in Telegram
+
+After saving the inbox file, upgrade all 👀 reactions to GTD-specific emojis:
+
+```bash
+cd ~/.config/telegram && uvx --python python3 --from telethon python3 react.py --file ~/Projects/ikigai/inbox/YYYY-MM-DD-HH-MM.md
+```
+
+This replaces the 👀 "seen" reaction with:
+- 👍 Action — will do
+- 🏆 Done — already handled
+- 🔥 Idea — captured for later
+- 🤔 Someday — someday/maybe
+- 🫡 Rule — rule applied
+- ✍ Content Idea — content to create
+- 👌 Reference — filed
+
+### 9. Append PR links to messages (when available)
+
+When work on an inbox item produces a PR, edit the original Telegram message to append the link:
+
+```bash
+# Single PR
+cd ~/.config/telegram && uvx --python python3 --from telethon python3 react.py --add-pr '2026-03-21 08:05|https://github.com/razbakov/festival-schedule/pull/23'
+
+# Bulk from JSON
+cat > /tmp/prs.json << 'EOF'
+[
+  {"ts": "2026-03-21 08:05", "pr": "https://github.com/.../pull/23", "title": "Add hero image"}
+]
+EOF
+cd ~/.config/telegram && uvx --python python3 --from telethon python3 react.py --add-pr /tmp/prs.json
+```
+
+The original message becomes:
+```
+We dance. We need to integrate a logo.
+→ PR: Add hero image
+  https://github.com/razbakov/festival-schedule/pull/23
+```
+
+**Information flow:** Telegram -> 👀 (seen) -> `inbox/` file (raw + processed) -> Project README (source of truth) -> GTD emoji in Telegram -> PR link in Telegram -> PROJECTS.md (cache) -> Daily Review (link only).
 
 ## Output
 

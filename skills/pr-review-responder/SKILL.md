@@ -34,7 +34,8 @@ Group comments by priority before fixing:
 | Category | Action |
 |----------|--------|
 | **Code fix needed** | Fix in code, commit, reply with commit SHA |
-| **Acknowledged (out of scope)** | Reply explaining why, with plan for future |
+| **Acknowledged (missing feature)** | Create a GitHub issue, reply with issue link. "Acknowledged" without a tracking issue means the work gets lost. |
+| **Acknowledged (product decision)** | Reply explaining the trade-offs. Don't create an issue — design questions need discussion first, not a ticket. |
 | **By design** | Reply with reasoning for the design choice |
 | **Already fixed** | Reply noting which commit addressed it |
 
