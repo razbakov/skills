@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 3,
+  "generatedAt": "2026-03-10T14:53:14.252Z",
+  "installedSkills": [
+    {
+      "name": "atlassian-cli-jira",
+      "description": "Use Atlassian CLI (acli) to manage Jira work items, projects, and workflows from the command line. Ideal for bulk operations, automation, scripting, and when users request CLI-based Jira interactions. Trigger on requests like \"use Jira CLI\", \"create Jira issues via CLI\", \"bulk update Jira tickets\", \"automate Jira workflows\", or when users want to script Jira operations.",
+      "install": {
+        "repoUrl": "https://github.com/benjaming/ai-skills",
+        "skillPath": "atlassian-cli-jira"
+      }
+    },
+    {
+      "name": "bdd-collaboration",
+      "description": "Use when facilitating BDD collaboration between developers, testers, and business stakeholders. Use when running discovery workshops and example mapping sessions.",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-collaboration"
+      }
+    },
+    {
+      "name": "bdd-patterns",
+      "description": "Use when applying Behavior-Driven Development patterns including Given-When-Then structure, feature files, and acceptance criteria. Use when writing BDD-style tests and specifications.",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-patterns"
+      }
+    },
+    {
+      "name": "bdd-principles",
+      "description": "Core BDD concepts, philosophy, and the Three Amigos practice",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-principles"
+      }
+    },
+    {
+      "name": "bdd-scenarios",
+      "description": "Use when writing effective BDD scenarios including acceptance criteria, edge cases, and scenario organization. Use when defining behavior specifications.",
+      "install": {
+        "repoUrl": "https://github.com/TheBushidoCollective/han",
+        "skillPath": "plugins/patterns/bdd/skills/bdd-scenarios"
+      }
+    },
+    {
+      "name": "confluence-cli",
+      "description": "Use confluence-cli (NPM package) to manage Confluence content, pages, and spaces from the command line. Ideal for documentation workflows, bulk content operations, page migration, and when users request CLI-based Confluence interactions. Trigger on requests like \"use Confluence CLI\", \"create Confluence pages via CLI\", \"migrate Confluence content\", \"automate documentation workflows\", or when users want to script Confluence operations.",
+      "install": {
+        "repoUrl": "https://github.com/benjaming/ai-skills",
+        "skillPath": "confluence-cli"
+      }
+    },
+    {
+      "name": "project-start",
+      "description": "Build shared understanding before building software: README → user journey → story map → architecture → AI context. Use when starting a new project, onboarding to an existing one, or when AI needs better context about what the project is and why it exists.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/project-start"
+      }
+    },
+    {
+      "name": "user-story",
+      "description": "Transform requirements into structured user stories with acceptance criteria using INVEST principles. Use when the user asks to write a user story, create a ticket, define acceptance criteria, or convert requirements into dev-ready stories.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/user-story"
+      }
+    }
+  ]
+}

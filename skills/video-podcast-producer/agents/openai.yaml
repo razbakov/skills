@@ -1,0 +1,4 @@
+interface:
+  display_name: "Video Podcast Producer"
+  short_description: "Transcribe, cut, and publish video recordings"
+  default_prompt: "Process a video recording: transcribe, cut, thumbnail, publish"
