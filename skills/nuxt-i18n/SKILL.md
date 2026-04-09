@@ -1,6 +1,6 @@
 ---
 name: nuxt-i18n
-description: Add internationalization (i18n) to a Nuxt 3 project — install @nuxtjs/i18n, extract hardcoded strings from components into locale JSON files, configure routing strategy, create a language switcher component, and fix hosting config for SSR locale routes. Use this skill whenever the user wants to translate a Nuxt site, add multiple languages, add a language switcher, or localize content in a Nuxt project. Also applies when migrating a monolingual Nuxt site to multilingual.
+description: Add internationalization (i18n) to a Nuxt 3 project — install @nuxtjs/i18n, extract hardcoded strings from components into locale JSON files, configure routing strategy, create a language switcher component, and fix hosting config for SSR locale routes. Use this skill whenever the user wants to translate a Nuxt site, add multiple languages, add a language switcher, localize content, or migrate a monolingual Nuxt site to multilingual. Also triggers when adding specific languages (e.g., "add German to my site") or when the user mentions i18n, localization, or translation in a Nuxt context.
 ---
 
 # Nuxt i18n Setup
@@ -10,15 +10,16 @@ Add multi-language support to any Nuxt 3 project. This skill covers the full wor
 ## Prerequisites
 
 - Nuxt 3 project with components containing hardcoded text
-- Target languages identified (e.g., de, ru, es)
+- Target languages identified (e.g., de, ru, es, fr, zh)
 
 ## Step 1: Audit existing text
 
-Before writing any code, scan all components and pages for hardcoded strings. This gives you the full picture of what needs translating.
+Before writing any code, scan all components and pages for hardcoded strings. Use the Grep tool to find text content in Vue templates:
 
-```bash
-# Find components and pages with text content
-grep -rn ">[^<{]*[a-zA-Z][^<{]*<" components/ pages/ --include="*.vue" | head -50
+```
+Pattern: ">[^<{]*[a-zA-Z][^<{]*<"
+Glob: "*.vue"
+Path: components/ and pages/
 ```
 
 Catalog every user-facing string:
@@ -29,14 +30,16 @@ Catalog every user-facing string:
 - Alt text on images
 - Error messages
 - Arrays of objects with text (testimonials, feature lists, FAQ items, etc.)
+- API response messages (e.g., email subjects/bodies in server routes)
 
 ## Step 2: Install @nuxtjs/i18n
 
+Check the lockfile to determine the package manager, then install:
+
 ```bash
-# Use whatever package manager the project uses (check lockfile)
-pnpm add @nuxtjs/i18n
-# or: npm install @nuxtjs/i18n
-# or: yarn add @nuxtjs/i18n
+pnpm add @nuxtjs/i18n    # if pnpm-lock.yaml exists
+npm install @nuxtjs/i18n  # if package-lock.json exists
+yarn add @nuxtjs/i18n     # if yarn.lock exists
 ```
 
 ## Step 3: Create locale files
@@ -47,44 +50,53 @@ Create `i18n/locales/` directory with a JSON file per language. Start with the d
 i18n/
 └── locales/
     ├── en.json   # Source language
-    ├── de.json   # German
-    ├── ru.json   # Russian
-    └── es.json   # Spanish
+    ├── de.json
+    ├── fr.json
+    └── ...
 ```
 
 Structure keys semantically by component or section:
 
 ```json
 {
-  "hero": {
-    "tagline": "The game begins when the lights go down.",
-    "cta": "Request an Invitation"
-  },
   "nav": {
-    "requestEntry": "Request Entry"
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Welcome to our platform",
+    "subtitle": "Build something amazing",
+    "cta": "Get Started"
   },
   "form": {
     "name": "Your name",
-    "email": "your@email.com",
-    "submit": "Get on the List",
+    "email": "your{'@'}email.com",
+    "submit": "Submit",
     "errors": {
       "nameRequired": "Name is required",
       "emailInvalid": "Please enter a valid email"
     }
+  },
+  "meta": {
+    "title": "My Website",
+    "description": "A brief description of the site"
   }
 }
 ```
 
-Tips for translation keys:
-- Use nested objects to group by component/section
-- Use camelCase for key names
-- Keep the same key structure across all locale files
-- For arrays (testimonials, features, phases), use indexed keys or arrays in JSON
-- Escape the `@` symbol as `{'@'}` in vue-i18n — it's a special character for linked messages
+Key conventions:
+- Nested objects grouped by component/section
+- camelCase for key names
+- Identical key structure across all locale files
+- For arrays (testimonials, features), use indexed keys like `"items": { "0": { "title": "..." }, "1": { ... } }` or JSON arrays
+- Escape `@` as `{'@'}` — it's a vue-i18n special character for linked messages
+- For pluralization: `"items": "no items | {count} item | {count} items"` (pipe-separated forms)
+- For interpolation: `"greeting": "Hello, {name}!"` then `$t('greeting', { name: userName })`
 
 ## Step 4: Configure nuxt.config.ts
 
-Add the i18n module with lazy-loaded locale files:
+Add the i18n module with lazy-loaded locale files. Adapt the locale list to the project's target languages:
 
 ```typescript
 export default defineNuxtConfig({
@@ -97,8 +109,7 @@ export default defineNuxtConfig({
     locales: [
       { code: 'en', language: 'en-US', file: 'en.json', name: 'English' },
       { code: 'de', language: 'de-DE', file: 'de.json', name: 'Deutsch' },
-      { code: 'ru', language: 'ru-RU', file: 'ru.json', name: 'Русский' },
-      { code: 'es', language: 'es-ES', file: 'es.json', name: 'Español' },
+      // Add more as needed
     ],
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
@@ -113,7 +124,7 @@ export default defineNuxtConfig({
 })
 ```
 
-**Strategy choice:** `prefix_except_default` means the default locale has no prefix (`/`) while others get prefixed (`/de/`, `/ru/`). This preserves existing URLs and is the most common choice.
+**Strategy choice:** `prefix_except_default` means the default locale has no prefix (`/`) while others get prefixed (`/de/`, `/fr/`). This preserves existing URLs and is the most common choice. Other options: `prefix` (all locales get prefix), `no_prefix` (no URL differentiation — locale from cookie/header only).
 
 ## Step 5: Update components to use $t()
 
@@ -123,16 +134,19 @@ Replace every hardcoded string with `$t('key.path')`. In `<script setup>`, use `
 <script setup>
 const { t } = useI18n()
 
-// For reactive arrays/objects that use translations:
-const items = computed(() => [
-  { title: t('features.item1.title'), description: t('features.item1.description') },
-  { title: t('features.item2.title'), description: t('features.item2.description') },
+// For reactive arrays/objects that use translations, wrap in computed()
+// so they update when the user switches language:
+const features = computed(() => [
+  { title: t('features.item1.title'), desc: t('features.item1.desc') },
+  { title: t('features.item2.title'), desc: t('features.item2.desc') },
 ])
 </script>
 
 <template>
-  <h1>{{ $t('hero.tagline') }}</h1>
+  <h1>{{ $t('hero.title') }}</h1>
+  <p>{{ $t('hero.subtitle') }}</p>
   <button>{{ $t('form.submit') }}</button>
+  <input :placeholder="$t('form.email')" />
 </template>
 ```
 
@@ -140,31 +154,35 @@ Important patterns:
 - Static text in templates: `{{ $t('key') }}`
 - Attributes: `:placeholder="$t('form.email')"`
 - Script setup: `const { t } = useI18n()` then `t('key')`
-- Computed arrays with translated content need `computed()` so they react to locale changes
-- Navigation links between pages: use `useLocalePath()` or `<NuxtLinkLocale>` to preserve locale prefix
+- Computed arrays/objects are essential — without `computed()`, translated content won't update when the user switches locale
+- Interpolation: `$t('greeting', { name: userName })`
+- Pluralization: `$t('items', { count: itemCount })`
+- Navigation links: use `useLocalePath()` or `<NuxtLinkLocale>` to preserve locale prefix in `<NuxtLink>` hrefs
 
 ## Step 6: Locale-aware SEO meta
 
-Update `useHead()` calls to use translated titles and descriptions:
+Update `useHead()` calls with `computed` wrapping — this ensures meta tags react to locale changes:
 
 ```vue
 <script setup>
 const { t } = useI18n()
 
-useHead({
+useHead(computed(() => ({
   title: t('meta.title'),
   meta: [
     { name: 'description', content: t('meta.description') },
     { property: 'og:title', content: t('meta.title') },
     { property: 'og:description', content: t('meta.description') },
   ],
-})
+})))
 </script>
 ```
 
+The `computed()` wrapper is important here — without it, meta tags won't update when the user switches language via the switcher.
+
 ## Step 7: Create LanguageSwitcher component
 
-Create a switcher that fits the project's design. Use `useLocalePath()` and `useSwitchLocalePath()`:
+Create a switcher component. Adapt the styling to match the project's design system (the example below uses minimal inline styles — replace with Tailwind, UnoCSS, or plain CSS as appropriate):
 
 ```vue
 <script setup>
@@ -173,26 +191,22 @@ const switchLocalePath = useSwitchLocalePath()
 </script>
 
 <template>
-  <div class="flex items-center gap-1">
+  <nav class="language-switcher" aria-label="Language">
     <NuxtLink
       v-for="loc in locales"
       :key="loc.code"
       :to="switchLocalePath(loc.code)"
-      :class="[
-        'text-xs px-2 py-1 uppercase tracking-wider transition-all border',
-        locale === loc.code
-          ? 'text-primary border-primary/50 bg-primary/10'
-          : 'text-muted border-transparent hover:text-foreground hover:border-muted/20'
-      ]"
+      :class="['lang-link', { active: locale === loc.code }]"
       :aria-label="loc.name"
+      :aria-current="locale === loc.code ? 'true' : undefined"
     >
       {{ loc.code }}
     </NuxtLink>
-  </div>
+  </nav>
 </template>
 ```
 
-Add the switcher to the site header/navigation.
+Place the switcher in the site header/navigation. Style it to match the project's existing design — the component handles the locale switching logic, you handle the look and feel.
 
 ## Step 8: Fix hosting config for SSR routes
 
@@ -200,7 +214,7 @@ This step is critical — without it, locale routes like `/de/` will 404 in prod
 
 ### Netlify
 
-If using Netlify with SSR (nitro preset "netlify"), remove any catch-all redirect from `netlify.toml`:
+If using Netlify with SSR (nitro preset `"netlify"`), remove any catch-all redirect from `netlify.toml`:
 
 ```toml
 # REMOVE this — it blocks SSR routes:
@@ -224,6 +238,10 @@ The Nuxt Netlify preset handles routing via server functions automatically — n
 
 Vercel with `preset: 'vercel'` handles SSR routes automatically. No special config needed.
 
+### Cloudflare Pages
+
+With `preset: 'cloudflare-pages'`, routes work automatically via Workers.
+
 ### Static hosting (nuxt generate)
 
 If using static generation, add `prerender` routes for each locale in `nuxt.config.ts`:
@@ -231,7 +249,7 @@ If using static generation, add `prerender` routes for each locale in `nuxt.conf
 ```typescript
 nitro: {
   prerender: {
-    routes: ['/de', '/ru', '/es'],
+    routes: ['/de', '/fr', '/es'],
     crawlLinks: true,
   }
 }
@@ -243,27 +261,27 @@ nitro: {
 # Build locally to catch errors
 pnpm build
 
-# Test locale routes
+# Test locale routes in dev
 pnpm dev
-# Visit /, /de/, /ru/, /es/ and verify:
-# - Text is translated
-# - Language switcher works
-# - SEO meta tags change per locale
-# - Forms show translated validation messages
-# - Browser language detection redirects correctly
-
-# Deploy
-# Netlify: push to main or `npx netlify-cli deploy --prod --build`
-# Vercel: push to main
 ```
+
+Verify each locale route:
+- Text is translated (not showing raw keys)
+- Language switcher changes the locale and URL
+- SEO meta tags update per locale (check page source)
+- Forms show translated validation messages
+- Browser language detection redirects correctly on root path
+- Internal links preserve the locale prefix
+
+Then deploy using the project's normal deployment method.
 
 ## Checklist
 
 - [ ] All hardcoded strings extracted to locale JSON files
 - [ ] All components use `$t()` / `useI18n()`
 - [ ] Arrays/objects with text use `computed()` for reactivity
+- [ ] `useHead()` wrapped in `computed()` for reactive meta tags
 - [ ] LanguageSwitcher component added to header
-- [ ] SEO meta tags are locale-aware
 - [ ] Hosting config allows SSR locale routes (no catch-all redirects)
 - [ ] Build succeeds
 - [ ] All locale routes render correctly
