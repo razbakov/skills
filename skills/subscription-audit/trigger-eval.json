@@ -1,0 +1,78 @@
+[
+  {
+    "query": "check my email for the last month and tell me what subscriptions im paying for, i feel like theres a bunch of stuff i signed up for and forgot about",
+    "should_trigger": true
+  },
+  {
+    "query": "i need to cut costs. go through my gmail receipts and figure out which recurring charges i can cancel — anything over 10 eur that i havent used in the last 2 weeks should be flagged",
+    "should_trigger": true
+  },
+  {
+    "query": "update my subscription tracker with any new charges since the last audit",
+    "should_trigger": true
+  },
+  {
+    "query": "how much am i spending per month on saas tools? check my email receipts from stripe and paypal for the last 90 days",
+    "should_trigger": true
+  },
+  {
+    "query": "audit my recurring expenses — i want a breakdown by category (dev tools, cloud, entertainment, food delivery) with monthly totals",
+    "should_trigger": true
+  },
+  {
+    "query": "i just got a stripe receipt for $49 from some service called Retool. is that a new subscription or did i have it before? check the tracker",
+    "should_trigger": true
+  },
+  {
+    "query": "pull all my purchase receipts from gmail for march 2026 — subscriptions AND one-time purchases. i need it for my tax records",
+    "should_trigger": true
+  },
+  {
+    "query": "whats my monthly burn rate on subscriptions right now? i think its getting out of hand",
+    "should_trigger": true
+  },
+  {
+    "query": "sync my subscription data to notion — create a database with a board view grouped by status so i can triage whats active vs what i should cancel",
+    "should_trigger": true
+  },
+  {
+    "query": "i want to set up a monthly budget tracker in a spreadsheet — columns for income, fixed costs, variable spending, and savings. can you create a template?",
+    "should_trigger": false
+  },
+  {
+    "query": "help me write a cancellation email to Adobe — i want to cancel my Creative Cloud subscription before the next billing cycle",
+    "should_trigger": false
+  },
+  {
+    "query": "search my gmail for emails from my bank about the mortgage payment schedule change they mentioned last week",
+    "should_trigger": false
+  },
+  {
+    "query": "i need to build a stripe webhook handler that listens for subscription.created and subscription.deleted events in my node app",
+    "should_trigger": false
+  },
+  {
+    "query": "can you check if theres a cheaper alternative to Figma for UI design? i saw some open source options on hacker news",
+    "should_trigger": false
+  },
+  {
+    "query": "create a cron job that sends me a slack notification whenever a new invoice email arrives in my gmail",
+    "should_trigger": false
+  },
+  {
+    "query": "i need to add a payment form to my website using stripe checkout — the subscription is 29/mo for the pro plan",
+    "should_trigger": false
+  },
+  {
+    "query": "help me dispute a charge on my credit card statement — theres a $150 charge from a company i dont recognize",
+    "should_trigger": false
+  },
+  {
+    "query": "set up a new email filter in gmail to automatically label all receipts and invoices so theyre easier to find later",
+    "should_trigger": false
+  },
+  {
+    "query": "i want to track my daily expenses in a markdown file — like a simple ledger where i log what i spend each day on coffee, lunch, transport etc",
+    "should_trigger": false
+  }
+]
