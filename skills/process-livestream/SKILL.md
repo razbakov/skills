@@ -129,8 +129,14 @@ Commit all blog files + hero image and push to trigger auto-deploy.
 
 The livestream has a community around it. Telegram engagement happens in three phases:
 
+**Telegram mapping:**
+
+| Stream | Community Chat | Personal Channel |
+|--------|---------------|-----------------|
+| Learn By Doing | https://t.me/+VNlqacOP9PgyNThi | @razbakov |
+
 **Before the stream:**
-- Post in the community Telegram chat (e.g., Learn By Doing group) announcing the stream with the YouTube link
+- Post in the community chat announcing the stream with the YouTube link
 - Include the agenda / questions that will be covered
 
 **During the stream:**
@@ -139,10 +145,10 @@ The livestream has a community around it. Telegram engagement happens in three p
 
 **After the stream:**
 - Post a recap message in the community chat with key takeaways and the recording link
-- Post on the personal/brand Telegram channel (e.g., Alosha channel) with a short hook + YouTube link
+- Post on the personal Telegram channel with a short hook + YouTube link
 - Use `/social-post` or draft manually — keep it conversational, not a press release
 
-Remind the user about these Telegram steps if they haven't mentioned doing them. These are manual actions the user performs, but the agent can draft the messages.
+Remind the user about these Telegram steps if they haven't mentioned doing them. The agent can draft the messages for the user to send.
 
 ### Step 11: Verify and report
 
