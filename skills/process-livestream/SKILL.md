@@ -129,11 +129,7 @@ Commit all blog files + hero image and push to trigger auto-deploy.
 
 The livestream has a community around it. Telegram engagement happens in three phases:
 
-**Telegram mapping:**
-
-| Stream | Community Chat | Personal Channel |
-|--------|---------------|-----------------|
-| Learn By Doing | https://t.me/+VNlqacOP9PgyNThi | @razbakov |
+Check the project's CLAUDE.md for Telegram chat/channel mappings (community chat link, personal channel).
 
 **Before the stream:**
 - Post in the community chat announcing the stream with the YouTube link
