@@ -125,14 +125,33 @@ OAuth token cached at `~/.config/youtube/token.json`.
 
 Commit all blog files + hero image and push to trigger auto-deploy.
 
-### Step 10: Verify and report
+### Step 10: Telegram distribution
+
+The livestream has a community around it. Telegram engagement happens in three phases:
+
+**Before the stream:**
+- Post in the community Telegram chat (e.g., Learn By Doing group) announcing the stream with the YouTube link
+- Include the agenda / questions that will be covered
+
+**During the stream:**
+- Share the YouTube link again for latecomers
+- React to comments and encourage participation
+
+**After the stream:**
+- Post a recap message in the community chat with key takeaways and the recording link
+- Post on the personal/brand Telegram channel (e.g., Alosha channel) with a short hook + YouTube link
+- Use `/social-post` or draft manually — keep it conversational, not a press release
+
+Remind the user about these Telegram steps if they haven't mentioned doing them. These are manual actions the user performs, but the agent can draft the messages.
+
+### Step 11: Verify and report
 
 Report what was done:
 - Blog URL(s)
 - YouTube video URL with updated metadata
 - Number of chapters
 - Files created/committed
-- Any items needing manual attention (e.g., timestamp verification)
+- Any items needing manual attention (e.g., timestamp verification, Telegram posts)
 
 ## Output Files
 
