@@ -69,69 +69,48 @@ ls -lt ~/.claude/projects/-Users-me-Projects-foo/*.jsonl | head -20
 
 ### Extracting Session Summaries
 
-```python
-import json, os, glob, datetime
-
-dir_path = os.path.expanduser("~/.claude/projects/{project-dir}/")
-files = sorted(glob.glob(dir_path + "*.jsonl"), key=os.path.getmtime, reverse=True)
-
-for f in files[:20]:
-    dt = datetime.datetime.fromtimestamp(os.path.getmtime(f)).strftime("%Y-%m-%d %H:%M")
-    size = os.path.getsize(f)
-    size_h = f"{size/1024:.0f}K" if size < 1048576 else f"{size/1048576:.1f}M"
-
-    first_msg = "(empty)"
-    with open(f) as fh:
-        for line in fh:
-            try:
-                obj = json.loads(line)
-                if obj.get("type") == "user":
-                    content = obj["message"].get("content", "")
-                    text = ""
-                    if isinstance(content, str):
-                        text = content.strip()
-                    elif isinstance(content, list):
-                        for item in content:
-                            if isinstance(item, dict) and item.get("type") == "text":
-                                t = item["text"].strip()
-                                if not t.startswith("<system-reminder>") and len(t) > 5:
-                                    text = t
-                                    break
-                    if text and not text.startswith("<system-reminder>") and len(text) > 5:
-                        first_msg = text[:140]
-                        break
-            except:
-                pass
-
-    print(f"{dt} | {size_h:>6} | {first_msg}")
+```bash
+# List recent sessions with date, size, and first user message
+for f in $(ls -t ~/.claude/projects/{project-dir}/*.jsonl | head -20); do
+  date=$(stat -f '%Sm' -t '%Y-%m-%d %H:%M' "$f")
+  size=$(du -h "$f" | cut -f1)
+  msg=$(jq -r 'select(.type == "user") | .message.content | if type == "string" then . elif type == "array" then map(select(.type == "text") | .text | select(startswith("<system-reminder>") | not) | select(length > 5)) | first // empty else empty end' "$f" 2>/dev/null | head -1 | cut -c1-140)
+  echo "$date | $size | ${msg:-(empty)}"
+done
 ```
 
 ### Exporting a Single Session
 
-```python
-import json
+```bash
+# Export user/assistant turns as readable markdown
+jq -r '
+  if .type == "user" then
+    .message.content |
+    if type == "string" then "\n## User\n" + . + "\n"
+    elif type == "array" then
+      map(select(.type == "text") | .text | select(startswith("<system-reminder>") | not)) | join("\n") | if . != "" then "\n## User\n" + . + "\n" else empty end
+    else empty end
+  elif .type == "assistant" then
+    .message.content |
+    if type == "string" then "\n## Assistant\n" + . + "\n"
+    elif type == "array" then
+      map(if .type == "text" then .text elif .type == "tool_use" then "\n[Tool: " + .name + "]\n" else empty end) | join("\n") | "\n## Assistant\n" + . + "\n"
+    else empty end
+  else empty end
+' session.jsonl
+```
 
-with open("session.jsonl") as f:
-    for line in f:
-        obj = json.loads(line)
-        if obj["type"] == "user":
-            content = obj["message"].get("content", "")
-            if isinstance(content, str):
-                print(f"\n## User\n{content}\n")
-            elif isinstance(content, list):
-                for item in content:
-                    if item.get("type") == "text" and not item["text"].startswith("<system-reminder>"):
-                        print(f"\n## User\n{item['text']}\n")
-        elif obj["type"] == "assistant":
-            content = obj["message"].get("content", "")
-            if isinstance(content, str):
-                print(f"\n## Assistant\n{content}\n")
-            elif isinstance(content, list):
-                for item in content:
-                    if item.get("type") == "text":
-                        print(item["text"])
-                    elif item.get("type") == "tool_use":
-                        print(f"\n[Tool: {item['name']}]\n")
+### Quick Searches
+
+```bash
+# Find sessions mentioning a topic
+grep -l '"content":".*deploy' ~/.claude/projects/{project-dir}/*.jsonl
+
+# Count user messages in a session
+jq -r 'select(.type == "user")' session.jsonl | wc -l
+
+# List all tool calls in a session
+jq -r 'select(.type == "assistant") | .message.content | arrays | .[] | select(.type == "tool_use") | .name' session.jsonl | sort | uniq -c | sort -rn
 ```
 
 ## Output Naming
