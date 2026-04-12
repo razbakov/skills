@@ -7,7 +7,7 @@ description: Export and share AI chat sessions from Claude Code, Cursor, or Cond
 
 Three-step workflow: **discover** sessions across providers, **select** one, **export** and share via GitHub Gist.
 
-Prerequisites: `jq`, `gh` (GitHub CLI, authenticated).
+Prerequisites: `jq`, `gawk`, `gh` (GitHub CLI, authenticated).
 
 ## Step 1: Discover Sessions
 
@@ -41,7 +41,7 @@ i=1; for f in $(ls -t ~/.claude/projects/{project-dir}/*.jsonl | head -20); do
 done
 ```
 
-JSONL line types: `user` (user messages), `assistant` (Claude responses with text/tool_use), `system`, `attachment`, `permission-mode`, `file-history-snapshot`.
+JSONL line types: `user` (user messages), `assistant` (Claude responses with text/tool_use), `system` (turn duration stats), `attachment`, `permission-mode`, `file-history-snapshot`.
 
 ### Conductor Sessions
 
@@ -64,7 +64,7 @@ done
 
 ## Step 2: Select Session
 
-Present the numbered list from Step 1 to the user. Ask them to pick a number. Map the number back to the file path.
+Present the numbered list from Step 1 to the user. Ask them to pick a number. Map the number back to the file path. **Save the absolute file path** — do not rely on `ls -t` order later, as file modification times shift between steps.
 
 If the user provides a search term instead of a number:
 ```bash
@@ -75,6 +75,8 @@ grep -rl 'search-term' ~/.claude/projects/{project-dir}/*.jsonl
 ## Step 3: Export and Share
 
 ### Export Claude Code / Conductor Session to Markdown
+
+Two-stage pipeline: jq extracts conversation, gawk collapses consecutive tool-only turns.
 
 ```bash
 jq -r '
@@ -89,11 +91,62 @@ jq -r '
     .message.content |
     if type == "string" then "\n## Assistant\n" + . + "\n"
     elif type == "array" then
-      map(if .type == "text" then .text elif .type == "tool_use" then "\n[Tool: " + .name + "]\n" else empty end) |
-      join("\n") | "\n## Assistant\n" + . + "\n"
+      ( [.[] | select(.type == "text") | .text] | join("\n") ) as $text |
+      ( [.[] | select(.type == "tool_use") | .name] ) as $tools |
+      ( $tools | group_by(.) | map(if length > 1 then "\(.[0]) ×\(length)" else .[0] end) | join(", ") ) as $toolsummary |
+      if ($text | length) > 0 and ($toolsummary | length) > 0 then
+        "\n## Assistant\n" + $text + "\n\n> " + ($tools | length | tostring) + " tools: " + $toolsummary + "\n"
+      elif ($text | length) > 0 then
+        "\n## Assistant\n" + $text + "\n"
+      elif ($toolsummary | length) > 0 then
+        "\n> " + ($tools | length | tostring) + " tools: " + $toolsummary + "\n"
+      else empty end
     else empty end
   else empty end
-' "$SESSION_FILE" > /tmp/session-export.md
+' "$SESSION_FILE" | gawk '
+  /^> [0-9]+ tools:/ {
+    match($0, /^> [0-9]+ tools: (.+)/, m)
+    n = split(m[1], arr, ", ")
+    for (i = 1; i <= n; i++) {
+      if (match(arr[i], /(.+) ×([0-9]+)/, p)) {
+        tools[p[1]] += p[2]
+      } else {
+        tools[arr[i]] += 1
+      }
+    }
+    pending = 1
+    next
+  }
+  /^$/ && pending { next }
+  {
+    if (pending) {
+      total = 0; summary = ""
+      for (t in tools) total += tools[t]
+      PROCINFO["sorted_in"] = "@val_num_desc"
+      for (t in tools) {
+        if (summary != "") summary = summary ", "
+        summary = summary (tools[t] > 1 ? t " ×" tools[t] : t)
+      }
+      print "> " total " tools: " summary
+      print ""
+      delete tools
+      pending = 0
+    }
+    print
+  }
+  END {
+    if (pending) {
+      total = 0; summary = ""
+      for (t in tools) total += tools[t]
+      PROCINFO["sorted_in"] = "@val_num_desc"
+      for (t in tools) {
+        if (summary != "") summary = summary ", "
+        summary = summary (tools[t] > 1 ? t " ×" tools[t] : t)
+      }
+      print "> " total " tools: " summary
+    }
+  }
+' > /tmp/session-export.md
 ```
 
 ### Export Cursor Session to Markdown
@@ -105,31 +158,61 @@ echo "" >> /tmp/session-export.md
 cat "$SESSION_FILE" >> /tmp/session-export.md
 ```
 
+### Generate Title and Description
+
+After exporting, read `/tmp/session-export.md` and generate:
+- **Title** — short (under 60 chars), descriptive summary of what the session accomplished. Not the first message verbatim. Example: "Montuno Club schedule update + promo code field"
+- **Description** — one sentence summarizing the outcome. Example: "Updated class times across 8 locale files and added optional promo code to the registration form."
+
+Use these as `{title}` and `{description}` in the header and gist description below.
+
 ### Add Metadata Header
 
-Prepend session metadata to the export:
+Extract metadata from the JSONL and prepend to the export. Available fields on assistant messages: `.message.model`, `.version`, `.entrypoint`, `.cwd`, `.gitBranch`, `.slug`, `.message.usage.output_tokens`. Duration from system messages with `.subtype == "turn_duration"`.
 
 ```bash
 dt=$(stat -f '%Sm' -t '%Y-%m-%d %H:%M' "$SESSION_FILE" 2>/dev/null || date -r "$SESSION_FILE" '+%Y-%m-%d %H:%M')
 msgs=$(jq -r 'select(.type == "user")' "$SESSION_FILE" 2>/dev/null | wc -l | tr -d ' ')
+asst_msgs=$(jq -r 'select(.type == "assistant")' "$SESSION_FILE" 2>/dev/null | wc -l | tr -d ' ')
 tools=$(jq -r 'select(.type == "assistant") | .message.content | arrays | .[] | select(.type == "tool_use") | .name' "$SESSION_FILE" 2>/dev/null | sort | uniq -c | sort -rn | head -5)
+model=$(jq -r 'select(.type == "assistant") | .message.model // empty' "$SESSION_FILE" | sort | uniq -c | sort -rn | head -1 | awk '{print $2}')
+version=$(jq -r 'select(.type == "assistant") | .version // empty' "$SESSION_FILE" | sort -u | tail -1)
+entrypoint=$(jq -r 'select(.type == "assistant") | .entrypoint // empty' "$SESSION_FILE" | sort -u | head -1)
+cwd=$(jq -r 'select(.type == "assistant") | .cwd // empty' "$SESSION_FILE" | sort -u | head -1)
+branch=$(jq -r 'select(.type == "assistant") | .gitBranch // empty' "$SESSION_FILE" | sort -u | head -1)
+output_tokens=$(jq -r 'select(.type == "assistant") | .message.usage.output_tokens // 0' "$SESSION_FILE" | paste -sd+ - | bc)
+total_duration=$(jq -r 'select(.type == "system" and .subtype == "turn_duration") | .durationMs // 0' "$SESSION_FILE" | paste -sd+ - | bc 2>/dev/null || echo 0)
+duration_min=$(echo "scale=1; ${total_duration:-0} / 60000" | bc 2>/dev/null || echo "?")
 
-header="# Session Export\n\n- **Date:** $dt\n- **Source:** {provider}\n- **Messages:** $msgs user turns\n- **Top tools:** \n\`\`\`\n$tools\n\`\`\`\n\n---\n"
-echo -e "$header" | cat - /tmp/session-export.md > /tmp/session-final.md
+cat <<HEADER > /tmp/session-header.md
+# {title}
+
+> {description}
+
+| | |
+|---|---|
+| **Date** | $dt |
+| **Model** | $model |
+| **Harness** | Claude Code $version ($entrypoint) |
+| **OS** | $(uname -s) $(uname -m) |
+| **Project** | $cwd ($branch) |
+| **Turns** | $msgs user · $asst_msgs assistant |
+| **Output** | $output_tokens tokens |
+| **Duration** | ${duration_min}m |
+| **Top tools** | $(echo "$tools" | awk '{printf "%s ×%s, ", $2, $1}' | sed 's/, $//') |
+
+---
+HEADER
+cat /tmp/session-header.md /tmp/session-export.md > /tmp/session-final.md
 mv /tmp/session-final.md /tmp/session-export.md
 ```
 
 ### Publish to GitHub Gist
 
-```bash
-gh gist create /tmp/session-export.md --desc "AI session export ($(date +%Y-%m-%d))" --public
-```
+Always create a private gist without asking. Share the URL with the user.
 
-The command outputs the gist URL. Share that URL.
-
-For private gists (default):
 ```bash
-gh gist create /tmp/session-export.md --desc "AI session export ($(date +%Y-%m-%d))"
+gh gist create /tmp/session-export.md --desc "{title}"
 ```
 
 ## Quick Reference
