@@ -131,8 +131,19 @@ All created artifacts should link to each other:
 
 ### Step 9: Report
 
-Summarize what you created and where each action item went. Example:
+Open the report with a **Topics discussed** table of contents — a numbered list of every distinct topic the call touched, in order. This is the user's mental index of the conversation; without it they can't navigate back to anything that didn't become a structured artifact, and a lot of what makes a call valuable lives in the threads that don't. Include tangents, personal asides, philosophy detours, and "by the way" moments — those are often exactly what the user wants to revisit. The default failure mode is reporting only what produced files; resist that. If the call was short and only covered one thing, the ToC still has one entry — write it anyway.
 
+Then list what you created and where each action item went. Example:
+
+> **Topics discussed:**
+> 1. Camera buying advice (Sony A7 IV, eBay sourcing, fixed-aperture lenses)
+> 2. SDTV admin migration freeze until Apr 20
+> 3. WeDance Instagram monetization pivot (€10 paid post or lottery)
+> 4. Croatia festival logistics
+> 5. Esoteric/spiritual tangent (Tibet, chakras, reincarnation-as-agents)
+> 6. Hiring approach for Egor (JP) and Ash (IN)
+>
+> **Artifacts created:**
 > - Session notes → `ops/sessions/...`
 > - Contact → `contacts/.../contact.md`
 > - Reminder "Add Michael to admin group" → Google Calendar Mon 09:00 [link]
