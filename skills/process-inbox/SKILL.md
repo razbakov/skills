@@ -3,6 +3,15 @@ description: "Collect Telegram saved messages + process Notion 'To do' cards + p
 user_invocable: true
 ---
 
+> **⚠️ Migration in progress (razbakov/ikigai#73):** Control Center has moved from Notion to GitHub Issues + Project v2. When this skill references creating/reading/updating Notion cards or pages, translate to GitHub equivalents:
+> - **Create card** → `gh issue create --repo <project-repo> --title "<title>" --label agent:<name> --body "<S3 body>"` then `gh project item-add 5 --owner razbakov --url <issue-url>`
+> - **Read cards** → `gh issue list --repo <repo> --label agent:<name> --state open` (or across repos via `gh search issues "org:razbakov label:agent:<name> state:open"`)
+> - **Update card status** → move on board: `gh project item-edit` with the Status field, or close via `gh issue close`
+> - **Board columns**: Inbox → To do → In progress → To review → Done
+> - **Do not call any `notion-*` MCP tools** — the Notion MCP is disabled.
+
+
+
 # Process Inbox
 
 Full GTD + S3 pipeline: collect from Telegram, classify, apply S3 Tension → Driver → Requirement analysis to Action items and clusters, create Notion cards, dispatch agents for "To do" items. Runs on any schedule — on demand, every 5 minutes, hourly, or as part of daily review.

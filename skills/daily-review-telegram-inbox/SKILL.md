@@ -3,6 +3,15 @@ description: Export Telegram saved messages via tdl, apply GTD + S3 clarify, upd
 user_invocable: true
 ---
 
+> **⚠️ Migration in progress (razbakov/ikigai#73):** Control Center has moved from Notion to GitHub Issues + Project v2. When this skill references creating/reading/updating Notion cards or pages, translate to GitHub equivalents:
+> - **Create card** → `gh issue create --repo <project-repo> --title "<title>" --label agent:<name> --body "<S3 body>"` then `gh project item-add 5 --owner razbakov --url <issue-url>`
+> - **Read cards** → `gh issue list --repo <repo> --label agent:<name> --state open` (or across repos via `gh search issues "org:razbakov label:agent:<name> state:open"`)
+> - **Update card status** → move on board: `gh project item-edit` with the Status field, or close via `gh issue close`
+> - **Board columns**: Inbox → To do → In progress → To review → Done
+> - **Do not call any `notion-*` MCP tools** — the Notion MCP is disabled.
+
+
+
 # Daily Review — Telegram Inbox (GTD + S3 Collect + Clarify)
 
 Telegram Saved Messages are the GTD inbox — voice notes, ideas, links, reminders captured throughout the day. This step collects, saves raw, and processes them into actionable items. Action items and clusters get deeper analysis using Sociocracy 3.0's Tension → Driver → Requirement pattern.

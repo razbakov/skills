@@ -3,6 +3,15 @@ description: "Dispatch all approved agent tasks from Notion Control Center. Pick
 user_invocable: true
 ---
 
+> **⚠️ Migration in progress (razbakov/ikigai#73):** Control Center has moved from Notion to GitHub Issues + Project v2. When this skill references creating/reading/updating Notion cards or pages, translate to GitHub equivalents:
+> - **Create card** → `gh issue create --repo <project-repo> --title "<title>" --label agent:<name> --body "<S3 body>"` then `gh project item-add 5 --owner razbakov --url <issue-url>`
+> - **Read cards** → `gh issue list --repo <repo> --label agent:<name> --state open` (or across repos via `gh search issues "org:razbakov label:agent:<name> state:open"`)
+> - **Update card status** → move on board: `gh project item-edit` with the Status field, or close via `gh issue close`
+> - **Board columns**: Inbox → To do → In progress → To review → Done
+> - **Do not call any `notion-*` MCP tools** — the Notion MCP is disabled.
+
+
+
 # Dispatch Approved — Launch Agents for Approved Tasks
 
 Picks up Notion Control Center cards that Alex has approved (moved from "Suggested" to "To do") and dispatches an AI agent for each one using the standard `/inbox` pattern.

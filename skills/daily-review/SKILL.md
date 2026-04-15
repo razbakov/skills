@@ -3,6 +3,15 @@ description: "Daily Review (Meta-Skill) — orchestrates 10 child skills: gather
 user_invocable: true
 ---
 
+> **⚠️ Migration in progress (razbakov/ikigai#73):** Control Center has moved from Notion to GitHub Issues + Project v2. When this skill references creating/reading/updating Notion cards or pages, translate to GitHub equivalents:
+> - **Create card** → `gh issue create --repo <project-repo> --title "<title>" --label agent:<name> --body "<S3 body>"` then `gh project item-add 5 --owner razbakov --url <issue-url>`
+> - **Read cards** → `gh issue list --repo <repo> --label agent:<name> --state open` (or across repos via `gh search issues "org:razbakov label:agent:<name> state:open"`)
+> - **Update card status** → move on board: `gh project item-edit` with the Status field, or close via `gh issue close`
+> - **Board columns**: Inbox → To do → In progress → To review → Done
+> - **Do not call any `notion-*` MCP tools** — the Notion MCP is disabled.
+
+
+
 # Daily Review (Meta-Skill)
 
 Run from the ikigai project directory. Gathers yesterday's activity, syncs all project next steps (with full git analysis), suggests today's plan, and adds approved plan to Google Calendar. Saves the review to `sessions/YYYY-MM-DD-daily-review.md`.
