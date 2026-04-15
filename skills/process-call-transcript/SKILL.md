@@ -27,7 +27,7 @@ If the user references a call they recorded (Jamie, Otter, Fireflies, Granola, e
    ```
    Pick the most recent "Summary Ready" subject. Each email body contains a `View Summary https://app.meetjamie.ai/meetings/<id>` link — extract the URL.
 
-3. **Open in the authenticated browser.** Use `mcp__Claude_in_Chrome__tabs_context_mcp` to connect to the user's existing Chrome (Jamie requires login), then `navigate` to the meeting URL.
+3. **Open in the authenticated browser.** Use `mcp__Claude_in_Chrome__tabs_context_mcp` to connect to the user's existing Chrome (Jamie requires login), then `navigate` to the meeting URL. **Track every tab you open** so you can close it with `mcp__Claude_in_Chrome__tabs_close_mcp` at the end of the run — including on partial failure. Never leave Jamie tabs behind in the user's browser; only close tabs you opened.
 
 4. **Pull the Summary first** (landing tab) — this gives you the auto-generated executive summary and topic buckets. Use `get_page_text`.
 
