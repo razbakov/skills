@@ -55,50 +55,72 @@ cd ${TASK_DIR} && bun install --frozen-lockfile 2>/dev/null || npm ci 2>/dev/nul
 
 Skip this step for non-JS projects or projects without package.json.
 
-### 5. Create Control Center card in Notion
+### 5. Create GitHub issue (Control Center tracking)
 
-Every agent must have a tracking card. Create one before launching:
+Every agent must have a tracking issue. Create one before launching.
 
+**Pick the target repo**: use the repo that matches `${PROJECT}` (see the Project Path Registry in the org CLAUDE.md). If the project has no GitHub repo, default to `razbakov/ikigai`.
+
+**Pick the agent label**: based on the task domain, choose one of `agent:maya`, `agent:viktor`, `agent:luna`, `agent:marco`, `agent:sage`, `agent:kai`.
+
+```bash
+REPO=<owner/repo for ${PROJECT}>
+AGENT_LABEL=<agent:xxx>
+
+ISSUE_URL=$(gh issue create --repo "$REPO" \
+  --title "<TASK title>" \
+  --label "$AGENT_LABEL" \
+  --body "$(cat <<'EOF'
+## S3 Analysis
+
+### Tension
+<1-2 sentences>
+
+### Driver
+| Conditions | Effect | Relevance |
+|------------|--------|-----------|
+| <facts> | <consequences> | <why it matters> |
+
+### Requirement
+> <who needs what so that what>
+
+### Response Options
+- [ ] <option A>
+- [ ] <option B>
+- [ ] <defer/skip>
+
+---
+
+**Agent:** tmux wf-${TASK}
+**Worktree:** ${TASK_DIR}
+EOF
+)")
+
+# Add to the Ikigai Control Center Project v2 board
+gh project item-add 5 --owner razbakov --url "$ISSUE_URL"
 ```
-notion-create-pages(
-  parent: { data_source_id: "32b9a1fd-a351-809d-bd4d-000b0d579048" },
-  pages: [{
-    properties: {
-      "Name": "<TASK title>",
-      "Status": "To do",
-      "Project": "<PROJECT>",
-      "GTD Type": "Action",
-      "Priority": "<inferred priority>",
-      "Source": "Agent",
-      "Effort": "<S|M|L>"
-    },
-    content: "## S3 Analysis\n\n### Tension\n<1-2 sentences>\n\n### Driver\n| Conditions | Effect | Relevance |\n|------------|--------|----------|\n| <facts> | <consequences> | <why it matters> |\n\n### Requirement\n> <who needs what so that what>\n\n### Response Options\n- [ ] <option A>\n- [ ] <option B>\n- [ ] <defer/skip>\n\n---\n\n**Agent:** tmux wf-${TASK}\n**Worktree:** ${TASK_DIR}",
-    icon: "🤖"
-  }]
-)
-```
 
-Save the returned Notion page URL — it goes into the agent prompt file so the agent can update the card with results.
+Save `$ISSUE_URL` — it goes into the agent prompt file so the agent can reference and close it.
 
 ### 6. Write prompt file
 
-Write the full prompt to `${TASK_DIR}/agent-prompt.md`. Include the Notion card URL so the agent can update it. This is the raw input log for this specific task.
+Write the full prompt to `${TASK_DIR}/agent-prompt.md`. Include the GitHub issue URL so the agent can reference and close it. This is the raw input log for this specific task.
 
 ```markdown
 # Agent Task: ${TASK}
 
 **Project:** ${PROJECT}
 **Dispatched:** $(date -Iseconds)
-**Notion card:** <NOTION_PAGE_URL>
+**GitHub issue:** <ISSUE_URL>
 **Raw input:** <exact user input, unedited>
 
 ## Instructions
 
 <expanded prompt with context>
 
-When done, update the Notion card:
-1. Set Status to "To review": notion-update-page(page_id, command: "update_properties", properties: { "Status": "To review" })
-2. Append a ## Result section with what was done, where to find it, and next steps.
+When done:
+1. The PR created in the delivery checklist must reference this issue with `Closes #<N>` in the body — merging the PR auto-closes the issue and moves it to Done on the Project board.
+2. If this task does NOT produce a PR (rare), comment on the issue with the result and close it manually: `gh issue close <N> --comment "<what was done, where to find it, next steps>"`.
 ```
 
 The expanded prompt MUST always end with a delivery checklist. Agents that finish without a PR leave invisible work in worktrees.
