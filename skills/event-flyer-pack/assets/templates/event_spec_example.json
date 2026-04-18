@@ -1,8 +1,10 @@
 {
   "slug": "frida-cubana",
+  "language": "de",
   "title_line1": "La Frida",
   "title_line2": "Cubana",
   "tagline": "Una noche cubana en Múnich",
+  "eyebrow": "MONTUNO CLUB · MÜNCHEN",
   "date": "Montag · 27. April 2026",
   "time": "19:00 – 23:00",
   "venue": "Frida München",
@@ -10,17 +12,9 @@
   "program": "Timba · Reparto · Son · Rumba Cubana",
   "highlights": ["Gratis Havana Club Shot", "Domino-Tisch"],
   "dresscode": "DRESSCODE: CUBA 80s · ROT & BLAU",
+  "dj_name": "Alösha",
   "dj": "DJ Alösha",
-  "eyebrow": "MONTUNO CLUB · MÜNCHEN",
   "event_url": "https://wedance.vip/events/wCz9k7mAxsNEKaMmsMjP",
-  "hero_path": "./hero.png",
-  "palette": {
-    "cream": "#F5ECDA",
-    "terracotta": "#C44C34",
-    "gold": "#C6A260",
-    "navy": "#16284A",
-    "wine": "#74141C",
-    "ink": "#1A0D0B"
-  },
-  "language": "de"
+  "aesthetic": "warm Cuban editorial, 1950s Havana, cinematic, terracotta and cream",
+  "scene_description": "Intimate Cuban bar scene, silhouettes of dancers facing a vintage standing microphone, warm terracotta walls in soft focus behind them, hanging pendant lights, cinematic editorial photography"
 }
