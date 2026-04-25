@@ -61,13 +61,36 @@ Format all projects in a single table sorted by 7-day average DAU (highest first
 |---------|-------|-------|-----|-------|--------|
 | WeDance v3 | 20 | 21 | ... | 39 | **23** |
 
-### 4. Add highlights
+### 4. Signals
 
-After the table, note:
-- Which project has most traffic
-- Any notable spikes or dips (and possible explanations if dates correlate with weekends, events, launches)
-- Projects with zero traffic (may indicate broken tracking or no deployment)
-- Any projects that were unavailable
+After the table, surface signals — not just observations, but routable findings. The point of this step is that a list of numbers is barely useful; what's useful is a short interpretation that someone could act on tomorrow.
+
+- **Top performer**: which project carries the portfolio (% of total DAU). If one project dominates >50%, that's worth naming — it means a "portfolio" framing isn't yet visible in traffic.
+- **Anomaly spikes**: any single day >2× a project's 7-day baseline. Name the day, name the magnitude, and ask what was published/shared. If the cause is obvious (weekend, launch day, known event), say so.
+- **Tracking gaps**: any project with 0 events for 7 days running, OR fewer active days than expected for a project that's claimed to be live. These are likely SDK/wiring problems, not user behavior. Flag them clearly so they don't get read as "no traffic".
+- **OKR/target gap**: if the project has a stated traffic or DAU target (check the project's CLAUDE.md, OKRs, README, or the user's stated goals), compute the gap. "X DAU vs target Y = Zx short." Skip this bullet if there's no stated target.
+- **Unavailable projects** (API failures): list separately so they're not confused with zero-traffic.
+
+### 5. Action items (only if invoked from a review or with "save")
+
+End the report with a small action list — one bullet per non-trivial signal, with a clear owner. Owners come from the project/org context (read the project's CLAUDE.md for the agent team or roles); don't hardcode names. Typical mappings:
+
+- Tracking gaps → engineering / CTO role
+- Content or traffic spikes worth replicating → content / growth role
+- Event-driven spikes → community / events role
+- Target-vs-reality gaps → strategy / business role
+
+If the project has no agent team defined, leave the owner as "TBD" or address it to the user.
+
+### 6. Save snapshot (optional)
+
+If the user said "save", or this skill was invoked from a daily/weekly review, persist the full report so other agents can reference it later. Read the project's CLAUDE.md to find the conventional sessions/snapshots directory (commonly `ops/sessions/` or `sessions/`). Filename:
+
+```
+<sessions-dir>/YYYY-MM-DD-portfolio-dau-snapshot.md
+```
+
+Use today's date. Include the per-day matrix, per-project averages, signals, and action items.
 
 ## Process: Single Project
 
