@@ -1,5 +1,5 @@
 ---
-description: "Daily Review (Meta-Skill) — orchestrates 10 child skills: gather browser history, AI transcripts, app usage, process Telegram inbox, process Chrome bookmarks, sync all projects, suggest agent tasks, suggest today's plan, sync to calendar, and save the review."
+description: "Daily Review (Meta-Skill) — orchestrates child skills: gather browser history, AI transcripts, app usage, process Telegram inbox, process Chrome bookmarks, snapshot portfolio DAU, sync all projects, suggest agent tasks, suggest today's plan, sync to calendar, and save the review."
 user_invocable: true
 ---
 
@@ -23,6 +23,7 @@ This meta-skill orchestrates the following child skills in order:
 3. **daily-review-app-usage** — Query macOS app focus time
 4. **process-inbox** — Collect Telegram + process Notion "To do" cards (GTD full pipeline)
 5. **daily-review-browser-bookmarks** — Process Chrome bookmarks (GTD)
+5.5. **analytics-check** — Snapshot portfolio DAU; flag any project at 0 events as a tracking-health concern (Viktor owns the fix)
 6. **daily-review-sync-projects** — Discover, pull, analyze all projects
 6.5. **suggest-tasks** — Propose agent tasks with assignments (Viktor/Luna/Marco/Kai)
 7. **daily-review-suggest-plan** — Propose today's schedule with OKR view
@@ -70,6 +71,10 @@ Captures: Telegram export → Notion cards → agent dispatch. Saves `inbox/YYYY
 Invoke: `//daily-review-browser-bookmarks`
 Captures: `inbox/YYYY-MM-DD-HH-MM-bookmarks.md`, updated project docs
 
+#### Step 5.5: Portfolio DAU snapshot
+Invoke: `//analytics-check` (portfolio mode, no save)
+Captures: per-project DAU table in the daily review file. The daily lens here is engineering health — any project showing 0 events, or unexpected silence on a project claimed to be live, is a **tracking-gap finding owned by Viktor (CTO)**. The growth lens (DAU vs targets, content spikes) is for the weekly review, not daily. Keep the daily output short: one row per project with yesterday's DAU and a flag column for tracking concerns.
+
 ### Phase 2 — Sync & Plan (sequential)
 
 #### Step 6: Sync Projects
@@ -110,7 +115,7 @@ Captures: `sessions/YYYY-MM-DD-daily-review.md`
 - Each child skill can also be run independently via `/daily-review-{name}`
 - If a step fails, fix the issue and re-run that specific child skill
 - If the user says "skip yesterday" — jump straight to Step 6
-- Steps 1, 2, 4, and 5 have no dependencies on each other and should run in parallel
+- Steps 1, 2, 4, 5, and 5.5 have no dependencies on each other and should run in parallel
 - Step 3 depends on Step 1 (appends to the same file)
 - Sub-agents in Step 6 should run in parallel for speed — one agent per project
 - If today is Saturday, Step 7 will remind about the weekly review
