@@ -23,7 +23,7 @@ This meta-skill orchestrates the following child skills in order:
 3. **daily-review-app-usage** — Query macOS app focus time
 4. **process-inbox** — Collect Telegram + process Notion "To do" cards (GTD full pipeline)
 5. **daily-review-browser-bookmarks** — Process Chrome bookmarks (GTD)
-5.5. **analytics-check** — Snapshot portfolio DAU; flag any project at 0 events as a tracking-health concern (Viktor owns the fix)
+5.5. **analytics-check** — Snapshot portfolio DAU. Read by multiple agents daily: Viktor (tracking health, zero = bug), Luna (content/SEO levers), Kai (community/partnership levers for event-driven projects), project coordinators (own their KR).
 6. **daily-review-sync-projects** — Discover, pull, analyze all projects
 6.5. **suggest-tasks** — Propose agent tasks with assignments (Viktor/Luna/Marco/Kai)
 7. **daily-review-suggest-plan** — Propose today's schedule with OKR view
@@ -73,7 +73,14 @@ Captures: `inbox/YYYY-MM-DD-HH-MM-bookmarks.md`, updated project docs
 
 #### Step 5.5: Portfolio DAU snapshot
 Invoke: `//analytics-check` (portfolio mode, no save)
-Captures: per-project DAU table in the daily review file. The daily lens here is engineering health — any project showing 0 events, or unexpected silence on a project claimed to be live, is a **tracking-gap finding owned by Viktor (CTO)**. The growth lens (DAU vs targets, content spikes) is for the weekly review, not daily. Keep the daily output short: one row per project with yesterday's DAU and a flag column for tracking concerns.
+Captures: per-project DAU table in the daily review file. DAU is a shared organ — multiple agents read the snapshot daily to pull different levers:
+
+- **Viktor (CTO)** — tracking health. Any project at 0 events or unexpected silence on a project claimed to be live = SDK bug, fix within 48h.
+- **Luna (Content & Growth)** — content/SEO levers. Below-target DAU on a content-driven project = "what gets published or shared today to move it?"
+- **Kai (Community & Partnerships)** — community/partnership levers for event-driven projects. Below-target DAU on event projects = "which Munich channel, IG account, or partner can route traffic today?"
+- **Project coordinators** — own their project's KR; pull every lever available.
+
+Keep the daily output short: one row per project with yesterday's DAU, a delta vs the 7-day baseline, and a flag column noting which agent should look at it (tracking gap → Viktor; flat above 0 → Luna or Kai based on project type; hitting target → nobody).
 
 ### Phase 2 — Sync & Plan (sequential)
 
