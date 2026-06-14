@@ -61,11 +61,23 @@ lines, a 40-min talk gets the bullets):
 
 ```
 <Title> — <Channel> (<duration> · <date>)
+https://youtu.be/<id>
 <1-2 sentence thesis: what the video is actually about / its main claim>
 • <key point / argument / step>
 • <key point>
 • <takeaway or conclusion>
+Relevance: <why this matters to *this* user — tie to their projects, role, or
+known interests; say "no direct tie — <reason to watch anyway>" when there isn't one>
 ```
+
+Two non-negotiable fields, because users ask for them every time if omitted:
+- **The link.** Always include a clickable URL per video (`https://youtu.be/<id>`).
+  Paste it as a raw URL on its own line, not a markdown `[title](url)` — chat
+  surfaces like Telegram render raw URLs but not markdown link syntax.
+- **Relevance to the user.** One line per video connecting it to what you know
+  about them (their projects, work, stated interests). This is what turns a
+  generic summary into a personal feed digest. If you don't know the user's
+  context, infer from the conversation/repo or ask once — don't skip it.
 
 Grounding rules that keep summaries trustworthy:
 - **Don't characterize what you haven't verified.** If a video's framing makes
