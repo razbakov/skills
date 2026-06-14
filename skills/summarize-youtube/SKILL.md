@@ -79,7 +79,13 @@ Grounding rules that keep summaries trustworthy:
 
 ### 4. Deliver
 
-**Default — Telegram.** Send via the instance's proactive Telegram sender
+**Default — Telegram. Do not ask which surface.** When the user gives no
+delivery instruction, send the summary to Telegram and then recap in chat —
+asking "should I send this to Telegram?" defeats the point, because Telegram is
+already the answer. Only deliver elsewhere if the user *explicitly* named a
+different surface in their request.
+
+Send via the instance's proactive Telegram sender
 (in this setup: `.bin/telegram-send.py`; the agent/bot mapping lives in your
 private CLAUDE.md — pick the agent whose domain fits the video topic). Telegram
 renders **HTML only**, not Markdown — use `<b>`, `<i>`, `<code>`, line breaks;
