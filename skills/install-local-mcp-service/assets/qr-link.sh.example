@@ -1,0 +1,47 @@
+#!/bin/bash
+# Resilient QR-link helper (template).
+# Keeps a fresh, scannable QR PNG on screen until the phone links, auto-restarting
+# the bridge whenever the pairing window times out. Adapt the marked variables and
+# the log-pattern greps to your bridge.
+set -u
+
+# --- adapt these ---
+BRIDGE_DIR="$HOME/Projects/<repo>/<bridge-subdir>"   # dir containing the bridge binary + store/
+BRIDGE_CMD="./<bridge-binary>"                        # how to start the bridge
+LOG="$BRIDGE_DIR/bridge.log"
+OUT="$HOME/<somewhere>/qr.png"                        # where to write the scannable PNG
+RAW_MARKER="QR_CODE_RAW:"                             # prefix your patched bridge prints the raw code with
+SUCCESS_RE="Successfully paired|Successfully logged in|Successfully connected and authenticated"
+TIMEOUT_RE="Timeout waiting for QR"
+DEADLINE_SECS=600                                     # total minutes to keep trying
+# -------------------
+
+mkdir -p "$(dirname "$OUT")"
+cd "$BRIDGE_DIR" || exit 1
+
+start_bridge() {
+  pkill -f "$(basename "$BRIDGE_CMD")" 2>/dev/null
+  sleep 2
+  : > "$LOG"
+  nohup $BRIDGE_CMD > "$LOG" 2>&1 &
+  echo "bridge restarted PID $!"
+}
+
+LAST="" ; OPENED=0
+DEADLINE=$(( $(date +%s) + DEADLINE_SECS ))
+start_bridge
+while [ "$(date +%s)" -lt "$DEADLINE" ]; do
+  grep -qiE "$SUCCESS_RE" "$LOG" 2>/dev/null && { echo ">>> LINKED"; exit 0; }
+  if grep -qiE "$TIMEOUT_RE" "$LOG" 2>/dev/null; then
+    echo "QR window expired -> restarting for a fresh code"; start_bridge; sleep 3; continue
+  fi
+  RAW=$(grep "$RAW_MARKER" "$LOG" | tail -1 | sed "s/^.*$RAW_MARKER//")
+  if [ -n "$RAW" ] && [ "$RAW" != "$LAST" ]; then
+    uvx segno "$RAW" --output="$OUT" --scale=10 --border=3 2>/dev/null
+    LAST="$RAW"
+    [ "$OPENED" -eq 0 ] && { open "$OUT"; OPENED=1; }
+    echo "QR refreshed $(date +%H:%M:%S)"
+  fi
+  sleep 2
+done
+echo ">>> TIMED OUT without a scan"; exit 1
