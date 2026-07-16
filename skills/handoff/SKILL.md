@@ -84,9 +84,19 @@ result=$(handoff do \
   --timeout 1800)
 code=$?   # 0 = done, 2 = blocked, 3 = timeout
 ```
-`handoff do` opens (or enqueues) the task in the app's single persistent window,
-blocks until the human clicks **Proceed** (or **Report a blocker**), then prints the
+`handoff do` delivers the task, blocks until the human resolves it, then prints the
 result JSON — `{status, notes, steps, completedAt}` — and exits with the code above.
+
+**Delivery surface (default: Telegram).** The human should do the step in their OWN
+browser — real cookies, 1Password/Bitwarden, passkeys, and it works on their phone —
+not an isolated embedded one. So by default the handoff arrives as a **Telegram
+message** with an "Open the page ↗" link button and **✓ Done / ⚠ Blocked** buttons;
+they tap the link, do it where they're already logged in, and tap a button. Replying
+to the message adds a note back to the agent (so "Blocked" can say *why*). Requires
+`~/.config/telegram/.env` (`ENVOY_BOT_TOKEN` + the human's chat id) and the bot's
+`ho:` handler — see the repo's `telegram/` dir. Use `--via app` to force the
+self-contained Electron window instead (embedded browser + checklist queue, but a
+session isolated from the real browser, desktop-only).
 
 ### 3. Act on the result
 - `0` **done** → verify the effect programmatically if you can (e.g. re-check DNS,
