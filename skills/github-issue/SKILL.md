@@ -69,12 +69,7 @@ gh pr create --title "Short title" --body "$(cat <<'EOF'
 ## Summary
 - bullet points
 
-## Test plan
-- [x] what was verified
-
 Closes #<issue-number>
-
-Generated with [Claude Code](https://claude.com/claude-code)
 EOF
 )"
 ```
