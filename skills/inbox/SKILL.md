@@ -133,7 +133,7 @@ The expanded prompt MUST always end with a delivery checklist. Agents that finis
 2. Commit changes with a descriptive message referencing the issue (e.g. "Add hero image #11")
 3. Push the branch: `git push -u origin agent/${TASK}`
 4. Create a pull request: `gh pr create --title "<short title>" --body "<summary + Closes #N>"`
-5. The PR body must include: a Summary section, a Test Plan section, and `Closes #<ISSUE_NUMBER>`
+5. The PR body must include: a Summary section and `Closes #<ISSUE_NUMBER>`
 ```
 
 **For all other tasks (research, skill creation, config changes, etc.):**
