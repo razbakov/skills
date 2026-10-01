@@ -1,0 +1,7 @@
+# ~/.cloudflared/linear-agent.yml — run: cloudflared tunnel --config ~/.cloudflared/linear-agent.yml run
+tunnel: <TUNNEL-UUID>
+credentials-file: <HOME>/.cloudflared/<TUNNEL-UUID>.json
+ingress:
+  - hostname: <agent.example.com>
+    service: http://127.0.0.1:5055
+  - service: http_status:404

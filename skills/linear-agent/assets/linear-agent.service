@@ -1,0 +1,14 @@
+# Linux: ~/.config/systemd/user/linear-agent.service → systemctl --user enable --now linear-agent
+# (loginctl enable-linger $USER so it runs without a login session). Duplicate for cloudflared.
+[Unit]
+Description=Claude Code as a native Linear agent
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 %h/linear-agent/linear-agent.py
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
