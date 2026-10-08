@@ -65,6 +65,14 @@
         "repoUrl": "https://github.com/razbakov/skills",
         "skillPath": "skills/user-story"
       }
+    },
+    {
+      "name": "test-strategy",
+      "description": "Write an actionable, risk-based QA test strategy (German \"Testkonzept\") for a product — diagnose the current test pyramid, map features to a 5x5 risk matrix, set quality gates and measurable KPIs, and deliver it as Markdown plus PDF. Use when the user asks for a test strategy, test concept, Testkonzept, QA strategy, QA plan for a product or codebase, test pyramid assessment, or quality gates / testing KPIs. Not for a single sprint or release test plan, and not for writing the tests themselves.",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/test-strategy"
+      }
     }
   ]
 }
