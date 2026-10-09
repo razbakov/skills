@@ -1,6 +1,6 @@
 ---
 name: test-strategy
-description: Write an actionable, risk-based QA test strategy (German "Testkonzept") for a product — diagnose the current test pyramid, map features to a 5x5 risk matrix, set quality gates and measurable KPIs, and deliver it as Markdown plus PDF. Use when the user asks for a test strategy, test concept, Testkonzept, QA strategy, QA plan for a product or codebase, test pyramid assessment, or quality gates / testing KPIs. Not for a single sprint or release test plan, and not for writing the tests themselves.
+description: Write an actionable, risk-based QA test strategy (test concept) for a product — diagnose the current test pyramid, map features to a 5x5 risk matrix, set quality gates and measurable KPIs, and deliver it as Markdown plus PDF. Use when the user asks for a test strategy, test concept, QA strategy, QA plan for a product or codebase, test pyramid assessment, or quality gates / testing KPIs. Not for a single sprint or release test plan, and not for writing the tests themselves.
 license: MIT
 metadata:
   author: Vitali
@@ -14,7 +14,7 @@ Produce a QA strategy tailored to one product, team, and risk profile — a docu
 
 **Output:** one Markdown document with 13 numbered sections plus a PDF rendered from it, both at an agreed path (default `docs/qa-strategy.md` + `docs/qa-strategy.pdf`).
 
-**Language:** write the document in the language the user asked in. A request for a "Testkonzept" means a German document — translate the section headings too, keep the `### N.` numbering so verification still works. Tool names and metric abbreviations (MTTR, E2E, CI) stay in English.
+**Language:** write the document in the language the user writes in. If that is not English, translate the section headings too but keep the `### N.` numbering so verification still works. Tool names and metric abbreviations (MTTR, E2E, CI) stay as they are.
 
 ## Workflow
 
@@ -188,7 +188,7 @@ Common starting points (document why you chose or deviated):
 
 Parallel efficiency = summed test time ÷ wall-clock time; it should approach the shard count. Track CI-minutes-per-PR so parallelization doesn't balloon billed compute.
 
-Optional framing references, if the audience expects a standard: ISTQB (CTFL v4.0 vocabulary, Advanced Agile Tester, GenAI testing syllabus), Bach's Heuristic Test Strategy Model, ISO/IEC/IEEE 29119-3 (common expectation behind a German "Testkonzept"). Check current versions before citing them by number.
+Optional framing references, if the audience expects a standard: ISTQB (CTFL v4.0 vocabulary, Advanced Agile Tester, GenAI testing syllabus), Bach's Heuristic Test Strategy Model, ISO/IEC/IEEE 29119-3 (test documentation standard). Check current versions before citing them by number.
 
 ### 8. Entry/Exit Criteria
 
