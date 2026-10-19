@@ -20,6 +20,17 @@ Invoked as part of `/daily-review` or independently via `/daily-review-save-revi
 
 ## Process
 
+### 0. Compute the date header (never infer the weekday)
+
+Before writing anything, compute the weekday from the system clock — do NOT guess which date falls on which weekday:
+
+```
+TODAY=$(date +%Y-%m-%d); WEEKDAY=$(date +%A)
+YDAY=$(date -v-1d +%Y-%m-%d); YWEEKDAY=$(date -v-1d +%A)   # GNU: date -d 'yesterday'
+```
+
+Use `$WEEKDAY` for the review header (`# Daily Review — $TODAY ($WEEKDAY)`) and `$YWEEKDAY` for the "Yesterday" / "Previous review" lines. A mislabeled weekday cascades into wrong day-type framing ("rest day" on a workday) and pushes critical items to the wrong day — this step exists to prevent exactly that.
+
 ### 1. Compile the review
 
 Save to `sessions/YYYY-MM-DD-daily-review.md` with the following sections:

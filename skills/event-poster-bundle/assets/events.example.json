@@ -1,0 +1,66 @@
+{
+  "weekLabel": "27.04 – 03.05",
+  "weekISO": "2026-W18",
+  "title": "SALSA",
+  "subtitle": "in MÜNCHEN",
+  "tagline": "Diese Woche",
+  "cta": "Folge @WeDanceMunich",
+  "ctaSub": "Salsa-Wochenplan jeden Sonntag",
+  "events": [
+    {
+      "day": "MO",
+      "date": "27. APR",
+      "time": "19:00",
+      "name": "La Frida Cubana",
+      "venue": "Frida",
+      "extra": "DJ Alösha · Cuba 80s Dresscode",
+      "price": "€10",
+      "tag": "TONIGHT"
+    },
+    {
+      "day": "DI",
+      "date": "28. APR",
+      "time": "20:30",
+      "name": "Salsa & Bachata Practice",
+      "venue": "Salsea Dance Academy",
+      "extra": "Zwei Räume, zwei DJs",
+      "price": "€10"
+    },
+    {
+      "day": "DO",
+      "date": "30. APR",
+      "time": "21:00",
+      "name": "Salsa Beats Social",
+      "venue": "Siempre Salsa e.V.",
+      "extra": "70% Salsa · 30% Bachata",
+      "price": "Free für Members"
+    },
+    {
+      "day": "FR",
+      "date": "01. MAI",
+      "time": "22:00",
+      "name": "Noche Latina",
+      "venue": "Buena Vista Bar",
+      "extra": "Cuban / Latin Mix",
+      "price": "FREE"
+    },
+    {
+      "day": "SA",
+      "date": "02. MAI",
+      "time": "20:00",
+      "name": "Salsa Cubana Party",
+      "venue": "Megano Tanzschule",
+      "extra": "Schnupperkurs + Rueda",
+      "price": "€10 / €8"
+    },
+    {
+      "day": "SO",
+      "date": "03. MAI",
+      "time": "18:00",
+      "name": "Casino Classes + Cuba Party",
+      "venue": "Buena Vista Bar",
+      "extra": "Montuno Club · 18→22:00",
+      "price": "Donation / Free"
+    }
+  ]
+}

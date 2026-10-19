@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- macOS: copy to ~/Library/LaunchAgents/, fill <…>, then:
+     launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/linear-agent.plist
+     Duplicate with the cloudflared command for the tunnel. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>linear-agent</string>
+  <key>ProgramArguments</key><array>
+    <string>/opt/homebrew/bin/python3</string>  <!-- Python ≥3.10, NOT /usr/bin/python3 (3.9) -->
+    <string><PATH-TO>/linear-agent.py</string>
+  </array>
+  <key>EnvironmentVariables</key><dict><key>PATH</key><string>/opt/homebrew/bin:/usr/local/bin:<HOME>/.local/bin:/usr/bin:/bin</string></dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>StandardErrorPath</key><string><HOME>/.config/linear/linear-agent.err.log</string>
+  <key>ThrottleInterval</key><integer>10</integer>
+</dict>
+</plist>
