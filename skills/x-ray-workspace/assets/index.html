@@ -20,6 +20,11 @@ header{padding:20px 24px 14px;border-bottom:1px solid var(--line);
 h1{font-size:17px;margin:0;font-weight:650;letter-spacing:-.01em}
 .sub{color:var(--dim);font-size:12px}
 .spacer{flex:1}
+.views{display:flex;gap:4px;align-self:center;margin-left:16px}
+.views a{font-size:12px;color:var(--dim);text-decoration:none;padding:5px 11px;
+  border:1px solid transparent;border-radius:6px}
+.views a:hover{color:var(--fg)}
+.views a.on{color:var(--fg);border-color:var(--line);background:var(--panel2)}
 button{background:var(--panel2);color:var(--fg);border:1px solid var(--line);
   border-radius:6px;padding:5px 11px;font:inherit;font-size:12px;cursor:pointer}
 button:hover{border-color:var(--accent)}
@@ -68,8 +73,8 @@ a{color:var(--accent)}
     <h1>X-Ray Workspace</h1>
     <div class="sub" id="sub">loading…</div>
   </div>
+  <nav class="views"><a href="/" class="on">Cards</a><a href="/map">Map</a></nav>
   <div class="spacer"></div>
-  <a href="/map" style="color:var(--accent);text-decoration:none;font-size:12px;align-self:center">Map view →</a>
   <button id="refresh">Re-probe now</button>
   <button id="auto" class="on">Auto 60s</button>
 </header>

@@ -1,6 +1,6 @@
 <!doctype html>
 <meta charset="utf-8">
-<title>Tool Map</title>
+<title>X-Ray Workspace</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 :root{
@@ -19,8 +19,11 @@ body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--display)
 .top{display:flex;gap:14px;align-items:center;padding:13px 22px;border-bottom:1px solid var(--line);
   background:var(--surface);position:sticky;top:0;z-index:20}
 .brand{font-weight:750;letter-spacing:-.01em}
-.top a{color:var(--muted);text-decoration:none;font-size:13px}
-.top a:hover,.top a.on{color:var(--ink);text-decoration:underline}
+.views{display:flex;gap:4px}
+.views a{font-size:12px;color:var(--muted);text-decoration:none;padding:5px 11px;
+  border:1px solid transparent;border-radius:6px}
+.views a:hover{color:var(--ink)}
+.views a.on{color:var(--ink);border-color:var(--line);background:var(--sunk)}
 .spacer{flex:1}
 .stamp{color:var(--muted);font-size:12px}
 .head{padding:18px 22px 0;max-width:1700px}
@@ -98,8 +101,8 @@ pre{margin:5px 0 0;background:var(--sunk);border:1px solid var(--line);border-ra
 </style>
 
 <div class="top">
-  <span class="brand">Tool Map</span>
-  <a href="/">Cards</a><a href="/map" class="on">Map</a>
+  <span class="brand">X-Ray Workspace</span>
+  <nav class="views"><a href="/">Cards</a><a href="/map" class="on">Map</a></nav>
   <span class="spacer"></span>
   <span class="stamp" id="stamp">loading…</span>
   <button class="tab" id="refresh">Re-probe</button>
