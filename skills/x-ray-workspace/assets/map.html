@@ -1,0 +1,385 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Tool Map</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --bg:#f7f8f9; --surface:#fff; --sunk:#eef1f3; --line:#d4dadf; --ink:#11181c; --muted:#68757e;
+  --accent:#0f766e; --bad:#c2410c; --warn:#a16207; --good:#15803d; --idle:#94a3b8;
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --display:ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif;
+  --r:7px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0f1317;--surface:#171c21;--sunk:#13181d;--line:#2b333b;--ink:#e7edf2;--muted:#8f9ba5;
+        --accent:#2dd4bf;--bad:#fb7185;--warn:#fbbf24;--good:#4ade80;--idle:#64748b}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--display)}
+.top{display:flex;gap:14px;align-items:center;padding:13px 22px;border-bottom:1px solid var(--line);
+  background:var(--surface);position:sticky;top:0;z-index:20}
+.brand{font-weight:750;letter-spacing:-.01em}
+.top a{color:var(--muted);text-decoration:none;font-size:13px}
+.top a:hover,.top a.on{color:var(--ink);text-decoration:underline}
+.spacer{flex:1}
+.stamp{color:var(--muted);font-size:12px}
+.head{padding:18px 22px 0;max-width:1700px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:25px;margin:4px 0 6px;letter-spacing:-.02em}
+.lede{color:var(--muted);margin:0 0 10px;max-width:72ch}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12px;color:var(--muted);margin-bottom:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.tabs{display:flex;flex-wrap:wrap;gap:7px;padding:0 22px 14px}
+.tab{font:inherit;font-size:12px;letter-spacing:.04em;text-transform:uppercase;font-weight:650;
+  background:var(--surface);color:var(--muted);border:1px solid var(--line);border-radius:5px;
+  padding:6px 12px;cursor:pointer}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme:dark){.tab.on{color:#06211d}}
+.stage{display:grid;grid-template-columns:1fr 380px;gap:16px;padding:0 22px 40px;align-items:start}
+@media (max-width:1100px){.stage{grid-template-columns:1fr}}
+.flowwrap{overflow:auto;background:var(--sunk);border:1px solid var(--line);border-radius:var(--r);
+  padding:18px;max-height:80vh;position:relative}
+.scaler{position:relative}
+.flow{position:relative;transform-origin:0 0}
+.tabs{align-items:center}
+.zoom{margin-left:auto;display:flex;gap:4px;background:var(--surface);
+  border:1px solid var(--line);border-radius:5px;padding:3px}
+.zoom button{font:inherit;font-size:11px;font-family:var(--mono);background:none;border:0;color:var(--muted);
+  cursor:pointer;padding:3px 7px;border-radius:4px}
+.zoom button:hover{background:var(--sunk);color:var(--ink)}
+.zoom button.on{color:var(--ink);font-weight:700}
+.flow svg{position:absolute;inset:0;overflow:visible;pointer-events:none}
+.edge{fill:none;stroke:var(--line);stroke-width:1.5}
+.edge.soft{opacity:.45;stroke-dasharray:1 3}
+.edge.dep{stroke:var(--warn);stroke-width:1.6}
+.edge.fall{stroke:var(--accent);stroke-dasharray:5 4;stroke-width:1.8}
+.edge.hot{stroke:var(--ink);stroke-width:2.4;opacity:1;stroke-dasharray:none}
+.edge.dim{opacity:.1}
+.edge-label{font-family:var(--display);font-size:9.5px;fill:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.colhead{position:absolute;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted)}
+.fnode{position:absolute;cursor:pointer;font:inherit;text-align:left;background:var(--surface);
+  color:var(--ink);border:1px solid var(--line);border-left:3px solid var(--line);border-radius:5px;
+  padding:7px 9px;display:flex;flex-direction:column;justify-content:center;gap:1px;
+  transition:box-shadow .12s,border-color .12s,opacity .12s}
+.fnode:hover{border-color:var(--accent)}
+.fnode-name{font-family:var(--mono);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fnode-sub{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fnode.client{border-left-color:var(--ink);background:var(--sunk)}
+.fnode.agent{border-left-color:var(--muted)}
+.fnode.s-broken{border-left-color:var(--bad)}
+.fnode.s-disconnected{border-left-color:var(--warn);border-left-style:dashed}
+.fnode.s-degraded{border-left-color:var(--warn)}
+.fnode.s-healthy{border-left-color:var(--good)}
+.fnode.s-idle{border-left-color:var(--idle);opacity:.8}
+.fnode.sel{border-color:var(--ink);box-shadow:0 0 0 3px var(--sunk),0 0 0 4px var(--ink)}
+.fnode.dim{opacity:.22}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;position:sticky;top:76px;max-height:78vh;overflow:auto}
+.panel h2{margin:2px 0 3px;font-size:16px;letter-spacing:-.01em}
+.chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:3px 7px;border-radius:20px;border:1px solid var(--line)}
+.c-broken{color:var(--bad);border-color:var(--bad)}
+.c-disconnected,.c-degraded{color:var(--warn);border-color:var(--warn)}
+.c-healthy{color:var(--good);border-color:var(--good)}
+.c-idle{color:var(--idle)}
+.k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  margin:13px 0 3px}
+.mono{font-family:var(--mono);font-size:11.5px}
+pre{margin:5px 0 0;background:var(--sunk);border:1px solid var(--line);border-radius:5px;padding:7px 9px;
+  overflow-x:auto;font-family:var(--mono);font-size:11px;white-space:pre-wrap}
+.fix{border-left:2px solid var(--accent);padding-left:10px}
+.jump{background:none;border:0;padding:0;font:inherit;font-size:13px;color:var(--accent);cursor:pointer;text-align:left}
+.jump:hover{text-decoration:underline}
+.lst{display:flex;flex-direction:column;gap:3px}
+.row2{display:flex;gap:7px;align-items:baseline}
+.tiny{font-size:11px;color:var(--muted)}
+.hint{color:var(--muted);font-size:12.5px}
+</style>
+
+<div class="top">
+  <span class="brand">Tool Map</span>
+  <a href="/">Cards</a><a href="/map" class="on">Map</a>
+  <span class="spacer"></span>
+  <span class="stamp" id="stamp">loading…</span>
+  <button class="tab" id="refresh">Re-probe</button>
+</div>
+
+<div class="head">
+  <span class="eyebrow">Access path</span>
+  <h1>What reaches what, and where it is broken</h1>
+  <p class="lede">Left to right: you, the agent that owns the tool, the tool, and anything that tool
+  depends on. Click any box for its card. Dashed teal is a fallback you can switch to; amber is a
+  hard dependency, so a broken box upstream explains a degraded one downstream.</p>
+  <div class="legend">
+    <span><i style="background:var(--bad)"></i>broken</span>
+    <span><i style="background:var(--warn)"></i>disconnected / degraded</span>
+    <span><i style="background:var(--good)"></i>healthy</span>
+    <span><i style="background:var(--idle)"></i>idle</span>
+    <span><i style="background:var(--accent)"></i>fallback edge</span>
+    <span><i style="background:var(--warn)"></i>dependency edge</span>
+  </div>
+</div>
+<div class="tabs">
+  <span id="tabs" style="display:contents"></span>
+  <span class="zoom">
+    <button data-z="out">&minus;</button><button data-z="fit">fit width</button>
+    <button data-z="1" class="on">100%</button><button data-z="in">+</button>
+  </span>
+</div>
+
+<div class="stage">
+  <div class="flowwrap" id="wrap">
+    <div class="scaler" id="scaler"><div class="flow" id="flow"></div></div>
+  </div>
+  <aside class="panel" id="panel"><p class="hint">Click a box to see how it is reached, when it last
+  worked, what failed last and how to fix it.</p></aside>
+</div>
+
+<script>
+const W=206,H=52,GX=92,GY=11,HEADROOM=26;
+const CATS={all:"everything",mcp:"MCP",cli:"CLI & API",automation:"automation",browser:"browser",skill:"skills"};
+let DATA=null, cat="all", sel=null, zoom=1, DIMS={w:0,h:0}, firstDraw=true;
+const esc=s=>(s??"").toString().replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const short=p=>(p||"").replace(/^\/Users\/[^/]+\//,"~/").replace(/^-Users-[^-]+-[^-]+-/,"");
+const RANK={broken:0,disconnected:1,degraded:2,healthy:3,idle:4};
+function ago(iso){ if(!iso) return "never";
+  const d=new Date(iso),h=(Date.now()-d)/36e5;
+  const s=d.toLocaleString([],{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
+  return h<24?`${s} (${Math.max(1,Math.round(h))}h ago)`:`${s} (${Math.round(h/24)}d ago)`; }
+
+/* ---------- graph ---------- */
+function build(){
+  const tools=DATA.tools.filter(t=>cat==="all"||t.category===cat||(cat==="cli"&&t.category==="api"));
+  const keep=new Set(tools.map(t=>t.id));
+  const nodes=new Map(), edges=[];
+  const add=n=>{nodes.set(n.id,n);return n};
+  add({id:"__you",kind:"client",name:(DATA.meta&&DATA.meta.owner)||"You",
+       sub:"this workspace",cls:"client"});
+
+  const agents=new Map();
+  const agentOf=name=>{
+    if(!agents.has(name)){
+      const id="__a:"+name;
+      agents.set(name,add({id,kind:"agent",name,sub:"agent",cls:"agent",worst:9}));
+      edges.push({from:"__you",to:id,kind:"own"});
+    }
+    return agents.get(name);
+  };
+  for(const t of tools){
+    add({id:t.id,kind:"tool",name:t.name,sub:t.access.split("·")[0].trim(),cls:"s-"+t.status,tool:t});
+    const a=agentOf(t.owner_agent||"—");
+    a.worst=Math.min(a.worst,RANK[t.status]);
+    edges.push({from:a.id,to:t.id,kind:"own"});
+    for(const o of t.also_used_by||[]) edges.push({from:agentOf(o).id,to:t.id,kind:"soft"});
+    for(const d of t.depends_on||[]) if(keep.has(d)) edges.push({from:t.id,to:d,kind:"dep"});
+    for(const a2 of t.alternatives||[]) if(a2.ref&&keep.has(a2.ref))
+      edges.push({from:t.id,to:a2.ref,kind:"fall",label:"fallback"});
+  }
+  for(const a of agents.values())
+    a.cls="agent s-"+(Object.keys(RANK).find(k=>RANK[k]===a.worst)||"idle");
+
+  /* tier = longest path from the root over own/soft/dep edges (fallbacks never move a node) */
+  const tier=new Map([["__you",0]]);
+  const structural=edges.filter(e=>e.kind!=="fall");
+  for(let i=0;i<8;i++){
+    let moved=false;
+    for(const e of structural){
+      const a=tier.get(e.from); if(a===undefined) continue;
+      if((tier.get(e.to)??-1)<a+1){ tier.set(e.to,a+1); moved=true; }
+    }
+    if(!moved) break;
+  }
+  for(const n of nodes.values()) if(!tier.has(n.id)) tier.set(n.id,1);
+
+  const cols=[];
+  for(const n of nodes.values()) (cols[tier.get(n.id)] ??= []).push(n);
+  cols.forEach((c,i)=>c.sort((x,y)=> i<2 ? x.name.localeCompare(y.name)
+      : (RANK[x.tool?.status]??9)-(RANK[y.tool?.status]??9) || x.name.localeCompare(y.name)));
+
+  /* Vertical placement. The tool column dwarfs the others, so centring every column (which is
+     what a flow diagram normally does) parks "you" and the agents a thousand pixels down, off
+     screen, next to nothing. Instead: pack the biggest column, then place every other column at
+     the average height of the nodes it connects to, and push apart anything that collides. */
+  const STEP=H+GY;
+  const yOf=new Map();
+  const big=cols.reduce((b,c,i)=>c.length>cols[b].length?i:b,0);
+  cols[big].forEach((n,i)=>yOf.set(n.id,i*STEP));
+  const neigh=(id,col)=>{
+    const ys=[];
+    for(const e of structural){
+      if(e.from===id&&col.some(n=>n.id===e.to)) ys.push(yOf.get(e.to));
+      if(e.to===id&&col.some(n=>n.id===e.from)) ys.push(yOf.get(e.from));
+    }
+    return ys.filter(v=>v!==undefined);
+  };
+  const place=(col,ref)=>{
+    col.forEach(n=>{
+      const ys=neigh(n.id,ref);
+      n._y=ys.length?ys.reduce((a,b)=>a+b,0)/ys.length:0;
+    });
+    col.sort((a,b)=>a._y-b._y);
+    let last=-1e9;
+    col.forEach(n=>{ const y=Math.max(n._y,last+STEP); yOf.set(n.id,y); last=y; });
+  };
+  for(let i=big-1;i>=0;i--) place(cols[i],cols[i+1]);
+  for(let i=big+1;i<cols.length;i++) place(cols[i],cols[i-1]);
+
+  const top=Math.min(...[...yOf.values()]);
+  const height=Math.max(...[...yOf.values()])-top+H;
+  const width=cols.length*W+(cols.length-1)*GX;
+  const pos=new Map();
+  cols.forEach((col,t)=>col.forEach(n=>pos.set(n.id,{x:t*(W+GX),y:yOf.get(n.id)-top})));
+  return {nodes,edges,pos,width,height,cols};
+}
+
+function path(a,b){
+  const x1=a.x+W,y1=a.y+H/2,x2=b.x,y2=b.y+H/2,m=(x1+x2)/2;
+  if(x2<=x1){ // backward edge (a fallback pointing left): arc under the boxes
+    const dip=Math.max(a.y,b.y)+H+16;
+    return `M${a.x+W/2} ${a.y+H} C${a.x+W/2} ${dip} ${b.x+W/2} ${dip} ${b.x+W/2} ${b.y+H}`;
+  }
+  return `M${x1} ${y1} C${m} ${y1} ${m} ${y2} ${x2} ${y2}`;
+}
+
+function render(){
+  const g=build();
+  const flow=document.getElementById("flow");
+  flow.style.width=g.width+"px"; flow.style.height=(g.height+HEADROOM)+"px";
+  const heads=["you","agent","tool","depends on","deeper"];
+  flow.innerHTML=
+    `<svg width="${g.width}" height="${g.height}" style="top:${HEADROOM}px">
+      ${g.edges.map(e=>{
+        const a=g.pos.get(e.from),b=g.pos.get(e.to); if(!a||!b) return "";
+        return `<path class="edge ${e.kind==='own'?'':e.kind}" data-a="${esc(e.from)}" data-b="${esc(e.to)}"
+                 d="${path(a,b)}"/>`;}).join("")}
+     </svg>`
+    + g.cols.map((c,i)=>`<span class="colhead" style="left:${i*(W+GX)}px;top:0">${heads[i]||"·"}</span>`).join("")
+    + [...g.nodes.values()].map(n=>{
+        const p=g.pos.get(n.id);
+        return `<button class="fnode ${n.cls}" data-id="${esc(n.id)}"
+          style="left:${p.x}px;top:${p.y+HEADROOM}px;width:${W}px;height:${H}px">
+          <span class="fnode-name">${esc(n.name)}</span>
+          <span class="fnode-sub">${esc(n.sub)}</span></button>`;}).join("");
+
+  DIMS={w:g.width,h:g.height+HEADROOM};
+  if(firstDraw && fitWidth()) firstDraw=false;
+  applyZoom();
+  // The canvas has no measurable width until the grid has laid out, and a backgrounded tab has
+  // none at all. Keep asking on later frames rather than shipping an unfitted first view.
+  if(firstDraw){
+    let tries=0;
+    const settle=()=>{ if(!firstDraw) return;
+      if(fitWidth()){ firstDraw=false; applyZoom(); return; }
+      if(tries++<40) requestAnimationFrame(settle); };
+    requestAnimationFrame(settle);
+  }
+  flow.querySelectorAll(".fnode").forEach(b=>b.onclick=()=>select(b.dataset.id,g));
+  if(sel&&g.nodes.has(sel)) highlight(sel,g); else { sel=null; }
+}
+
+// Width, not the whole graph: 38 tools in one column is taller than any screen, and a height-fit
+// shrinks the labels to nothing. Fit the columns, scroll the rows.
+function fitWidth(){
+  const w=document.getElementById("wrap").clientWidth;
+  if(!DIMS.w||w<120) return false;      // not laid out yet; leave the zoom alone
+  zoom=Math.max(.35,Math.min((w-40)/DIMS.w,1));
+  return true;
+}
+function applyZoom(){
+  const f=document.getElementById("flow"), sc=document.getElementById("scaler");
+  f.style.transform="scale("+zoom+")";
+  sc.style.width=(DIMS.w*zoom)+"px"; sc.style.height=(DIMS.h*zoom)+"px";
+  document.querySelectorAll(".zoom button").forEach(b=>
+    b.classList.toggle("on", b.dataset.z==="1" ? Math.abs(zoom-1)<.01 : false));
+}
+document.querySelector(".zoom").onclick=e=>{
+  const z=e.target.dataset.z; if(!z) return;
+  const wrap=document.getElementById("wrap");
+  if(z==="fit") fitWidth();
+  else if(z==="in") zoom=Math.min(1.6,zoom*1.25);
+  else if(z==="out") zoom=Math.max(.2,zoom/1.25);
+  else zoom=1;
+  applyZoom();
+};
+
+function highlight(id,g){
+  const near=new Set([id]);
+  g.edges.forEach(e=>{ if(e.from===id) near.add(e.to); if(e.to===id) near.add(e.from); });
+  document.querySelectorAll(".fnode").forEach(b=>{
+    b.classList.toggle("sel",b.dataset.id===id);
+    b.classList.toggle("dim",!near.has(b.dataset.id));
+  });
+  document.querySelectorAll(".edge").forEach(p=>{
+    const touch=p.dataset.a===id||p.dataset.b===id;
+    p.classList.toggle("hot",touch); p.classList.toggle("dim",!touch);
+  });
+}
+
+/* ---------- panel ---------- */
+function select(id,g){
+  sel=id; highlight(id,g);
+  const n=g.nodes.get(id);
+  const el=document.getElementById("panel");
+  if(n.kind!=="tool"){
+    const mine=DATA.tools.filter(t=>t.owner_agent===n.name||(t.also_used_by||[]).includes(n.name));
+    el.innerHTML=`<span class="eyebrow">${n.kind==="client"?"you":"agent"}</span><h2>${esc(n.name)}</h2>
+      <p class="hint">${n.kind==="client"?"Every access path in this workspace starts here.":
+        `Owns or uses ${mine.length} tools.`}</p>
+      ${n.kind==="agent"?`<div class="k">Tools</div><div class="lst">${mine.map(t=>
+        `<div class="row2"><span class="chip c-${t.status}">${t.status}</span>
+         <button class="jump" data-go="${esc(t.id)}">${esc(t.name)}</button></div>`).join("")}</div>`:""}`;
+  } else {
+    const t=n.tool,u=t.usage,pr=t.probe_result;
+    const alts=(t.alternatives||[]).map(a=>`<div class="row2"><span class="tiny mono">${esc(a.kind)}</span>
+      ${a.ref?`<button class="jump" data-go="${esc(a.ref)}">${esc(a.what)}</button>`:`<span>${esc(a.what)}</span>`}
+      <span class="tiny">· ${esc(a.state)}</span></div>`).join("")||`<span class="hint">none — single point of failure</span>`;
+    const deps=(t.depends_on||[]).map(d=>{const x=DATA.tools.find(y=>y.id===d);return x?
+      `<div class="row2"><span class="chip c-${x.status}">${x.status}</span>
+       <button class="jump" data-go="${esc(d)}">${esc(x.name)}</button></div>`:""}).join("");
+    el.innerHTML=`<span class="eyebrow">${esc(t.category)}</span>
+      <h2>${esc(t.name)}</h2>
+      <div class="row2"><span class="chip c-${t.status}">${t.status}</span><span class="tiny">${esc(t.status_reason)}</span></div>
+      <div class="k">Reached by</div><div class="mono">${esc(t.access)}</div>
+      <div class="k">Owner</div><div>${esc(t.owner_agent)}${(t.also_used_by||[]).length?
+        `<span class="tiny"> · also ${t.also_used_by.map(esc).join(", ")}</span>`:""}</div>
+      ${pr?`<div class="k">Live probe</div><pre>${esc(pr.output)||"(no output)"}</pre>`:""}
+      <div class="k">Last used</div><div>${ago(u.last_used)}
+        <div class="tiny mono">session ${u.last_session?u.last_session.slice(0,8):"—"} · ${esc(short(u.last_project))||"—"}</div></div>
+      <div class="k">Last failure</div><div>${ago(u.last_error)}
+        ${u.last_error?`<div class="tiny mono">session ${u.last_error_session.slice(0,8)} · ${esc(short(u.last_error_project))}</div>`:""}
+        ${u.last_error_text?`<pre>${esc(u.last_error_text)}</pre>`:""}</div>
+      <div class="k">Volume</div><div>${u.calls} calls, ${u.errors} errors</div>
+      ${deps?`<div class="k">Depends on</div><div class="lst">${deps}</div>`:""}
+      <div class="k">Alternatives</div><div class="lst">${alts}</div>
+      <div class="k">Fix</div><div class="fix">${esc(t.fix)}</div>
+      ${t.notes?`<div class="k">Note</div><div class="tiny">${esc(t.notes)}</div>`:""}`;
+  }
+  el.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.go;
+    const box=document.querySelector(`.fnode[data-id="${CSS.escape(id)}"]`);
+    if(box) box.scrollIntoView({block:"center",inline:"center",behavior:"smooth"});
+    select(id,g);
+  });
+}
+
+function tabs(){
+  document.getElementById("tabs").innerHTML=Object.entries(CATS).map(([k,v])=>{
+    const n=k==="all"?DATA.tools.length:DATA.tools.filter(t=>t.category===k||(k==="cli"&&t.category==="api")).length;
+    return `<button class="tab ${cat===k?"on":""}" data-c="${k}">${v} ${n}</button>`;}).join("");
+  document.querySelectorAll("#tabs .tab").forEach(b=>b.onclick=()=>{cat=b.dataset.c;sel=null;tabs();render();});
+}
+
+async function load(force){
+  const r=await fetch("/api/state"+(force?"?refresh=1":""));
+  DATA=await r.json();
+  const c=DATA.counts;
+  document.getElementById("stamp").textContent=
+    `${DATA.tools.length} tools · ${c.broken} broken, ${c.disconnected} disconnected, ${c.degraded} degraded · probed ${DATA.generated_at}`;
+  tabs(); render();
+}
+document.getElementById("refresh").onclick=e=>{e.target.textContent="probing…";
+  load(true).then(()=>e.target.textContent="Re-probe");};
+setInterval(()=>load(false),60000);
+load(false);
+</script>

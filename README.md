@@ -82,6 +82,7 @@ Each skill encodes a real methodology into a repeatable command. They compose: `
 | `scrum` | Check status of all dispatched agents across sessions |
 | `inbox` | Fire-and-forget agent dispatch with isolation |
 | `personal-coach` | Coaching sessions: assessment, check-in, unblock, build jam, journal |
+| `x-ray-workspace` | Inventory every MCP, CLI and credential you use, probe what is actually broken, serve it as a live dashboard |
 
 ### Content & Marketing
 

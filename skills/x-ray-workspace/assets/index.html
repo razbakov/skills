@@ -1,0 +1,155 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Tool &amp; Access Dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --bg:#0e1116; --panel:#161b22; --panel2:#1c232c; --line:#2a323d;
+  --fg:#e6edf3; --dim:#8b96a5; --accent:#58a6ff;
+  --broken:#f85149; --disconnected:#d29922; --degraded:#e3b341; --healthy:#3fb950; --idle:#6e7681;
+}
+@media (prefers-color-scheme:light){
+  :root{--bg:#f6f8fa;--panel:#fff;--panel2:#f0f3f6;--line:#d8dee4;--fg:#1f2328;--dim:#636c76;
+        --broken:#cf222e;--disconnected:#9a6700;--degraded:#9a6700;--healthy:#1a7f37;--idle:#6e7681;}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font:14px/1.5 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif}
+header{padding:20px 24px 14px;border-bottom:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:16px;align-items:baseline;position:sticky;top:0;background:var(--bg);z-index:5}
+h1{font-size:17px;margin:0;font-weight:650;letter-spacing:-.01em}
+.sub{color:var(--dim);font-size:12px}
+.spacer{flex:1}
+button{background:var(--panel2);color:var(--fg);border:1px solid var(--line);
+  border-radius:6px;padding:5px 11px;font:inherit;font-size:12px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button.on{border-color:var(--accent);color:var(--accent)}
+.bar{display:flex;flex-wrap:wrap;gap:7px;padding:12px 24px;border-bottom:1px solid var(--line);align-items:center}
+main{padding:18px 24px 60px;display:grid;gap:12px;
+  grid-template-columns:repeat(auto-fill,minmax(400px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.card.s-broken{border-left:4px solid var(--broken)}
+.card.s-disconnected{border-left:4px solid var(--disconnected)}
+.card.s-degraded{border-left:4px solid var(--degraded)}
+.card.s-healthy{border-left:4px solid var(--healthy)}
+.card.s-idle{border-left:4px solid var(--idle)}
+.ch{padding:12px 14px;display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.ch h2{font-size:14px;margin:0 0 3px;font-weight:620}
+.pill{font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;
+  padding:3px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.p-broken{background:color-mix(in srgb,var(--broken) 18%,transparent);color:var(--broken)}
+.p-disconnected,.p-degraded{background:color-mix(in srgb,var(--degraded) 20%,transparent);color:var(--degraded)}
+.p-healthy{background:color-mix(in srgb,var(--healthy) 18%,transparent);color:var(--healthy)}
+.p-idle{background:color-mix(in srgb,var(--idle) 22%,transparent);color:var(--idle)}
+.meta{color:var(--dim);font-size:12px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px}
+.body{border-top:1px solid var(--line);padding:12px 14px;display:none;background:var(--panel2)}
+.card.open .body{display:block}
+.row{display:grid;grid-template-columns:104px 1fr;gap:6px 10px;padding:3px 0;align-items:start}
+.k{color:var(--dim);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em}
+pre{margin:6px 0 0;background:var(--bg);border:1px solid var(--line);border-radius:6px;
+  padding:8px 10px;overflow-x:auto;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;white-space:pre-wrap}
+.alt{display:flex;gap:7px;align-items:baseline;padding:2px 0}
+.tag{font-size:10px;padding:1px 6px;border-radius:4px;border:1px solid var(--line);color:var(--dim);
+  text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
+.st-live{color:var(--healthy);border-color:color-mix(in srgb,var(--healthy) 45%,var(--line))}
+.st-broken{color:var(--broken);border-color:color-mix(in srgb,var(--broken) 45%,var(--line))}
+.st-degraded{color:var(--degraded);border-color:color-mix(in srgb,var(--degraded) 45%,var(--line))}
+.fix{border-left:2px solid var(--accent);padding-left:10px;margin:8px 0 2px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.chip{font-size:11px;background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:2px 8px;color:var(--dim)}
+.chip b{color:var(--fg);font-weight:600}
+.chip.err b{color:var(--broken)}
+a{color:var(--accent)}
+</style>
+
+<header>
+  <div>
+    <h1>Tool &amp; Access Dashboard</h1>
+    <div class="sub" id="sub">loading…</div>
+  </div>
+  <div class="spacer"></div>
+  <a href="/map" style="color:var(--accent);text-decoration:none;font-size:12px;align-self:center">Map view →</a>
+  <button id="refresh">Re-probe now</button>
+  <button id="auto" class="on">Auto 60s</button>
+</header>
+<div class="bar" id="filters"></div>
+<main id="grid"></main>
+
+<script>
+const ORDER = ["broken","disconnected","degraded","healthy","idle"];
+let DATA = null, filter = "all", auto = true;
+
+const esc = s => (s??"").toString().replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+function ago(iso){
+  if(!iso) return "never";
+  const d = new Date(iso), h = (Date.now()-d)/36e5;
+  const stamp = d.toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
+  if(h < 24) return `${stamp} (${Math.max(1,Math.round(h))}h ago)`;
+  return `${stamp} (${Math.round(h/24)}d ago)`;
+}
+const short = p => (p||"").replace(/^\/Users\/[^/]+\//,"~/").replace(/^-Users-[^-]+-[^-]+-/,"");
+const sess = s => s ? s.slice(0,8) : "—";
+
+function card(t){
+  const u = t.usage, pr = t.probe_result;
+  const alts = (t.alternatives||[]).map(a =>
+    `<div class="alt"><span class="tag st-${a.state==='always'?'live':a.state}">${esc(a.kind)}</span>
+     <span>${esc(a.what)}<span class="meta"> · ${esc(a.state)}</span></span></div>`).join("") ||
+    '<span class="meta">none — single point of failure</span>';
+  const mem = (u.members||[]).map(m =>
+    `<span class="chip ${m.errors?'err':''}">${esc(m.name)} <b>${m.calls}</b>${m.errors?` <b>·${m.errors} err</b>`:""}</span>`).join("");
+  return `<section class="card s-${t.status}" data-status="${t.status}">
+    <div class="ch">
+      <div style="flex:1">
+        <h2>${esc(t.name)}</h2>
+        <div class="meta">${esc(t.access)}</div>
+        <div class="meta">owner: <b style="color:var(--fg)">${esc(t.owner_agent)}</b>${
+          (t.also_used_by&&t.also_used_by.length)?" · also "+t.also_used_by.map(esc).join(", "):""}</div>
+      </div>
+      <span class="pill p-${t.status}">${t.status}</span>
+    </div>
+    <div class="body">
+      <div class="row"><span class="k">Why</span><span>${esc(t.status_reason)}${
+        pr?` · probe ${pr.ok?"passed":"failed"} in ${pr.ms}ms`:" · no probe available"}</span></div>
+      ${pr?`<div class="row"><span class="k">Probe said</span><span class="mono">${esc(pr.output)||"(no output)"}</span></div>`:""}
+      <div class="row"><span class="k">Last used</span><span>${ago(u.last_used)}
+        <span class="meta mono"> · session ${sess(u.last_session)} · ${esc(short(u.last_project))||"—"}</span></span></div>
+      <div class="row"><span class="k">Last failure</span><span>${ago(u.last_error)}
+        ${u.last_error?`<span class="meta mono"> · session ${sess(u.last_error_session)} · ${esc(short(u.last_error_project))}</span>`:""}
+        ${u.last_error_text?`<pre>${esc(u.last_error_text)}</pre>`:""}</span></div>
+      <div class="row"><span class="k">Volume</span><span>${u.calls} calls, ${u.errors} errors${mem?`<div class="chips">${mem}</div>`:""}</span></div>
+      <div class="row"><span class="k">Alternatives</span><div>${alts}</div></div>
+      <div class="row"><span class="k">Fix</span><div class="fix">${esc(t.fix)}</div></div>
+      ${t.notes?`<div class="row"><span class="k">Note</span><span>${esc(t.notes)}</span></div>`:""}
+      ${t.docs?`<div class="row"><span class="k">Docs</span><span class="mono">${esc(t.docs)}</span></div>`:""}
+    </div></section>`;
+}
+
+function render(){
+  const d = DATA;
+  document.getElementById("sub").textContent =
+    `${d.tools.length} tools · probed ${d.generated_at} · ${d.transcripts} transcripts scanned · connector list verified ${d.meta.connected_verified}`;
+  const c = d.counts;
+  document.getElementById("filters").innerHTML =
+    [["all", d.tools.length]].concat(ORDER.map(k => [k, c[k]])).map(([k,n]) =>
+      `<button data-f="${k}" class="${filter===k?"on":""}">${k} <b>${n}</b></button>`).join("");
+  document.getElementById("grid").innerHTML =
+    d.tools.filter(t => filter==="all" || t.status===filter).map(card).join("");
+  document.querySelectorAll("#filters button").forEach(b =>
+    b.onclick = () => { filter = b.dataset.f; render(); });
+  document.querySelectorAll(".ch").forEach(h =>
+    h.onclick = () => h.parentElement.classList.toggle("open"));
+}
+
+async function load(force){
+  const r = await fetch("/api/state" + (force?"?refresh=1":""));
+  DATA = await r.json(); render();
+}
+document.getElementById("refresh").onclick = e => { e.target.textContent="probing…";
+  load(true).then(()=>e.target.textContent="Re-probe now"); };
+document.getElementById("auto").onclick = e => { auto=!auto; e.target.classList.toggle("on",auto); };
+setInterval(()=>{ if(auto) load(false); }, 60000);
+load(false);
+</script>
