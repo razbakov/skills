@@ -30,7 +30,7 @@ Move decision-making close to where value is created and align information flow 
 - Agents should make operational decisions within their domain (not escalate everything)
 - The Coordinator should surface information from one agent's domain that another agent needs
 - Feedback loops: after each sprint, the Analyst reviews what happened and feeds insights back to other agents
-- Avoid bottlenecks: don't require Alex to approve every PR if the change is within the agent's documented autonomy
+- Avoid bottlenecks: don't require the founder to approve every PR if the change is within the agent's documented autonomy
 
 ## Open Systems
 

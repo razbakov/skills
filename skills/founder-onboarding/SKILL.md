@@ -23,6 +23,10 @@ Everything this skill creates lives under that one `<Name>` root.
 
 Often an **onboarder agent** in a Telegram group named "**<Name>'s Ikigai**" runs this skill: the platform operator says "Onboard founder <Name>", which scaffolds the workspace and the group, the operator adds the real person and introduces them, and the agent takes over here. The skill also works when run directly by a founder in their own workspace. Either way, the founder is the "you" being onboarded.
 
+In a group, more than one person may post. The operator's introduction ("Hi <Name>!") is the cue to welcome the founder — not the founder's first answer. Only the founder's own answers found their realm, and anything you know about the operator (their name, projects, priorities, tools) is not the founder's and must not be carried in.
+
+**When run by a chat agent without a skill tool** (it reads this file with `cat`): companion skills sit next to this one — `../org-coach/SKILL.md` (with its `phases/` and `templates/`), `../product-coach/`, `../project-start/`, `../envoy-connect/` — read them the same way. Chat history is not memory there: a new group or a bot restart loses it, so the files under the workspace are the only thing that carries the founder's progress.
+
 ## Trigger
 
 User says "onboard me", "set me up", "I'm new", "get me started", "help me begin", or an operator says "onboard founder <name>", or `/founder-onboarding`.
@@ -36,7 +40,7 @@ User says "onboard me", "set me up", "I'm new", "get me started", "help me begin
 - **Autopilot only.** Invoke the child coaches in their **autopilot** mode (max 4 discovery questions, then generate with sensible defaults). Do not let them switch to "guided" during onboarding — capture any strong opinion as a note for the one tweak pass and keep moving. Guided mode is for later, invoked deliberately.
 - **One question at a time.** Ask, wait, move on. Never dump a list of questions in one message.
 - **Checkpoint at every stage boundary.** End each stage with `✓ <what was created>` + a one-line preview + "continue, or pause here?" The founder can always stop.
-- **Write to disk each step** so the flow is fully resumable (see Resume detection). Nothing lives only in chat.
+- **Write to disk each step, before you reply** so the flow is fully resumable (see Resume detection). Nothing lives only in chat — if a step's answer isn't on disk when the turn ends, the next session starts from zero.
 - **Hard end.** Onboarding is Stage 1 only. It ends with an explicit "✓ you're set up" screen and the Stage 2 menu — never an automatic continuation that makes the flow feel infinite.
 
 ### 2. Caring — the founder is a guest, not a ticket
@@ -47,6 +51,8 @@ The person being onboarded may be nervous, new to this, or doing something quiet
 - **Mark the weight of the ikigai step.** After the purpose/driver dig in Stage 1 — the heaviest moment — pause and check in on *them* ("that's a real question — how did that land?") before moving on. Acknowledge what they said in their own words; don't just file it.
 - **Celebrate the finish.** The ✓ at the end of Stage 1 is a genuine milestone (they now exist as an operating center). Name it warmly.
 - **Adapt to the signal, not the script.** If they're clearly energized and fast, don't pad. If they're overwhelmed, one step and a rest is plenty for today — the resume logic will pick them up.
+- **Speak their language.** Answer in the language the founder writes in, and switch when they do.
+- **A crisis stops the process.** If the founder says they are in a health crisis, in hospital, or not okay, stop onboarding. Acknowledge it plainly, don't coach through it, offer to pause (their files keep their place), and point to the people already caring for them. Don't write medical or crisis details into their workspace unless they ask you to.
 
 ## Time is measured, not guessed
 
@@ -99,7 +105,7 @@ Welcome — glad you're here. Here's the whole path, and you're in control the w
 Stop after any step and pick up exactly where you left off. No clock — we go at your pace.
 ```
 
-**Step 0.2 — Confirm their name.** Ask what to call them. This names their workspace (`~/Workspaces/<Name>/`). Confirm it back in one line, then: "Ready to start Stage 1 — or any questions first?"
+**Step 0.2 — Confirm their name.** Ask what to call them. If no workspace exists yet, this names it (`~/Workspaces/<Name>/`). If an operator already scaffolded one, keep it where it is — never rename or move it — and just record what they like to be called in their `CLAUDE.md`. Confirm it back in one line, then: "Ready to start Stage 1 — or any questions first?"
 
 ---
 

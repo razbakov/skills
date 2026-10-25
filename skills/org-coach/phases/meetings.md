@@ -74,7 +74,7 @@ Choose someone to facilitate — keep the meeting on track, hold the space, navi
 - Facilitate a meeting evaluation at the end
 - Select the facilitator for a specific term
 
-**For AI agent organizations:** The Coordinator is the default facilitator for cross-agent meetings. For human meetings (e.g., partnership discussions between Alex and Kirill), an agent can prepare the agenda and structure, while a human facilitates.
+**For AI agent organizations:** The Coordinator is the default facilitator for cross-agent meetings. For human meetings (e.g., partnership discussions between two founders), an agent can prepare the agenda and structure, while a human facilitates.
 
 ### Prepare For Meetings
 

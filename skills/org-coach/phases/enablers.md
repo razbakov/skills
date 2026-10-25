@@ -58,7 +58,7 @@ Secure S3 principles in the organization's legal structure:
 - Secure values, owner influence, and cost/gain sharing
 - Protect the organizational culture from legal erosion
 
-**For AI agent organizations:** When the organization incorporates (GmbH, UG, etc.), ensure the legal structure supports S3 governance. The partnership agreement between Alex and Kirill should reflect consent decision-making for strategic decisions (as defined in Policy 002).
+**For AI agent organizations:** When the organization incorporates (GmbH, UG, etc.), ensure the legal structure supports S3 governance. A partnership agreement between founders should reflect consent decision-making for strategic decisions (as defined in the org's decision-making policy).
 
 ## Cultural Patterns
 
@@ -139,7 +139,7 @@ Lead by example — behave in the ways you want others to behave:
 - Practice consent, transparency, and empiricism yourself
 - Others will follow when they see it working
 
-**For AI agent organizations:** The founders model S3 behavior. When Alex reviews a PR, he practices consent (checking for objections, not just approving). When Kirill sends outreach, he's transparent about the experiment framing. Agents mirror the culture they're embedded in.
+**For AI agent organizations:** The founders model S3 behavior. When a founder reviews a PR, they practice consent (checking for objections, not just approving). When a founder sends outreach, they're transparent about the experiment framing. Agents mirror the culture they're embedded in.
 
 ### Invite Change
 
