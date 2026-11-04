@@ -1,120 +1,97 @@
 ---
 name: file-issue
-description: 'File a task, user story, or bug report as a tracker issue (GitHub Issues or Linear) with an S3 body (Tension, Driver, Requirement, Response options), one owner label, and a board entry, following the tracker routing in the user''s CLAUDE.md. Use whenever an issue or ticket should actually land in a tracker: "file an issue", "create an issue for this", "open a ticket", "log this bug", "make a story for X", "plan it", "put this in the backlog", or when a session turns up follow-up work, a bug, or a user report that someone else should pick up — even if the user doesn''t say "issue". Not for implementing an existing issue (use github-issue), and not when the user only wants a story drafted in chat or as a file without filing it (use user-story).'
+description: 'Write a clear, self-contained issue for a task, user story, or bug, in S3 form (Tension, Driver, Requirement, Response options), so that anyone can pick it up cold. Use whenever something should become an issue or ticket: "file an issue", "create a ticket", "log this bug", "make a story for this", "plan it", "put it in the backlog", or when a session turns up follow-up work, a bug, or a user report that someone else should handle, even if the user does not say "issue". Focuses on what the issue says, whichever tracker it goes into. Not for implementing an existing issue, and not for a full INVEST story with detailed acceptance criteria (use user-story for that).'
 ---
 
 # File Issue
 
-Turn a tension found in conversation, code, or a user report into one well-formed tracker issue that anyone (human or agent) can pick up cold.
+Turn a problem found in conversation, in a user report, or during other work into one issue that a person or agent can pick up without having been there.
 
-The format is S3 (Sociocracy 3.0): every issue says what hurts, why it matters, what done looks like, and which ways forward were considered. The value of the skill is that this shape is the same every time, no matter which session or repo files the issue.
+The issue uses the S3 (Sociocracy 3.0) shape: what hurts, why it matters, what done looks like, and which ways forward were considered. The shape stays the same every time, so issues read alike no matter who wrote them.
 
-## Step 1: Load the instance config
+This skill is about the **content** of the issue. Where it gets filed (which tracker, project, labels, board) comes from the user's own setup. Follow that if it exists. If it doesn't, give the user the finished issue and ask where it should go.
 
-This skill holds no config. Read it from the CLAUDE.md chain in effect (global, org, project) and the project's own README/CLAUDE.md. Look for:
+## 1. Understand the tension first
 
-| What | Typical wording to search for |
-|---|---|
-| **Tracker routing**: which kind of item goes where (e.g. stories and bugs → GitHub Issues, governance or blockers → Linear) | "Issue tracker", "user stories and bug reports go to", "Tasks live in" |
-| **Repo for a project**: the project's own repo | "Project Path Registry", the `git remote` of the project folder |
-| **Owner labels**: label prefix and allowed values | "`agent:*`", "Ownership labels" |
-| **Board**: project board number and owner, if issues must be added to one | "Control Center board", "gh project item-add" |
+Before writing, be able to answer these in one sentence each:
 
-If the config can't be found, use these defaults and say so in the report: GitHub Issues in the repo of the project the work belongs to, no owner label, no board.
+- **Who** is affected (a user role, a team, a process)?
+- **What** do they experience, observably? (what happens, where, when)
+- **What** should happen instead?
+- **Why** does it matter now?
 
-If the item belongs in a tracker other than GitHub (e.g. Linear), use that tracker's tool, but keep the same S3 body and the same steps below.
+If one of these is unknown, find out (ask the user, read the report, look at the thing that misbehaves). For a bug, reproduce it or find out what explains it before filing. If you can't, say so in the issue. Guessing a cause and writing it as fact sends whoever picks the issue up in the wrong direction.
 
-## Step 2: Pick the repo and check for duplicates
+Check whether an issue for the same tension already exists. If so, add the new information there instead of filing a duplicate.
 
-1. Find the repo the **change** belongs to, not the repo you're sitting in. A bug in a web app goes to the web app's repo even when found from an ops folder. If the fix spans two repos, file one issue per repo and link them to each other.
-2. Search before filing:
-   ```bash
-   gh issue list -R <owner>/<repo> --state all --search "<2-4 key words>" --limit 10
-   ```
-   If a matching open issue exists, add a comment with the new information instead of filing a duplicate. If a matching closed one exists, link it from the new issue.
+## 2. Describe behaviour, not code
 
-## Step 3: Ground it in reality
+Write the issue in terms of what people see and need, not in terms of the implementation:
 
-Before writing, read what the issue is about: the relevant source files, routes, tables, the page that misbehaves, the user's report. Use the real names (file paths, function names, page names, UI labels, handles) in backticks. An issue that says "the feed is missing events" is weaker than one that names `profileFeedEvents` in `server/utils/profileFeed.ts` and the column it ignores.
+- Name the **page, screen, feature, or step** a user would recognise, not the file, function, or table behind it.
+- Describe **what happens and what should happen**, not which line is wrong.
+- Leave the **solution open** unless it was already decided. The person who picks it up will read the code themselves. A premature implementation detail in the issue anchors them to it and goes stale as the code changes.
 
-For a **bug from a user report**, reproduce it (or at least find the code path that explains it) with the reporter's data before filing. If you can't reproduce it, say so in the Tension.
+Implementation hints are allowed in one place only: **Response options**, phrased as options, not instructions.
 
-## Step 4: Write the issue
+## 3. Write it
 
-**Title:** `<Topic>: <what changes>`. The topic is where the change lives (a page, a feature, a component). A reader should be able to sort the issue from the title alone.
-Example: `Profile feed: include events where the profile is in the line-up`
+**Title:** `<Topic>: <what changes>`. The topic is where the change lives, in the words a user would use. A reader should be able to sort the issue from the title alone.
 
-**Body** (write it to a temp file; inline text on the command line breaks on quotes and multi-byte characters):
+Good: `Checkout: show the total price before the payment step`
+Weak: `Fix bug in price calculation`
+
+**Body:**
 
 ```markdown
 ## Tension
-What hurts or is off, observed and concrete. Who is affected and where they see it.
-For a bug: steps to reproduce, what happens, what should happen, a link to the page.
+What hurts or is off, observed and concrete. Who is affected and where they notice it.
+For a bug: steps to reproduce, what happens, what should happen, where to see it.
 
 ## Driver
-The underlying need: why this matters now, which goal or user need it serves.
+The underlying need: why this matters, which goal or user need it serves.
 
 ## Requirement
-What done looks like, as checkable bullets. Include what must keep working.
-For a story: acceptance criteria. Name the test that will prove it, if any.
+What done looks like, as checkable bullets someone could verify by using the product.
+Include what must keep working.
 
 ## Response options
-1. <option> (chosen: <one-line reason>)
-2. <option> (rejected: <one-line reason>)
+1. <option> (recommended / chosen: one-line reason)
+2. <option> (rejected / alternative: one-line reason)
 ```
 
-Rules for the body:
+How to fill it well:
 
-- **One tension per issue.** If the request holds several unrelated problems, file several issues.
-- **Requirement is the outcome, not the plan.** Implementation detail belongs in Response options.
-- **Response options:** at least one. If a direction was already decided in the conversation, mark it `chosen` with the reason; otherwise mark the recommended one and leave the decision open.
-- **Plain language, short sentences.** The reader may be a non-engineer. Explain jargon once.
-- **No secrets, tokens, or personal data** (emails, phone numbers) in the body. Refer to a person by role or public handle.
-- If the user wants a classic user story too, add the "As a … I want … so that …" line at the top of Tension. Use the `user-story` skill when a full INVEST story with detailed acceptance criteria is asked for.
+- **One tension per issue.** If the request holds several unrelated problems, write several issues and say they are related.
+- **Tension is observation, not diagnosis.** "Customers don't see app orders in their order history" beats "the query is missing a join".
+- **Driver answers "so what?"** If you can't name the need, the issue probably isn't worth filing yet. Say that instead of inventing a driver.
+- **Requirement is the outcome, not the plan.** Each bullet should be verifiable from the outside: "an order placed in the app appears in the order history", not "add a condition to the query".
+- **Response options: at least one.** If the conversation already settled a direction, mark it `chosen` with the reason. Otherwise mark one `recommended` and leave the decision open.
+- **Plain language, short sentences.** The reader may not be an engineer. Explain any term a newcomer wouldn't know, once.
+- **No secrets or personal data** (passwords, tokens, emails, phone numbers). Refer to people by role.
+- If a classic user story helps, put "As a … I want … so that …" as the first line of Tension.
 
-## Step 5: Create it
+## 4. Hand it over
 
-```bash
-BODY="$(mktemp)"
-cat > "$BODY" <<'EOF'
-## Tension
-...
-EOF
-gh issue create -R <owner>/<repo> --title "<Topic>: <change>" --body-file "$BODY" --label "<prefix>:<owner>"
-```
-
-- **Exactly one owner label** when the config defines them. Dispatch loops and digests pick up work by this label, so an issue with none sits unowned, and one with two gets picked up twice or by nobody. Check it exists first (`gh label list -R <owner>/<repo> --search <prefix>`); if it doesn't, create it with `gh label create` rather than dropping the label.
-- **Board:** if the config names a board, add the issue: `gh project item-add <number> --owner <board-owner> --url <issue-url>`.
-- Create issues one at a time. Some trackers (Linear especially) silently drop writes under parallel load while still returning success.
-
-## Step 6: Verify and report
-
-```bash
-gh issue view <url> --json title,labels,url
-```
-
-Confirm the title, label, and (if used) board membership actually landed. Then report to the user:
-
-- the **full issue URL** (raw, not a bare `#123`),
-- the repo and owner label,
-- one line on which response option was chosen or left open,
-- any duplicate you linked or commented on instead.
+- If the user's setup says where issues go and how they are labelled or assigned, follow it. Give the issue exactly one owner when the setup uses owners: with none, nobody picks it up; with two, both or neither do.
+- Otherwise show the finished title and body to the user and ask where to file it.
+- After filing, read the issue back from the tracker to confirm the title, body, and owner actually landed. Then report the link, or the place it was filed, and which response option was chosen or left open.
 
 ## Example
 
-Filed from a session about a profile website showing no workshops:
+From a session where a customer reported that a recent order was missing from their account:
 
-> **Profile feed: include events where the profile is in the line-up** · label `agent:engineering`
+> **Order history: show orders placed through the mobile app**
 >
-> **Tension:** A profile's feed (`profileFeedEvents` in `server/utils/profileFeed.ts`) lists only events the profile hosts or organises. An artist mostly appears in other people's events, named in their line-up (`events.artists`), so the artist's site shows an empty "upcoming workshops" placeholder even when booked.
+> **Tension:** A customer's order history shows only orders placed on the website. Orders placed in the mobile app are missing, although they were paid for and delivered. Customers who look for an invoice or want to reorder think the order was lost, and some contact support.
 >
-> **Driver:** Profile websites use the feed as their schedule. For artists it has to include the events they teach or play at.
+> **Driver:** Order history is where customers go for invoices, returns, and reorders. If it's incomplete, they lose trust and support gets tickets that shouldn't exist.
 >
 > **Requirement:**
-> - The feed also lists published, upcoming events whose `artists` contains the handle, case-insensitive.
-> - Host and organiser events still list; an event matching twice appears once.
-> - Covered by a DB test.
+> - An order placed in the mobile app appears in the customer's order history, with the same details as a website order.
+> - Website orders still appear. No order appears twice.
+> - Cancelled orders show as cancelled, same as today.
 >
 > **Response options:**
-> 1. Widen the `where` in `profileFeedEvents` with an `exists` over the artists array (chosen: one query, works for every profile type).
-> 2. A separate artist-only query merged in JS (rejected: two queries and a sort for the same result).
+> 1. Show orders from both channels in one list (recommended: customers don't care where they ordered).
+> 2. Add a "Mobile orders" tab (alternative: quicker, but customers have to know where to look).
