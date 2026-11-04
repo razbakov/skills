@@ -1,6 +1,6 @@
 ---
 name: file-issue
-description: File a task, user story, or bug report as a tracker issue (GitHub Issues or Linear) with an S3 body (Tension, Driver, Requirement, Response options), one owner label, and a board entry, following the tracker routing in the user's CLAUDE.md. Use whenever an issue or ticket should actually land in a tracker: "file an issue", "create an issue for this", "open a ticket", "log this bug", "make a story for X", "plan it", "put this in the backlog", or when a session turns up follow-up work, a bug, or a user report that someone else should pick up — even if the user doesn't say "issue". Not for implementing an existing issue (use github-issue), and not when the user only wants a story drafted in chat or as a file without filing it (use user-story).
+description: 'File a task, user story, or bug report as a tracker issue (GitHub Issues or Linear) with an S3 body (Tension, Driver, Requirement, Response options), one owner label, and a board entry, following the tracker routing in the user''s CLAUDE.md. Use whenever an issue or ticket should actually land in a tracker: "file an issue", "create an issue for this", "open a ticket", "log this bug", "make a story for X", "plan it", "put this in the backlog", or when a session turns up follow-up work, a bug, or a user report that someone else should pick up — even if the user doesn''t say "issue". Not for implementing an existing issue (use github-issue), and not when the user only wants a story drafted in chat or as a file without filing it (use user-story).'
 ---
 
 # File Issue
