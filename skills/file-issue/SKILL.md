@@ -24,17 +24,28 @@ If one of these is unknown, find out (ask the user, read the report, look at the
 
 Check whether an issue for the same tension already exists. If so, add the new information there instead of filing a duplicate.
 
-## 2. Describe behaviour, not code
+## 2. Read the docs and the code before you write
+
+A request says what someone wants. It rarely says what the product does today, and an issue that only restates the request leaves the reader to find that out alone. Before structuring anything, establish the current state:
+
+- **Bring the source up to date first** (`git fetch`, check the branch is not behind). A stale checkout makes fixed behaviour look broken.
+- **Read the project's docs** for the area: README, feature docs, decision records, the project's notes or profile. They say what the feature is meant to do and what was already decided.
+- **Read the code behind the screen or step the request names.** Find what is shown, where the data comes from, and what is missing. This is how you find out that a field "doesn't exist" because nothing stores it, or that a view exists on one page but not another.
+- **Look at related issues**, open and closed, for decisions and earlier attempts.
+
+Use what you find to write a Tension that states **what happens today**, not only what was asked. If the request rests on a wrong assumption (it asks for something that already exists, or misreads where data comes from), say so plainly in the Tension: that is often the real answer. If you could not reach the code or docs, say that too instead of guessing.
+
+## 3. Describe behaviour, not code
 
 Write the issue in terms of what people see and need, not in terms of the implementation:
 
 - Name the **page, screen, feature, or step** a user would recognise, not the file, function, or table behind it.
 - Describe **what happens and what should happen**, not which line is wrong.
-- Leave the **solution open** unless it was already decided. The person who picks it up will read the code themselves. A premature implementation detail in the issue anchors them to it and goes stale as the code changes.
+- Leave the **solution open** unless it was already decided. Give the reader the facts about today's behaviour (step 2), not the fix. A premature implementation detail in the issue anchors them to it and goes stale as the code changes.
 
-Implementation hints are allowed in one place only: **Response options**, phrased as options, not instructions.
+Implementation hints are allowed in two places only: **Response options**, phrased as options, not instructions; and an optional closing **What the code and docs say** section, which lists the facts from step 2 with their file or doc paths so the reader can check them. Keep code references out of Tension, Driver and Requirement.
 
-## 3. Write it
+## 4. Write it
 
 **Title:** `<Topic>: <what changes>`. The topic is where the change lives, in the words a user would use. A reader should be able to sort the issue from the title alone.
 
@@ -44,6 +55,11 @@ Weak: `Fix bug in price calculation`
 **Body:**
 
 ```markdown
+**Source:** <where the ask came from: sheet and row, email, meeting, chat>
+
+## Original ask (verbatim)
+> <the requester's exact words, unedited: keep typos, punctuation and language>
+
 ## Tension
 What hurts or is off, observed and concrete. Who is affected and where they notice it.
 For a bug: steps to reproduce, what happens, what should happen, where to see it.
@@ -58,9 +74,14 @@ Include what must keep working.
 ## Response options
 1. <option> (recommended / chosen: one-line reason)
 2. <option> (rejected / alternative: one-line reason)
+
+## What the code and docs say (optional)
+- <fact about today's behaviour> (`path/to/file`, `docs/feature.md`)
 ```
 
 How to fill it well:
+
+- **Quote the original ask when there is one.** When the issue comes from someone's request (a feedback sheet, an email, a chat message, a meeting), copy their words exactly into "Original ask (verbatim)" and say where it came from. Do not paraphrase, translate or tidy it: the quote is what lets the requester recognise their ask, and lets anyone check that the structured part did not drift from it. When the issue came up in your own work, with no requester, leave both lines out.
 
 - **One tension per issue.** If the request holds several unrelated problems, write several issues and say they are related.
 - **Tension is observation, not diagnosis.** "Customers don't see app orders in their order history" beats "the query is missing a join".
@@ -71,7 +92,7 @@ How to fill it well:
 - **No secrets or personal data** (passwords, tokens, emails, phone numbers). Refer to people by role.
 - If a classic user story helps, put "As a … I want … so that …" as the first line of Tension.
 
-## 4. Hand it over
+## 5. Hand it over
 
 - If the user's setup says where issues go and how they are labelled or assigned, follow it. Give the issue exactly one owner when the setup uses owners: with none, nobody picks it up; with two, both or neither do.
 - Otherwise show the finished title and body to the user and ask where to file it.
