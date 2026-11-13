@@ -55,12 +55,26 @@ Then create exactly what they confirm, one level at a time. If they stop a call,
 
 ## 5. Write the issues (only when asked)
 
-Write and place each issue with the **linear-issue** skill, so every issue reads the same whether it came from a project or on its own: the Origin, the S3 shape (Tension, Driver, Requirement, Response options), collapsed Agent notes, and its status, owner, priority, labels and relations. One issue per open piece of work. On top of that, for a whole project:
+Follow the team's existing format if it has one. Otherwise:
 
-- **Origin from the brief:** each issue's Origin quotes the lines of the project brief it comes from, with "project brief" as the source, so it leads back to the user's words.
-- **Order:** create blockers first (setup before what needs it) so the later issues can point at them with `blockedBy`.
-- **Status across the project:** usually one or two issues are committed now (Todo, with an owner); the rest wait in Backlog, prioritised relative to each other.
+- **Title:** the outcome, not the implementation. "Keep spam out of the city Telegram chats", not "Add moderation bot".
+- **Description:** the problem in plain words first: who is affected and what happens today. Then one line: **Done when** … (observable). Then, if useful, a decision still to make, or what's out of scope.
+- **Agent notes:** file paths, commands and technical hints go in a collapsed section at the end so they don't crowd the human part:
+
+  ```
+  +++ Agent notes
+
+  - …
+
+  +++
+  ```
+
+- **Status and owner:** Todo and assigned only for work someone has committed to now; everything else is Backlog and unassigned. Linear may pull Todo issues into the current cycle; say so when it happens.
+- **Priority:** set it, relative to the other issues in the project.
+- **Relations:** `blockedBy` when an issue can't start before another (e.g. setup first). Create the blocker first to get its ID.
 - **Already-shipped work:** don't file issues just to mark them Done unless the user asks. A PR link on the project is enough.
+
+Check each issue against `list_issues` first so you don't file a duplicate.
 
 ## 6. Report back
 
