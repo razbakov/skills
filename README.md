@@ -64,7 +64,7 @@ Each skill encodes a real methodology into a repeatable command. They compose: `
 | Skill | What it does |
 |-------|-------------|
 | `user-story` | Requirements to INVEST-compliant stories with acceptance criteria |
-| `linear-issue` | File one self-contained Linear issue: verbatim Origin, S3 shape (Tension, Driver, Requirement, Response options), placed with status, owner, priority and relations |
+| `linear-issue` | File a Linear issue the Linear way: one concrete task, a plain title, the ask quoted with its link, placed with status, owner, priority and relations |
 | `linear-project` | Hand a bigger-picture conversation over to Linear as initiative → project (verbatim brief) → issues, creating only what was asked |
 | `estimation` | Story point estimation with factor scoring |
 | `bdd-from-ux` | BDD scenarios grounded in actual UI/UX implementation |

@@ -1,158 +1,102 @@
 ---
 name: linear-issue
-description: 'File one clear, self-contained Linear issue for a task, user story or bug: an Origin that quotes the original ask word for word, links its source and marks it as an idea, agreement or promise, then the S3 shape (Tension, Driver, Requirement, Response options), placed in the right Linear team and project with the right status, priority, owner, labels and relations, so anyone can pick it up cold. Use whenever something should become a Linear issue or ticket: "file an issue", "create a ticket", "log this bug", "put it in Linear", "add it to the backlog", "make a story for this", or when a session turns up follow-up work, a bug or a user report someone else should handle, even if the user does not say "issue". Not for setting up a whole initiative or project from a bigger-picture conversation (use linear-project), not for implementing an existing issue, and not for a full INVEST story (use user-story).'
+description: 'File a Linear issue the way Linear recommends: one concrete task with a clear outcome, a short title that states the task, a description with only what the task needs, the original ask quoted word for word with a link to where it came from, and the right team, status, owner, priority and relations. Use whenever something should become a Linear issue or ticket: "file an issue", "create a ticket", "log this bug", "put it in Linear", "add it to the backlog", or when a session turns up follow-up work, a bug or a user report someone else should handle, even if the user does not say "issue". Not for setting up an initiative or project from a bigger-picture conversation (use linear-project), and not for implementing an existing issue.'
 ---
 
 # Linear Issue
 
-Turn a problem found in conversation, in a user report, or during other work into one Linear issue that a person or agent can pick up without having been there.
+File one issue that a person or agent can pick up without having been there, following the Linear Method ([linear.app/method](https://linear.app/method)):
 
-The issue opens with its **origin**: the ask in the requester's own words, where it was said, and whether it is an idea, an agreement, or a promise. Then comes the S3 (Sociocracy 3.0) shape: what hurts, why it matters, what done looks like, and which ways forward were considered. The shape stays the same every time, so issues read alike no matter who wrote them.
+- **Issues, not user stories.** Linear calls user stories an anti-pattern. An issue describes the task in plain language; the user experience is discussed in the project, not in each task.
+- **Short and direct.** The title states the task. The description holds only what the task needs, or nothing when the title says it all.
+- **Quote, don't summarise.** Feedback and requests are quoted directly, with a link to the conversation, so more context is one click away.
 
-Filing goes through the Linear MCP tools (`list_teams`, `list_projects`, `list_issues`, `list_issue_labels`, `save_issue`, `get_issue`). If they aren't connected, give the user the finished title and body and say what to set when they file it.
+Filing goes through the Linear MCP tools (`list_teams`, `list_projects`, `list_issues`, `list_issue_labels`, `save_issue`, `get_issue`). If they aren't connected, give the user the finished title and description and say what to set when they file it.
 
-## 1. Understand the tension first
+## 1. Is it one issue?
 
-Before writing, be able to answer these in one sentence each:
+An issue is **a task with a clear, defined outcome**: someone can do it and tell when it's done. Exploratory work counts when it's framed as a task ("Explore layouts for the city page", "Write the spec for city channels").
 
-- **Who** is affected (a user role, a team, a process)?
-- **What** do they experience, observably? (what happens, where, when)
-- **What** should happen instead?
-- **Why** does it matter now?
+- **Too big** (several deliverables, or more than a few days' work): break it into smaller, tangible pieces. Steps of one change become sub-issues of a parent; a bigger body of work with its own brief is a project (linear-project).
+- **Not a task** (an opinion, a vague wish, a discussion): don't file it. Say so and suggest where it belongs: a project brief, a doc, or a question back to the user.
+- **Already there:** search first (`list_issues` with a `query`, including done and canceled ones). Add new information to an open issue as a comment instead of filing a duplicate. If a closed one comes back, file a new issue that links to it and says why it returned.
 
-If one of these is unknown, find out (ask the user, read the report, look at the thing that misbehaves). For a bug, reproduce it or find out what explains it before filing. If you can't, say so in the issue. Guessing a cause and writing it as fact sends whoever picks the issue up in the wrong direction.
+## 2. Know what happens today
 
-**Check Linear for the same tension** (`list_issues` with a `query`, including done and canceled ones). If an open one exists, add the new information there (a comment, or a new source in its Origin) instead of filing a duplicate. If a closed one exists, link it as related and say why it's back.
+A request says what someone wants, not what the product does now. Before writing, find out enough that the issue doesn't send the reader the wrong way:
 
-## 2. Read the docs and the code before you write
+- Update the source (`git fetch`) and read the code and docs behind the screen or step the request names.
+- For a bug, reproduce it or find what explains it. If you can't, say so in the issue rather than guessing a cause.
+- If the request rests on a wrong assumption (it asks for something that already exists), say that plainly: it's often the real answer.
 
-A request says what someone wants. It rarely says what the product does today, and an issue that only restates the request leaves the reader to find that out alone. Before structuring anything, establish the current state:
+## 3. Write it
 
-- **Bring the source up to date first** (`git fetch`, check the branch is not behind). A stale checkout makes fixed behaviour look broken.
-- **Read the project's docs** for the area: README, feature docs, decision records, the project's notes or profile. They say what the feature is meant to do and what was already decided.
-- **Read the code behind the screen or step the request names.** Find what is shown, where the data comes from, and what is missing. This is how you find out that a field "doesn't exist" because nothing stores it, or that a view exists on one page but not another.
-- **Look at related Linear issues and the project's description**, open and closed, for decisions and earlier attempts.
+**Title:** short and plain, stating the task, easy to scan in a list. Lead with the area only when the project doesn't already name it.
 
-Use what you find to write a Tension that states **what happens today**, not only what was asked. If the request rests on a wrong assumption (it asks for something that already exists, or misreads where data comes from), say so plainly in the Tension: that is often the real answer. If you could not reach the code or docs, say that too instead of guessing.
+- Good: `Show orders placed in the mobile app in order history`
+- Weak: `Order history bug`, `As a customer I want to see all my orders…`
 
-## 3. Record the origin
-
-The rest of the issue is rewritten for whoever picks it up. The Origin keeps the way back: to the exact words, to the conversation, and to anyone who is waiting on the result.
-
-- **Quote the original ask word for word**, in its original language, keeping typos and punctuation. Trim it to the part that matters, mark cuts with `…`, and never reword, translate or tidy it. Copy it from the source rather than retyping it from memory. A paraphrase is already an interpretation, and the quote is what lets anyone check later that the issue still matches what was asked.
-- **Name the source**: the channel (Telegram, email, meeting, WhatsApp, user report, PR comment, chat session), the date, and who asked. **Link it** when a link exists: a message link, an email thread, a meeting note, a comment URL. If there's no link, write "no link" and say where to look (for example "desktop chat, 2026-11-07"). When the issue belongs to a project whose description holds the original brief, the source can be that project: quote the relevant lines and say "project brief".
-- **Mark the kind, exactly one,** seen from the side of whoever owns the backlog (the user and their team), not the person who wrote the message:
-  - **idea**: the user's own, or a suggestion someone made that nobody committed to. Nobody is waiting on it.
-  - **agreement**: decided together with someone. Name who.
-  - **promise**: the user or their team told someone it will be done. Name who, what was promised, and by when if a date was given.
-- **Don't guess the kind.** If the source doesn't make it clear whether someone was promised something, ask. Calling an idea a promise turns it into an obligation; missing a real promise means someone ends up let down.
-- **Several sources** (for example merged duplicates): quote and link each one. If any of them is a promise, the issue is a promise.
-
-## 4. Describe behaviour, not code
-
-Write the issue in terms of what people see and need, not in terms of the implementation:
-
-- Name the **page, screen, feature, or step** a user would recognise, not the file, function, or table behind it.
-- Describe **what happens and what should happen**, not which line is wrong.
-- Leave the **solution open** unless it was already decided. Give the reader the facts about today's behaviour (step 2), not the fix. A premature implementation detail anchors them to it and goes stale as the code changes.
-
-Implementation hints are allowed in two places only: **Response options**, phrased as options, not instructions; and the collapsed **Agent notes** at the end, which list the facts from step 2 with their file or doc paths. Keep code references out of Tension, Driver and Requirement: Linear issues are read by people first, and agents can open the notes.
-
-## 5. Write it
-
-**Title:** what changes, in the words a user would use, so the issue can be sorted from the title alone. When the issue lives in a project that already names the area, don't repeat it; otherwise lead with the area: `<Area>: <what changes>`.
-
-Good: `Checkout: show the total price before the payment step`, or inside a "Checkout" project, `Show the total price before the payment step`
-Weak: `Fix bug in price calculation`
-
-**Body** (Markdown with real line breaks, no escaped `\n`):
+**Description:** only what the task needs, in this order, dropping any part that adds nothing:
 
 ```markdown
-## Origin
-> <the original ask, verbatim, trimmed with …>
+> <the ask, quoted word for word, trimmed with …>
 
-- **Source:** <channel>, <date>, <who asked> · <link, or "no link: where to look">
-- **Kind:** idea | agreement (with <who>) | promise (to <who>: <what>, by <when>)
+<who asked, where, when> · <link to the message, ticket or call notes>
 
-## Tension
-What hurts or is off, observed and concrete. Who is affected and where they notice it.
-For a bug: steps to reproduce, what happens, what should happen, where to see it.
+<What happens today and what should happen instead: a few short sentences. For a bug: steps, what happens, what should happen.>
 
-## Driver
-The underlying need: why this matters, which goal or user need it serves.
-
-## Requirement
-- [ ] What done looks like, checkable from the outside by using the product
-- [ ] What must keep working
-
-## Response options
-1. <option> (recommended / chosen: one-line reason)
-2. <option> (rejected / alternative: one-line reason)
+**Done when** <the outcome, checkable from the outside>
 
 +++ Agent notes
 
-- <fact about today's behaviour> (`path/to/file`, `docs/feature.md`)
-- <commands, data to check, gotchas>
+- <file paths, commands, data to check, gotchas>
 
 +++
 ```
 
-How to fill it well:
+- **The quote:** copy it from the source, word for word, in its original language with its typos. Never reword, translate or tidy it: a paraphrase is already an interpretation, and the quote is how anyone can check later that the issue still matches what was asked. Leave the quote out when the issue came from your own work; say where it came from instead ("found while fixing checkout").
+- **The source line:** always a link when one exists. Without one, say where to look ("desktop chat, 2026-11-07").
+- **Someone waiting:** if the user or their team promised this to someone, say so on the source line ("promised to the customer by support, no date"). Don't guess: ask when it's unclear. A promise also gets a due date when one was given, and the team's `promise` label if it has one.
+- **Problem, not solution,** when someone else will do the work: describe what's wrong and let the assignee propose the fix. Write the solution only when it's already decided.
+- **Plain language, short sentences, one term per concept.** The reader may not be an engineer.
+- **Agent notes:** technical detail for an agent goes in the collapsed section at the end (`+++ Agent notes` … `+++`; Linear stores and shows it as `>>>`). Skip it when there's nothing technical to say.
+- **No secrets or personal data** in the issue or the quote (passwords, tokens, emails, phone numbers): cut them with `…`. Use `@name` only for a real Linear user you mean to notify.
 
-- **Fill the Origin every time** (step 3). When the issue came up in your own work with no requester, quote nothing, set the source to where you found it ("found while fixing the checkout page"), and the kind to idea.
-- **One tension per issue.** If the request holds several unrelated problems, file several issues and link them as related. If they are steps of one change, file them as sub-issues of a parent.
-- **Tension is observation, not diagnosis.** "Customers don't see app orders in their order history" beats "the query is missing a join".
-- **Driver answers "so what?"** If you can't name the need, the issue probably isn't worth filing yet. Say that instead of inventing a driver.
-- **Requirement is the outcome, not the plan.** Each checkbox should be verifiable from the outside: "an order placed in the app appears in the order history", not "add a condition to the query".
-- **Response options: at least one.** If the conversation already settled a direction, mark it `chosen` with the reason. Otherwise mark one `recommended` and leave the decision open.
-- **Agent notes stay collapsed** (`+++ Agent notes` … `+++`) and are optional; leave them out when there's nothing technical to say.
-- **Plain language, short sentences.** The reader may not be an engineer. Explain any term a newcomer wouldn't know, once.
-- **No secrets or personal data** (passwords, tokens, emails, phone numbers), in the quote too: cut them with `…`. Refer to people by role, or by first name where the Origin needs to say who asked or who was promised something. Use `@name` only for a real Linear user you mean to notify.
-- If a classic user story helps, put "As a … I want … so that …" as the first line of Tension.
-
-## 6. Place it in Linear
+## 4. Place it
 
 Read the workspace before choosing; don't invent structure.
 
-- **Team** (`list_teams`): the team whose backlog the work belongs to. If none fits, ask. Teams can't be created through the MCP.
-- **Project** (`list_projects`): the live project the issue moves forward, if there is one. No project is fine for standalone work; don't create a project for a single issue (that's linear-project's job, and only when asked).
-- **Status:** `Triage` for reports from outside the team when the team uses triage; `Todo` only for work someone has committed to now (Linear may pull it into the current cycle; say so); `Backlog` for everything else.
-- **Owner:** exactly one assignee when someone has committed, otherwise none. With two, both or neither do it.
-- **Priority:** 1 Urgent · 2 High · 3 Medium · 4 Low, relative to the team's other open work. Leave it unset rather than guess when you have no basis.
-- **Due date:** only for a promise with a date, or a real external deadline.
-- **Labels** (`list_issue_labels`): only labels the team already uses. A **promise** gets the `promise` label, so open promises are listable in one view. If the label doesn't exist, ask before creating it; otherwise start the title with `[Promise]`.
-- **Relations:** `blockedBy` / `blocks` when one can't start before another (create the blocker first to get its ID), `relatedTo` for siblings, `duplicateOf` instead of a second copy, `parentId` for sub-issues, and a link to the PR, doc or message behind it.
+- **Team** (`list_teams`): the team whose backlog the work belongs to. If none fits, ask; teams can't be created through the MCP.
+- **Project** (`list_projects`): the live project it moves forward, if any. Standalone issues are fine.
+- **Status:**
+  - **Triage** for reports from outside the team (users, other teams, integrations), when the team uses triage. The team accepts, declines or merges them there.
+  - **Todo** for work someone has committed to now. Linear may pull it into the current cycle; say so when it happens.
+  - **Backlog** for everything else.
+- **Owner:** one assignee, and ideally the person who will do it, since Linear's practice is that people write their own issues. No owner until someone commits.
+- **Priority:** what moves things forward this week or this month goes high: unblocking others, fixing what's blocking users. Set it relative to the team's other open work, or leave it unset rather than guess.
+- **Estimate:** only if the team estimates, on its own scale.
+- **Labels** (`list_issue_labels`): only labels the team already uses. Ask before creating one.
+- **Relations:** `blockedBy` / `blocks` when one can't start before another (create the blocker first to get its ID); `parentId` for sub-issues; `relatedTo` for siblings; `duplicateOf` rather than a second copy. Mentioning an issue ID in the description also links it as related.
 
-## 7. File it and check it landed
+## 5. File it and check it landed
 
-1. Show the user the title, the body and the placement (team, project, status, priority, owner, labels), unless they already asked you to file it right away.
+1. Show the user the title, description and placement, unless they asked you to file it right away.
 2. Create it with `save_issue` (no `id` when creating).
-3. Read it back (`get_issue`) to confirm the title, body, project and owner actually landed, and that the Agent notes collapsed (Linear stores the `+++` section as `>>>` … `>>>`, so that's what a read-back shows).
-4. Report the issue ID as a link, its kind (idea, agreement, or promise and to whom), its status and owner, and which response option was chosen or left open.
+3. Read it back (`get_issue`) to confirm the title, description, project and owner landed and the Agent notes collapsed.
+4. Report the issue ID as a link with its status and owner, and anything still to decide.
 
 ## Example
 
-From a session where a customer reported that a recent order was missing from their account. Filed in the Shop team, project "Order history", status Todo, assigned to the support lead, label `promise`, priority High:
+A customer wrote to support that a recent order was missing; support promised to fix it. Filed in the Shop team, project "Order history", Todo, assigned to the developer taking it, priority High:
 
-> **Show orders placed through the mobile app**
+> **Show orders placed in the mobile app in order history**
 >
-> **Origin:**
 > > "I ordered on the app last Tuesday and it's not in my account … I need the invoice for my company."
 >
-> - **Source:** support email from a customer, 2026-03-12 · link to the support ticket
-> - **Kind:** promise (to the customer: support replied "we'll fix the order history and send you the invoice", no date given)
+> Customer, support email, 2026-03-12 · link to the ticket · support promised a fix and the invoice, no date
 >
-> **Tension:** A customer's order history shows only orders placed on the website. Orders placed in the mobile app are missing, although they were paid for and delivered. Customers who look for an invoice or want to reorder think the order was lost, and some contact support.
+> Order history shows only orders placed on the website. Orders from the mobile app are missing, although they were paid and delivered, so customers can't find invoices and think the order was lost.
 >
-> **Driver:** Order history is where customers go for invoices, returns, and reorders. If it's incomplete, they lose trust and support gets tickets that shouldn't exist.
->
-> **Requirement:**
-> - [ ] An order placed in the mobile app appears in the customer's order history, with the same details as a website order.
-> - [ ] Website orders still appear. No order appears twice.
-> - [ ] Cancelled orders show as cancelled, same as today.
->
-> **Response options:**
-> 1. Show orders from both channels in one list (recommended: customers don't care where they ordered).
-> 2. Add a "Mobile orders" tab (alternative: quicker, but customers have to know where to look).
+> **Done when** app orders appear in order history with the same details as website orders, with no order shown twice.
 >
 > *(collapsed)* **Agent notes:** order history reads only the web orders table (`api/orders/history.ts`); app orders are stored by the mobile checkout service (`services/mobile-checkout`).

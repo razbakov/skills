@@ -55,26 +55,12 @@ Then create exactly what they confirm, one level at a time. If they stop a call,
 
 ## 5. Write the issues (only when asked)
 
-Follow the team's existing format if it has one. Otherwise:
+Write, place and file each issue with the **linear-issue** skill: one concrete task each, a plain title, only what the task needs, and its status, owner, priority and relations. On top of that, for a whole project:
 
-- **Title:** the outcome, not the implementation. "Keep spam out of the city Telegram chats", not "Add moderation bot".
-- **Description:** the problem in plain words first: who is affected and what happens today. Then one line: **Done when** … (observable). Then, if useful, a decision still to make, or what's out of scope.
-- **Agent notes:** file paths, commands and technical hints go in a collapsed section at the end so they don't crowd the human part:
-
-  ```
-  +++ Agent notes
-
-  - …
-
-  +++
-  ```
-
-- **Status and owner:** Todo and assigned only for work someone has committed to now; everything else is Backlog and unassigned. Linear may pull Todo issues into the current cycle; say so when it happens.
-- **Priority:** set it, relative to the other issues in the project.
-- **Relations:** `blockedBy` when an issue can't start before another (e.g. setup first). Create the blocker first to get its ID.
+- **The quote comes from the brief:** each issue quotes the lines of the project brief it comes from, and its source line links the project, so every issue leads back to the user's words.
+- **Blockers first:** create the issues others depend on (setup, decisions) first, so the later ones can point at them with `blockedBy`.
+- **Status across the project:** usually one or two issues are committed now (Todo, with an owner); the rest wait in Backlog, prioritised relative to each other.
 - **Already-shipped work:** don't file issues just to mark them Done unless the user asks. A PR link on the project is enough.
-
-Check each issue against `list_issues` first so you don't file a duplicate.
 
 ## 6. Report back
 
