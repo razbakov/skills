@@ -68,10 +68,18 @@
     },
     {
       "name": "linear-issue",
-      "description": "Write a clear, self-contained issue for a task, user story, or bug, in S3 form (Tension, Driver, Requirement, Response options), so that anyone can pick it up cold. Use whenever something should become an issue or ticket: \"file an issue\", \"create a ticket\", \"log this bug\", \"make a story for this\", \"plan it\", \"put it in the backlog\", or when a session turns up follow-up work, a bug, or a user report that someone else should handle, even if the user does not say \"issue\". Focuses on what the issue says, whichever tracker it goes into. Not for implementing an existing issue, and not for a full INVEST story with detailed acceptance criteria (use user-story for that).",
+      "description": "File one clear, self-contained Linear issue for a task, user story or bug: an Origin that quotes the original ask word for word, links its source and marks it as an idea, agreement or promise, then the S3 shape (Tension, Driver, Requirement, Response options), placed in the right Linear team and project with the right status, priority, owner, labels and relations, so anyone can pick it up cold. Use whenever something should become a Linear issue or ticket: \"file an issue\", \"create a ticket\", \"log this bug\", \"put it in Linear\", \"add it to the backlog\", \"make a story for this\", or when a session turns up follow-up work, a bug or a user report someone else should handle, even if the user does not say \"issue\". Also how linear-project writes each issue of a project. Not for setting up a whole initiative or project from a bigger-picture conversation (use linear-project), not for implementing an existing issue, and not for a full INVEST story (use user-story).",
       "install": {
         "repoUrl": "https://github.com/razbakov/skills",
         "skillPath": "skills/linear-issue"
+      }
+    },
+    {
+      "name": "linear-project",
+      "description": "Hand a bigger-picture conversation over to Linear as an initiative → project → issues structure, keeping the user's original words as the project brief. Use when a chat about a direction, a product area or a set of related needs should land in Linear: \"save this in Linear\", \"put my message in Linear\", \"which initiative / project does this belong to\", \"hand this over to Linear\", \"set this up in Linear\", \"add the open issues to the project\", or at the end of a session that turned a long ask into shipped work plus follow-ups. Works one level at a time and creates only what the user asked for. Not for a single bug or task (use linear-issue), and not for running issues as an agent (use linear-agent).",
+      "install": {
+        "repoUrl": "https://github.com/razbakov/skills",
+        "skillPath": "skills/linear-project"
       }
     },
     {
