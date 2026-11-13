@@ -1,6 +1,6 @@
 ---
 name: linear-project
-description: 'Hand a bigger-picture conversation over to Linear as an initiative → project → issues structure, keeping the user''s original words as the project brief. Use when a chat about a direction, a product area or a set of related needs should land in Linear: "save this in Linear", "put my message in Linear", "which initiative / project does this belong to", "hand this over to Linear", "set this up in Linear", "add the open issues to the project", or at the end of a session that turned a long ask into shipped work plus follow-ups. Works one level at a time and creates only what the user asked for. Not for a single bug or task (use file-issue), and not for running issues as an agent (use linear-agent).'
+description: 'Hand a bigger-picture conversation over to Linear as an initiative → project → issues structure, keeping the user''s original words as the project brief. Use when a chat about a direction, a product area or a set of related needs should land in Linear: "save this in Linear", "put my message in Linear", "which initiative / project does this belong to", "hand this over to Linear", "set this up in Linear", "add the open issues to the project", or at the end of a session that turned a long ask into shipped work plus follow-ups. Works one level at a time and creates only what the user asked for. Not for a single bug or task (use linear-issue), and not for running issues as an agent (use linear-agent).'
 ---
 
 # Linear Project

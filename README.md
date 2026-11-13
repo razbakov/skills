@@ -64,7 +64,7 @@ Each skill encodes a real methodology into a repeatable command. They compose: `
 | Skill | What it does |
 |-------|-------------|
 | `user-story` | Requirements to INVEST-compliant stories with acceptance criteria |
-| `file-issue` | Write a self-contained S3 issue (Tension, Driver, Requirement, Response options) for any tracker |
+| `linear-issue` | Write a self-contained S3 issue (Tension, Driver, Requirement, Response options) for any tracker |
 | `estimation` | Story point estimation with factor scoring |
 | `bdd-from-ux` | BDD scenarios grounded in actual UI/UX implementation |
 | `test-strategy` | Risk-based QA strategy / test concept — pyramid diagnosis, risk matrix, gates, KPIs, Markdown + PDF |

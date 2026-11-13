@@ -1,9 +1,9 @@
 ---
-name: file-issue
+name: linear-issue
 description: 'Write a clear, self-contained issue for a task, user story, or bug, in S3 form (Tension, Driver, Requirement, Response options) with an Origin that quotes the original ask, links its source, and marks it as an idea, agreement, or promise, so that anyone can pick it up cold. Use whenever something should become an issue or ticket: "file an issue", "create a ticket", "log this bug", "make a story for this", "plan it", "put it in the backlog", or when a session turns up follow-up work, a bug, or a user report that someone else should handle, even if the user does not say "issue". Focuses on what the issue says, whichever tracker it goes into. Not for implementing an existing issue, and not for a full INVEST story with detailed acceptance criteria (use user-story for that).'
 ---
 
-# File Issue
+# Linear Issue
 
 Turn a problem found in conversation, in a user report, or during other work into one issue that a person or agent can pick up without having been there.
 

@@ -67,11 +67,11 @@
       }
     },
     {
-      "name": "file-issue",
+      "name": "linear-issue",
       "description": "Write a clear, self-contained issue for a task, user story, or bug, in S3 form (Tension, Driver, Requirement, Response options), so that anyone can pick it up cold. Use whenever something should become an issue or ticket: \"file an issue\", \"create a ticket\", \"log this bug\", \"make a story for this\", \"plan it\", \"put it in the backlog\", or when a session turns up follow-up work, a bug, or a user report that someone else should handle, even if the user does not say \"issue\". Focuses on what the issue says, whichever tracker it goes into. Not for implementing an existing issue, and not for a full INVEST story with detailed acceptance criteria (use user-story for that).",
       "install": {
         "repoUrl": "https://github.com/razbakov/skills",
-        "skillPath": "skills/file-issue"
+        "skillPath": "skills/linear-issue"
       }
     },
     {
