@@ -159,6 +159,12 @@ Reply at the end with: PR URL, merged yes/no, Linear state, follow-up and blocke
 
 Fill `<merge>` / `<no-merge>` with the one that applies and delete the other.
 
+**Link the session on the issue.** Right after the start, attach the session that works on it, so
+anyone in Linear can open it: `save_issue` with `links: [{url, title: "Session: <title>"}]`, where url is
+`claude://claude.ai/epitaxy/<local_… session id>` — the sub-session's id from `start_session`, or, for
+the sub-agent fallback, this dispatcher's own run (newest `running` entry of
+`mcp__scheduled-tasks__list_task_runs` for this routine; outside a routine, skip it). Read it back.
+
 ## 6. Report
 
 One table in chat — the sub-sessions run on their own:
