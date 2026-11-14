@@ -40,6 +40,7 @@ The dispatcher never writes code itself. Each sub-session owns exactly one issue
 Skip (leave in `Todo`, list in the report with the reason) when the issue:
 
 - has the label `commander` or `agent:commander` (human-only work, by definition);
+- has the label `in-chat` (a chat the user is working in holds it; its link is attached as "Chat: …");
 - is delegated to an agent already (`delegate` set — that agent owns it);
 - is assigned to someone **other than the user** (never take a teammate's issue; the user's own
   assignment does not block — it usually just means "mine to get done");
@@ -69,7 +70,7 @@ skip the issue ("repo unclear") rather than guess.
 
 For each picked issue, in this order:
 
-1. **Lock:** `save_issue` → `state: "In Progress"`. Then **read it back** (`get_issue`) — `save_issue`
+1. **Lock:** `save_issue` → `state: "In Progress"`, `assignee: "me"` (the user from `whoami`). Then **read it back** (`get_issue`) — `save_issue`
    can return success without writing. Retry once; if it still didn't land, skip the issue and report it.
    The lock is what makes a re-run (or a parallel run) safe: later runs only look at `Todo`.
 2. **Worktree** (the user's convention: `~/Projects/<repo>` stays on `main`, branch work lives in `~/Streams`):
@@ -134,7 +135,8 @@ Read the repo's CLAUDE.md first and follow its conventions.
 2. Commit, push, open a PR. Title = what changed. Body = short summary + `Fixes <ID>`.
    No "Test plan" section, and no mention of Claude or Claude Code in the PR or its comments.
 3. <merge> Wait for CI. If it is green and the PR has no conflicts, squash-merge it
-   (`gh pr merge --squash --delete-branch`) and set the Linear issue to Done (read it back).
+   (`gh pr merge --squash --delete-branch`) and set the Linear issue to **In Review** (read it back).
+   Never set Done: only the user moves an issue to Done, after checking what's deployed.
    Red CI or conflicts: fix on the same branch and try again (at most 3 rounds), then stop and say why.
    Review comments, partial requirements or nice-to-haves do not block the merge: file each leftover
    as a follow-up issue in the same Linear project instead.
@@ -146,8 +148,9 @@ Read the repo's CLAUDE.md first and follow its conventions.
 5. Anything only the user can do (GUI login, signing, a real-world action, a credential you don't
    have, a product decision): create ONE new Linear issue in the same team, assigned to the user,
    label `commander`, title = the action, body = numbered one-action steps, marked as blocking <ID>.
-   Do not stop there — finish everything else. If the issue cannot progress at all, move it back
-   to Todo with a one-line comment why.
+   Do not stop there — finish everything else. If the issue cannot progress at all, or you are
+   stopped before finishing, leave a "⏸ Handover" comment (where the work is: branch, PR, worktree,
+   uncommitted files; what's next) and move it back to Todo.
 6. Never touch other issues' state, never merge other PRs, never push to main.
    When finished, remove nothing — the dispatcher cleans worktrees after merge.
 
