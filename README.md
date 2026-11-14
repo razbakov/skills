@@ -67,6 +67,7 @@ Each skill encodes a real methodology into a repeatable command. They compose: `
 | `linear-issue` | File a Linear issue the Linear way: one concrete task, a plain title, the ask quoted with its link, placed with status, owner, priority and relations |
 | `linear-project` | Hand a bigger-picture conversation over to Linear as initiative → project (verbatim brief) → issues, creating only what was asked |
 | `linear-triage` | One source with many asks (video review, call, sheet, doc) → one Linear project of jobs and frictions, each friction mapped to its issue; for videos, pulls the frame shown whenever someone says "look here" |
+| `linear-todo` | Implement every Linear issue in Todo: triage, lock, one worktree + one desktop sub-session (or sub-agent) per issue, each ending in a merged PR and a try-it comment |
 | `estimation` | Story point estimation with factor scoring |
 | `bdd-from-ux` | BDD scenarios grounded in actual UI/UX implementation |
 | `test-strategy` | Risk-based QA strategy / test concept — pyramid diagnosis, risk matrix, gates, KPIs, Markdown + PDF |
