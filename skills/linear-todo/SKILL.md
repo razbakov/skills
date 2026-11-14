@@ -174,17 +174,25 @@ Don't wait or poll. When a sub-session reports back (a side-sessions note), chec
 state with `gh pr view`, the issue state with `get_issue` — before telling the user it's done, and
 remove merged worktrees: `git -C ~/Projects/<repo> worktree remove <DIR>`.
 
+If a sub-session or agent is stopped from outside (killed, paused by the user), it can't write its own
+handover — the dispatcher does: read the worktree (`git status`, `git log origin/main..HEAD`, open PR),
+post the "⏸ Handover" comment, move the issue back to Todo, and keep the worktree.
+
 ## Scheduling
 
 Run it from a Claude desktop scheduled task (`mcp__scheduled-tasks__create_scheduled_task`, e.g. hourly
-on weekdays) with the prompt "Run the linear-todo skill for team Alösha AI, --max 3." Desktop
+on weekdays) with the prompt "Run the linear-todo skill for team Alösha AI, --max 1." A frequent
+schedule must also gate on work already in flight (a lock file, or "skip if a run's issue is still In
+Progress"): every run adds agents, and overlapping runs once had 6 agents and 5+ builds fighting for
+one machine, none finishing. Desktop
 scheduled runs may not be allowed to start sessions; the skill then falls back to sub-agents on its
 own. A run that finds nothing to do says nothing.
 
 ## Rules
 
-- Only `Todo`. Never act on `Triage`/`Backlog`; never move anything *into* `Todo` except a sub-session
-  handing back an issue it could not start.
+- Only `Todo`. Never act on `Triage`/`Backlog`; never move anything *into* `Todo` except an issue
+  handed back with a "⏸ Handover" comment (could not start, or stopped before finishing).
+- Never set Done — merged work goes to In Review; the user closes it after checking the deploy.
 - One issue → one sub-session → one branch → one PR.
 - Lock before starting; verify every Linear write by reading it back.
 - Never claim a result you didn't read back.
