@@ -1,6 +1,6 @@
 ---
 name: linear-issue
-description: 'File a Linear issue the way Linear recommends: one concrete task with a clear outcome, a short title that states the task, a description with only what the task needs, the original ask quoted word for word with a link to where it came from, and the right team, status, owner, priority and relations. Use whenever something should become a Linear issue or ticket: "file an issue", "create a ticket", "log this bug", "put it in Linear", "add it to the backlog", or when a session turns up follow-up work, a bug or a user report someone else should handle, even if the user does not say "issue". Not for setting up an initiative or project from a bigger-picture conversation (use linear-project), and not for implementing an existing issue.'
+description: 'File a Linear issue the way Linear recommends: one concrete task with a clear outcome, a short title that states the task, a description with only what the task needs, the original ask quoted word for word with a link to where it came from, and the right team, status, owner, priority and relations, after triaging the request: its outcome, whether it is a fix or a redesign that needs clickable UI variants first, and how likely one PR solves it. Use whenever something should become a Linear issue or ticket: "file an issue", "create a ticket", "log this bug", "put it in Linear", "add it to the backlog", or when a session turns up follow-up work, a bug or a user report someone else should handle, even if the user does not say "issue". Not for setting up an initiative or project from a bigger-picture conversation (use linear-project), and not for implementing an existing issue.'
 ---
 
 # Linear Issue
@@ -13,12 +13,20 @@ File one issue that a person or agent can pick up without having been there, fol
 
 Filing goes through the Linear MCP tools (`list_teams`, `list_projects`, `list_issues`, `list_issue_labels`, `save_issue`, `get_issue`). If they aren't connected, give the user the finished title and description and say what to set when they file it.
 
-## 1. Is it one issue?
+## 1. Triage: what outcome, what kind of work, is it one issue?
 
 An issue is **a task with a clear, defined outcome**: someone can do it and tell when it's done. Exploratory work counts when it's framed as a task ("Explore layouts for the city page", "Write the spec for city channels").
 
-- **Too big** (several deliverables, or more than a few days' work): break it into smaller, tangible pieces. Steps of one change become sub-issues of a parent; a bigger body of work with its own brief is a project (linear-project).
-- **Not a task** (an opinion, a vague wish, a discussion): don't file it. Say so and suggest where it belongs: a project brief, a doc, or a question back to the user.
+Before writing anything, triage the request and tell the user the result in one or two lines:
+
+- **Outcome:** what is true when it's done, checkable from the outside.
+- **Kind of work:**
+  - **Fix:** the problem and the fix are both clear. File a plain issue.
+  - **Redesign:** a new screen, flow or layout, where several UIs are plausible and taste decides. Don't write one UI into the issue as if it were decided. The issue's first step is clickable alternatives for the requester to pick from (the ui-variants skill). It's done when the chosen variant is built.
+  - **Not a task** (an opinion, a vague wish, a discussion): don't file it. Say so and suggest where it belongs: a project brief, a doc, or a question back to the user.
+- **One-step odds:** how likely one PR solves it (high / medium / low), and what lowers the odds: an open product decision, missing data, or a dependency on other work. Put open decisions in the issue, so whoever picks it up asks first.
+
+**Default to one issue per request, even a big one.** Don't propose a project or a split into many issues on your own. A problem someone raised in one message is usually one task to them, and splitting it early locks in a solution before anyone has seen one. Split only when the user asks, or when the request is plainly several unrelated deliverables. Then say so and ask, rather than filing the split. A bigger body of work with its own brief is a project (linear-project), but only when the user wants a project.
 - **Already there:** search first (`list_issues` with a `query`, including done and canceled ones). Add new information to an open issue as a comment instead of filing a duplicate. If a closed one comes back, file a new issue that links to it and says why it returned.
 
 ## 2. Know what happens today
