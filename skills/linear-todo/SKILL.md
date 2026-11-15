@@ -49,9 +49,9 @@ Skip (leave in `Todo`, list in the report with the reason) when the issue:
   decision only the user can make. Read the description, not just the title;
 - has no repo you can map with confidence (see 3).
 
-**Mixed issues are dispatched**: the sub-session does the agent part and files the human part as a
-blocker issue (step 5). Rank the rest by priority (Urgent → Low, none last), then oldest first, and take
-the first `--max`.
+**Mixed issues are dispatched**: the sub-session does the agent part and hands the human part back
+(step 5): a decision as a question on the same issue, a real-world action as a blocker issue.
+Rank the rest by priority (Urgent → Low, none last), then oldest first, and take the first `--max`.
 
 **Overlap check.** If two picked issues clearly touch the same files (same component, same migration
 number, same router), take only the higher-ranked one this run and say why; the other stays in `Todo`.
@@ -121,7 +121,7 @@ Implement Linear issue <ID>: <title>
 
 ## The issue
 <full description, verbatim>
-<comments from list_comments, newest last, verbatim — a comment starting "Owner ·" or "Commander ·" is the user speaking>
+<comments from list_comments, newest last, verbatim — a comment starting "Owner ·" or "Commander ·", or the user's reply to a "❓ Decision needed" comment, is the user speaking; act on that answer>
 
 ## Where
 Work only in <DIR> (git worktree of <repo>, branch <BRANCH>, based on origin/main).
@@ -145,11 +145,21 @@ Read the repo's CLAUDE.md first and follow its conventions.
    "✅ <what changed, plain words> — <PR link>"
    "Try it: 1. Open <live URL> 2. Click … 3. You should see …"
    Internal change → "Nothing to try — internal change (<what>)."
-5. Anything only the user can do (GUI login, signing, a real-world action, a credential you don't
-   have, a product decision): create ONE new Linear issue in the same team, assigned to the user,
-   label `commander`, title = the action, body = numbered one-action steps, marked as blocking <ID>.
-   Do not stop there — finish everything else. If the issue cannot progress at all, or you are
-   stopped before finishing, leave a "⏸ Handover" comment (where the work is: branch, PR, worktree,
+5. Anything only the user can do — two kinds, handled differently:
+   - **A decision or a review** (pick a variant, choose between approaches, a policy or legal call,
+     confirm a requirement): it is part of this issue, so it stays on this issue. Post ONE comment
+     "❓ Decision needed" that @mentions the user, with the link to look at, numbered questions, your
+     recommendation for each and what each answer unlocks. Add the label `commander` (addLabels), move
+     the issue to Todo and read it back. The user answers in the thread and removes the label; the next
+     run picks the issue up with that answer in its comments. A decision gets no issue of its own: it is
+     this issue's review, and a separate issue splits the context (link, answer, build) across two
+     places and leaves someone to copy the answer back.
+   - **A real-world action outside this issue's review** (GUI login, signing, a credential you don't
+     have, a payment, a message to a real person): create ONE new Linear issue in the same team,
+     assigned to the user, label `commander`, title = the action, body = numbered one-action steps,
+     marked as blocking <ID>.
+   Do not stop at either — finish everything else first. If the issue cannot progress at all, or you
+   are stopped before finishing, leave a "⏸ Handover" comment (where the work is: branch, PR, worktree,
    uncommitted files; what's next) and move it back to Todo.
 6. Never touch other issues' state, never merge other PRs, never push to main.
    When finished, remove nothing — the dispatcher cleans worktrees after merge.
@@ -197,7 +207,10 @@ own. A run that finds nothing to do says nothing.
 ## Rules
 
 - Only `Todo`. Never act on `Triage`/`Backlog`; never move anything *into* `Todo` except an issue
-  handed back with a "⏸ Handover" comment (could not start, or stopped before finishing).
+  handed back with a "⏸ Handover" comment (could not start, or stopped before finishing) or a
+  "❓ Decision needed" comment plus the `commander` label (waiting on the user's answer).
+- Decisions live in the issue's own comments, so the answer sits next to the work it unblocks;
+  separate `commander` issues are only for real-world actions.
 - Never set Done — merged work goes to In Review; the user closes it after checking the deploy.
 - One issue → one sub-session → one branch → one PR.
 - Lock before starting; verify every Linear write by reading it back.
